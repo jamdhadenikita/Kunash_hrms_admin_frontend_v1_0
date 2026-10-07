@@ -122,14 +122,14 @@
                         <div class="relative z-10 p-8">
                             <div class="flex items-center gap-2 mb-10">
                                 <div class="w-24 h-18 flex items-center justify-center">
-                                    <img src="/assets/images/logo.png" class="w-full h-full object-contain">
+                                    <img src="/assets/images/kunash-logo.png" class="w-full h-full object-contain">
                                 </div>
 
                             </div>
                             <div class="space-y-3">
                                 <h1 class="text-3xl font-semibold leading-tight">Welcome to<br><span
-                                        style="color: #EBF4F6;">SIEC</span></h1>
-                                <p class="text-sm leading-relaxed text-white/80">Powering sustainable, integrated environments for smarter organizations.</p>
+                                        style="color: #EBF4F6;">Kunash Media Solution</span></h1>
+                                <p class="text-sm leading-relaxed text-white/80">Powering innovative digital solutions for smarter, faster, and more connected businesses.</p>
                             </div>
 
                             <div class="mt-8 space-y-3">
@@ -167,7 +167,7 @@
                     <!-- Right Side - Login Form -->
                     <div class="lg:w-3/5 p-8 bg-white">
                         <div class="text-center lg:text-left mb-10">
-                            <h2 class="text-2xl text-center font-bold mb-1" style="color: #1B738C;">Admin Login</h2>
+                            <h2 class="text-2xl text-center font-bold mb-1" style="color: #1B738C;">Admin Login</h2><br>
                             <p class="text-sm text-center" style="color: #1a677c;">Enter your credentials to access the admin panel
                             </p>
                         </div>
@@ -202,7 +202,7 @@
                                     class="fas fa-sign-in-alt text-sm"></i><span>Sign In</span></button>
 
                             <div class="text-center pt-3">
-                                <p class="text-[11px] mt-14" style="color: #1B738C;">© 2026 SIEC. All rights
+                                <p class="text-[11px] mt-14" style="color: #1B738C;">© 2026 Kunash Media Solution. All rights
                                     reserved.</p>
                             </div>
                         </form>
@@ -265,8 +265,38 @@
             }
         }
 
-        // ========== BOOTSTRAP / LOGIN HANDLER ==========
+        // ========== HELPER: Save user session to localStorage ==========
+        function saveUserSession(data, mobileFallback, firstNameFallback = '', lastNameFallback = '') {
+            const firstName = data.firstName || firstNameFallback || '';
+            const lastName = data.lastName || lastNameFallback || '';
 
+            const userData = {
+                mobile: data.mobile || mobileFallback,
+                adminId: data.adminId || '',
+                role: data.role || 'ADMIN',
+                firstName: firstName,
+                lastName: lastName,
+                fullName: (firstName && lastName) ? `${firstName} ${lastName}` : (firstName || data.mobile || mobileFallback),
+                moduleAccess: Array.isArray(data.moduleAccess) ? data.moduleAccess : []   // 👈 KEY ADD
+            };
+
+            localStorage.setItem('hrms_logged_in', 'true');
+            localStorage.setItem('hrms_user', JSON.stringify(userData));
+            localStorage.setItem('hrms_mobile', userData.mobile);
+            localStorage.setItem('hrms_role', userData.role);
+            localStorage.setItem('hrms_adminId', userData.adminId);
+            localStorage.setItem('hrms_firstName', userData.firstName);
+            localStorage.setItem('hrms_lastName', userData.lastName);
+            localStorage.setItem('hrms_fullName', userData.fullName);
+            localStorage.setItem('hrms_moduleAccess', JSON.stringify(userData.moduleAccess));  // 👈 KEY ADD
+
+            console.log('✅ User session saved:', userData);
+            console.log('🔒 moduleAccess:', userData.moduleAccess);
+
+            return userData;
+        }
+
+        // ========== BOOTSTRAP / LOGIN HANDLER ==========
         async function handleBootstrapOrLogin(mobile, password, firstName, lastName, isBootstrap = false) {
             const endpoint = isBootstrap ? '/api/admin/bootstrap' : '/api/admin/auth/login';
 
@@ -274,7 +304,7 @@
                 const response = await fetch(`${API_BASE_URL}${endpoint}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',  // IMPORTANT: Allows cookies to be set
+                    credentials: 'include',
                     body: JSON.stringify({
                         mobile,
                         password,
@@ -286,39 +316,10 @@
                 console.log('Response:', data);
 
                 if (response.ok) {
-                    // CRITICAL: Store user data in localStorage for UI
-                    const userData = {
-                        mobile: data.mobile || mobile,
-                        adminId: data.adminId || '',
-                        role: data.role || 'SUPER_ADMIN',
-                        firstName: data.firstName || firstName || '',
-                        lastName: data.lastName || lastName || '',
-                        fullName: (data.firstName && data.lastName) ?
-                            `${data.firstName} ${data.lastName}` :
-                            (data.firstName || firstName || mobile)
-                    };
-
-                    // Store in localStorage for header display
-                    localStorage.setItem('hrms_logged_in', 'true');
-                    localStorage.setItem('hrms_user', JSON.stringify(userData));
-                    localStorage.setItem('hrms_mobile', userData.mobile);
-                    localStorage.setItem('hrms_role', userData.role);
-                    localStorage.setItem('hrms_adminId', userData.adminId);
-                    localStorage.setItem('hrms_firstName', userData.firstName);
-                    localStorage.setItem('hrms_lastName', userData.lastName);
-                    localStorage.setItem('hrms_fullName', userData.fullName);
-
-                    console.log('✅ User data stored in localStorage:', userData);
-                    console.log('📦 All localStorage keys:', Object.keys(localStorage));
-
-                    // Cookies are automatically stored in Cookie storage (check Application → Cookies)
-                    console.log('🍪 Cookies should be set - Check Application → Cookies → localhost:8086');
-
-                    // Redirect to dashboard
+                    saveUserSession(data, mobile, firstName, lastName);
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1000);
-
                 } else {
                     console.error('Failed:', data.message || data.error);
                 }
@@ -328,8 +329,7 @@
             }
         }
 
-
-        // Main Login Function
+        // ========== MAIN LOGIN FUNCTION ==========
         async function handleLogin(event) {
             event.preventDefault();
             const mobile = mobileInput?.value?.trim();
@@ -361,30 +361,8 @@
                 const data = await response.json();
                 console.log('Login response:', data);
 
-
                 if (response.ok) {
-                    // CRITICAL: Store user data with firstName and lastName
-                    const firstName = data.firstName || '';
-                    const lastName = data.lastName || '';
-
-                    const userData = {
-                        mobile: data.mobile || mobile,
-                        adminId: data.adminId || '',
-                        role: data.role || 'ADMIN',
-                        firstName: firstName,
-                        lastName: lastName,
-                        fullName: (firstName && lastName) ? `${firstName} ${lastName}` : (firstName || data.mobile || mobile)
-                    };
-
-                    // Store all user data
-                    localStorage.setItem('hrms_logged_in', 'true');
-                    localStorage.setItem('hrms_user', JSON.stringify(userData));
-                   
-                    console.log('✅ User data stored in localStorage:');
-                    console.log('  firstName:', firstName);
-                    console.log('  lastName:', lastName);
-                    console.log('  fullName:', userData.fullName);
-                    console.log('  All keys:', Object.keys(localStorage));
+                    const userData = saveUserSession(data, mobile);
 
                     showNotification('Login successful!', 'success');
                     setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
@@ -404,7 +382,6 @@
         async function checkExistingSession() {
             const isLoggedIn = localStorage.getItem('hrms_logged_in');
             if (isLoggedIn === 'true') {
-                // Verify with backend
                 try {
                     const response = await fetch(`${API_BASE_URL}/api/admin/get-all-admin`, {
                         method: 'GET',
@@ -414,7 +391,6 @@
                     if (response.ok) {
                         window.location.href = 'dashboard.html';
                     } else {
-                        // Session invalid, clear storage
                         localStorage.clear();
                     }
                 } catch (e) { console.log('Session check failed:', e); }

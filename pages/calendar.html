@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar Management | SIEC</title>
+    <title>Calendar Management | HRMS Admin</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -33,7 +34,7 @@
     </style>
 
     <style>
-        /* ===== DESIGN TOKENS (same as Attendance module / Employee Calendar module) ===== */
+        /* ===== DESIGN TOKENS ===== */
         :root {
             --color-primary:   #1B738C;
             --color-secondary: #1a6a80;
@@ -58,6 +59,7 @@
             --status-festival-fg: #ffffff;
             --status-leave-bg:    #D2042D;
             --status-leave-fg:    #eaf2ef;
+            --status-birthday-color: #e0527a;
         }
 
         * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
@@ -131,7 +133,7 @@
         .form-group { display: flex; flex-direction: column; }
         .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
 
-        /* ===== TAB NAVIGATION (view switch inside this module) ===== */
+        /* ===== TAB NAVIGATION ===== */
         .tab-nav {
             display: flex; gap: 6px; margin-bottom: 20px;
             padding-bottom: 12px; border-bottom: 1px solid var(--color-border); flex-wrap: wrap;
@@ -242,6 +244,8 @@
         .mini-cal-cell.mk-wfh      { background: var(--status-wfh-bg); color: #fff; }
         .mini-cal-cell.mk-festival { background: var(--status-festival-bg); color: #fff; }
 
+        /* ❌ REMOVED: mini-cal-cell.has-birthday::after — ab CSS pseudo-element nahi hai */
+
         .holiday-legend { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
         .cal-legend-item { display: flex; align-items: center; gap: 4px; font-size: 11.5px; color: #555; }
         .cal-legend-dot { width: 10px; height: 10px; border-radius: 4px; }
@@ -268,7 +272,11 @@
             display: flex; gap: 18px; flex-wrap: wrap; align-items: stretch; margin-bottom: 22px;
         }
         .current-month-cal-col { flex: 2 1 480px; }
-        .current-month-list-col { flex: 1 1 260px; max-width: 300px; }
+        .current-month-list-col {
+            flex: 1 1 260px; max-width: 300px;
+            display: flex; flex-direction: column;
+            max-height: 600px;
+        }
         .current-month-card {
             background: var(--color-white); border: 1px solid var(--color-border);
             border-radius: 14px; padding: 16px; height: 100%;
@@ -329,13 +337,34 @@
         .cm-cell.mk-wfh      { background-color: var(--status-wfh-bg); }
         .cm-cell.mk-festival { background-color: var(--status-festival-bg); }
 
-        .upcoming-list { display: flex; flex-direction: column; gap: 10px; max-height: 560px; overflow-y: auto; padding-right: 4px; }
+        /* ❌ REMOVED: cm-cell.has-birthday-day::before — ab CSS pseudo-element nahi hai */
+
+        .upcoming-list {
+            display: flex; flex-direction: column; gap: 10px;
+            max-height: 260px;
+            overflow-y: auto; overflow-x: hidden; padding-right: 4px;
+        }
+        .bday-list-scroll {
+            display: flex; flex-direction: column; gap: 4px;
+            max-height: 195px;
+            overflow-y: auto; overflow-x: hidden; padding-right: 4px;
+        }
+
         .upcoming-card { border: 1px solid var(--color-border); border-radius: 10px; padding: 10px 12px; background: #f7fbfc; position: relative; }
         .upcoming-card.is-today { background: #fff; border-color: var(--color-primary); box-shadow: 0 2px 10px rgba(27,115,140,.12); }
         .upcoming-card-toptag { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: .06em; color: #fff; background: var(--color-primary); padding: 2px 7px; border-radius: 5px; margin-bottom: 6px; text-transform: uppercase; }
         .upcoming-card-date { float: right; font-size: 10.5px; color: var(--color-secondary); font-weight: 600; }
         .upcoming-card-name { font-size: 13px; font-weight: 700; color: #26424b; }
         .upcoming-card-sub { font-size: 11px; color: var(--color-secondary); margin-top: 2px; }
+
+        /* ===== BIRTHDAY LIST PANEL ===== */
+        .bday-list-row { display:flex; align-items:center; gap:10px; padding:9px 4px; border-bottom:1px solid #eef4f6; }
+        .bday-list-row:last-child { border-bottom:none; }
+        .bday-avatar {
+            width:34px; height:34px; border-radius:50%; background:var(--color-primary); color:#fff;
+            display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0;
+        }
+        .bday-today-icon { color: var(--status-birthday-color); margin-left: 4px; font-size: 11px; }
 
         @media (max-width: 768px) {
             .section-card { padding: 14px; }
@@ -358,7 +387,7 @@
                 <!-- PAGE HEADER -->
                 <div class="mb-5">
                     <h1 class="text-xl font-bold" style="color: var(--color-primary);">Calendar Management</h1>
-                    <p class="text-xs mt-1" style="color: var(--color-secondary);">Manage yearly public holidays, Indian festivals, and mark custom Half Day / Work From Home dates for the organization</p>
+                    <p class="text-xs mt-1" style="color: var(--color-secondary);">Manage yearly public holidays, Indian festivals, custom Half Day / Work From Home dates, and view employee birthdays</p>
                 </div>
 
                 <!-- TAB NAVIGATION -->
@@ -374,7 +403,7 @@
                 <!-- ==================== TAB: YEAR CALENDAR ==================== -->
                 <div id="tab-year" class="tab-content">
 
-                    <!-- Toolbar: year switcher, add/reset actions, description, festival notice, legend -->
+                    <!-- Toolbar -->
                     <div class="section-card">
                         <div class="year-cal-toolbar">
                             <div class="year-switcher">
@@ -404,10 +433,11 @@
                             <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--status-wfh-bg);"></div>Work From Home</div>
                             <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#fff; border:1px solid var(--color-border);"></div>Weekend</div>
                             <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#fff; box-shadow:inset 0 0 0 2px var(--color-primary);"></div>Today</div>
+                            <div class="cal-legend-item"><i class="fas fa-birthday-cake" style="color:var(--status-birthday-color); font-size:12px;"></i>Birthday</div>
                         </div>
                     </div>
 
-                    <!-- CURRENT MONTH SPOTLIGHT: big calendar + Upcoming list (same style/logic as Employee Calendar), side by side -->
+                    <!-- CURRENT MONTH SPOTLIGHT + Upcoming + Birthdays -->
                     <div class="current-month-wrap">
                         <div class="current-month-cal-col">
                             <div class="current-month-card">
@@ -428,6 +458,14 @@
                                     <h3 id="cmListTitle">Upcoming</h3>
                                 </div>
                                 <div class="upcoming-list" id="currentMonthList"></div>
+                            </div>
+
+                            <!-- Upcoming Birthdays panel -->
+                            <div class="current-month-card" style="margin-top:14px;">
+                                <div class="current-month-header">
+                                    <h3><i class="fas fa-birthday-cake" style="color:var(--status-birthday-color); margin-right:6px;"></i>Upcoming Birthdays</h3>
+                                </div>
+                                <div class="bday-list-scroll" id="birthdayListContainer"></div>
                             </div>
                         </div>
                     </div>
@@ -556,13 +594,14 @@
 
     <script>
     /* =======================================================================
-       CONFIG — update BASE_URL if your proxy / env var differs
+       CONFIG
        ======================================================================= */
     const API = {
         BASE: 'http://localhost:8086',
-        CALENDAR_LIST:    '/api/calendar',              // GET  ?year=YYYY  -> full merged calendar for that year
-        CALENDAR_SAVE:    '/api/calendar',               // POST             -> create/update one custom entry
-        CALENDAR_DELETE:  (id) => `/api/calendar/${id}`, // DELETE           -> remove one custom entry
+        CALENDAR_LIST:    '/api/calendar',
+        CALENDAR_SAVE:    '/api/calendar',
+        CALENDAR_DELETE:  (id) => `/api/calendar/${id}`,
+        BIRTHDAYS:        '/api/employees/birthdays',
     };
 
     const TYPE_LABEL  = { Holiday:'Public Holiday', Festival:'Indian Festival', Half_Day:'Half Day', WFH:'Work From Home' };
@@ -592,14 +631,12 @@
 
     function closeModal(id) { document.getElementById(id)?.classList.remove('active'); }
 
-    /** For Festival entries, appends whether that day is a working day or an office holiday. */
     function dayStatusSuffix(entry) {
         if (!entry || entry.type !== 'Festival') return '';
         const STATUS_LABEL = { Working: 'Working Day', Half_Day: 'Half Day', WFH: 'Work From Home', Holiday: 'Holiday' };
         return ' — ' + (STATUS_LABEL[entry.dayStatus] || 'Working Day');
     }
 
-    /** A Festival marked as an actual office Holiday should be color-coded the same as Public Holiday. */
     function cellColorKey(entry) {
         if (!entry) return '';
         if (entry.type === 'Festival' && entry.dayStatus === 'Holiday') return 'holiday';
@@ -626,27 +663,20 @@
 
     /* =======================================================================
        HOLIDAY / CUSTOM CALENDAR — CORE MODULE (backend-driven)
-       ---------------------------------------------------------------------
-       The backend (GET /api/calendar?year=YYYY) is now the single source of
-       truth: it already merges fixed public holidays + auto-fetched Indian
-       festivals + any custom Half Day/WFH/extra entries into one sorted list.
-       This file no longer computes or hardcodes any of that — it just fetches
-       per year and caches the result in memory. No offline fallback table
-       here anymore; if the backend call fails, the UI shows an error state
-       for that year instead of guessing at data.
        ======================================================================= */
 
     const calendarState = {
         year: new Date().getFullYear(),
-        entriesCache: {}, // year -> array of entries returned by the backend, or null if that fetch failed
+        entriesCache: {},
     };
 
     const spotlightState = {
         year: new Date().getFullYear(),
-        month: new Date().getMonth(), // 0-indexed
+        month: new Date().getMonth(),
     };
 
-    /** Fetches (or returns cached) merged calendar entries for a given year from the backend. */
+    const birthdayState = { cache: {} };
+
     async function loadCalendarForYear(year) {
         if (calendarState.entriesCache[year] !== undefined) return calendarState.entriesCache[year];
         try {
@@ -654,12 +684,11 @@
             calendarState.entriesCache[year] = Array.isArray(data) ? data : [];
         } catch (err) {
             console.error(`[Calendar] Failed to load calendar for year=${year}:`, err.message);
-            calendarState.entriesCache[year] = null; // null = "tried, failed"
+            calendarState.entriesCache[year] = null;
         }
         return calendarState.entriesCache[year];
     }
 
-    /** Force a re-fetch for a year (used after save/delete so the UI reflects the backend's new state). */
     function invalidateYear(year) {
         delete calendarState.entriesCache[year];
     }
@@ -668,16 +697,41 @@
         return calendarState.entriesCache[year] || [];
     }
 
+    async function loadBirthdaysForYear(year) {
+        if (birthdayState.cache[year] !== undefined) return birthdayState.cache[year];
+        try {
+            const json = await apiFetch(`${API.BIRTHDAYS}?year=${year}`);
+            birthdayState.cache[year] = json.data || [];
+        } catch (err) {
+            console.error(`[Calendar] Failed to load birthdays for year=${year}:`, err.message);
+            birthdayState.cache[year] = [];
+        }
+        return birthdayState.cache[year];
+    }
+
+    function getBirthdayMapForYear(year) {
+        const map = {};
+        (birthdayState.cache[year] || []).forEach(b => {
+            (map[b.occursOn] = map[b.occursOn] || []).push(b);
+        });
+        return map;
+    }
+
     async function refreshCalendarModule() {
         document.getElementById('calYearLabel').textContent = calendarState.year;
 
         const realCurrentYear = new Date().getFullYear();
         const [yearEntries] = await Promise.all([
             loadCalendarForYear(calendarState.year),
-            loadCalendarForYear(realCurrentYear),      // needed for the "Upcoming" list
-            loadCalendarForYear(realCurrentYear + 1),  // needed for the "Upcoming" list near year-end
-            loadCalendarForYear(spotlightState.year),  // needed for the month spotlight grid
-            loadCalendarForYear(spotlightState.year + 1), // needed for Upcoming list near year-end
+            loadCalendarForYear(realCurrentYear),
+            loadCalendarForYear(realCurrentYear + 1),
+            loadCalendarForYear(spotlightState.year),
+            loadCalendarForYear(spotlightState.year + 1),
+            loadBirthdaysForYear(calendarState.year),
+            loadBirthdaysForYear(realCurrentYear),
+            loadBirthdaysForYear(realCurrentYear + 1),
+            loadBirthdaysForYear(spotlightState.year),
+            loadBirthdaysForYear(spotlightState.year + 1),
         ]);
 
         const notice = document.getElementById('festivalDataNotice');
@@ -696,6 +750,7 @@
         renderYearCalendar();
         renderCurrentMonth();
         renderUpcomingList();
+        renderBirthdayList();
     }
 
     function changeCalendarYear(delta) {
@@ -712,17 +767,29 @@
         spotlightState.month += delta;
         if (spotlightState.month < 0) { spotlightState.month = 11; spotlightState.year -= 1; }
         if (spotlightState.month > 11) { spotlightState.month = 0; spotlightState.year += 1; }
-        await Promise.all([ loadCalendarForYear(spotlightState.year), loadCalendarForYear(spotlightState.year + 1) ]);
+        await Promise.all([
+            loadCalendarForYear(spotlightState.year),
+            loadCalendarForYear(spotlightState.year + 1),
+            loadBirthdaysForYear(spotlightState.year),
+            loadBirthdaysForYear(spotlightState.year + 1),
+        ]);
         renderCurrentMonth();
         renderUpcomingList();
+        renderBirthdayList();
     }
 
     async function goToCurrentSpotlightMonth() {
         spotlightState.year  = new Date().getFullYear();
         spotlightState.month = new Date().getMonth();
-        await Promise.all([ loadCalendarForYear(spotlightState.year), loadCalendarForYear(spotlightState.year + 1) ]);
+        await Promise.all([
+            loadCalendarForYear(spotlightState.year),
+            loadCalendarForYear(spotlightState.year + 1),
+            loadBirthdaysForYear(spotlightState.year),
+            loadBirthdaysForYear(spotlightState.year + 1),
+        ]);
         renderCurrentMonth();
         renderUpcomingList();
+        renderBirthdayList();
     }
 
     function resetCustomCalendarEntries() {
@@ -751,6 +818,8 @@
         const entryMap = {};
         entries.forEach(e => { entryMap[e.date] = e; });
 
+        const bdayMap = getBirthdayMapForYear(year);
+
         const grid  = document.getElementById('yearCalendarGrid');
         const today = todayISO();
         const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -771,14 +840,25 @@
                 const dateStr = `${year}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
                 const dow     = new Date(year, m, d).getDay();
                 const entry   = entryMap[dateStr];
+                const hasBday = !!bdayMap[dateStr];
                 const cls = [
                     'mini-cal-cell',
                     (dow === 0 || dow === 6) ? 'is-weekend' : '',
                     dateStr === today ? 'is-today' : '',
                     entry ? `mk-${cellColorKey(entry)}` : '',
                 ].filter(Boolean).join(' ');
-                const title = entry ? `${entry.name} (${entry.type.replace('_',' ')}${dayStatusSuffix(entry)})` : '';
-                html += `<div class="${cls}" title="${escapeAttr(title)}" onclick="onYearCalendarDayClick('${dateStr}')">${d}</div>`;
+                const bdayNames = hasBday ? bdayMap[dateStr].map(b => b.fullName).join(', ') : '';
+                const title = [
+                    entry ? `${entry.name} (${entry.type.replace('_',' ')}${dayStatusSuffix(entry)})` : '',
+                    hasBday ? `Birthday: ${bdayNames}` : ''
+                ].filter(Boolean).join(' | ');
+
+                // ✅ Single inline cake icon (only when has birthday AND no entry on that day)
+                const cakeIcon = (hasBday && !entry)
+                    ? `<i class="fas fa-birthday-cake" style="position:absolute;top:1px;right:2px;font-size:7px;color:var(--status-birthday-color);pointer-events:none;"></i>`
+                    : '';
+
+                html += `<div class="${cls}" style="position:relative;" title="${escapeAttr(title)}" onclick="onYearCalendarDayClick('${dateStr}')">${d}${cakeIcon}</div>`;
             }
             html += `</div></div>`;
         }
@@ -795,12 +875,14 @@
 
     function renderCurrentMonth() {
         const year  = spotlightState.year;
-        const month = spotlightState.month; // 0-indexed
+        const month = spotlightState.month;
         const today = todayISO();
 
         const entries  = getCalendarEntriesForYear(year);
         const entryMap = {};
         entries.forEach(e => { entryMap[e.date] = e; });
+
+        const bdayMap = getBirthdayMapForYear(year);
 
         const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         const DAYNAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -820,21 +902,38 @@
             const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
             const dow     = new Date(year, month, d).getDay();
             const entry   = entryMap[dateStr];
+            const hasBday = !!bdayMap[dateStr];
             const cls = [
                 'cm-cell',
                 (dow === 0 || dow === 6) ? 'is-weekend' : '',
                 dateStr === today ? 'is-today' : '',
                 entry ? `has-entry mk-${cellColorKey(entry)}` : '',
             ].filter(Boolean).join(' ');
-            const title = entry ? `${entry.name} (${entry.type.replace('_',' ')}${dayStatusSuffix(entry)})` : '';
-            const badge = entry ? `<span class="cm-badge-icon"><i class="fas ${ICON_MAP[entry.type] || 'fa-circle'}"></i></span>` : '';
-            const pill  = entry ? `<span class="cm-pill">${escapeHtml(entry.name)}</span>` : '';
+            const bdayNames = hasBday ? bdayMap[dateStr].map(b => b.fullName).join(', ') : '';
+            const title = [
+                entry ? `${entry.name} (${entry.type.replace('_',' ')}${dayStatusSuffix(entry)})` : '',
+                hasBday ? `Birthday: ${bdayNames}` : ''
+            ].filter(Boolean).join(' | ');
+
+            // ✅ Single icon logic — entry icon takes priority; else birthday cake icon
+            const badge = entry
+                ? `<span class="cm-badge-icon"><i class="fas ${ICON_MAP[entry.type] || 'fa-circle'}"></i></span>`
+                : (hasBday
+                    ? `<span class="cm-badge-icon"><i class="fas fa-birthday-cake" style="color:var(--status-birthday-color);"></i></span>`
+                    : '');
+
+            const pill = entry
+                ? `<span class="cm-pill">${escapeHtml(entry.name)}</span>`
+                : (hasBday
+                    ? `<span class="cm-pill" style="color:var(--status-birthday-color);">${escapeHtml(bdayNames)}</span>`
+                    : '');
+
             html += `<div class="${cls}" title="${escapeAttr(title)}" onclick="onYearCalendarDayClick('${dateStr}')"><div class="cm-cell-top"><span class="cm-daynum">${d}</span>${badge}</div>${pill}</div>`;
         }
         document.getElementById('currentMonthGrid').innerHTML = html;
     }
 
-    /* ------------------------- Upcoming list (same as Employee Calendar) ------------------------- */
+    /* ------------------------- Upcoming list ------------------------- */
 
     function renderUpcomingList() {
         const today = todayISO();
@@ -858,6 +957,50 @@
                 <div style="clear:both;"></div>
                 <div class="upcoming-card-name">${escapeHtml(e.name)}</div>
                 <div class="upcoming-card-sub"${(e.type === 'Holiday' || (e.type === 'Festival' && e.dayStatus === 'Holiday')) ? ' style="color:var(--status-holiday-bg); font-weight:600;"' : ''}>${TYPE_LABEL[e.type] || e.type}${dayStatusSuffix(e)}</div>
+            </div>`;
+        }).join('');
+    }
+
+    /* ------------------------- Upcoming Birthdays list ------------------------- */
+
+    function renderBirthdayList() {
+        const container = document.getElementById('birthdayListContainer');
+        if (!container) return;
+        const today = todayISO();
+
+        const combined = [
+            ...(birthdayState.cache[spotlightState.year] || []),
+            ...(birthdayState.cache[spotlightState.year + 1] || []),
+        ].filter(b => b.occursOn >= today);
+
+        const earliestByEmployee = new Map();
+        combined.forEach(b => {
+            const key = b.employeeId || b.fullName;
+            const existing = earliestByEmployee.get(key);
+            if (!existing || b.occursOn < existing.occursOn) {
+                earliestByEmployee.set(key, b);
+            }
+        });
+
+        const upcoming = Array.from(earliestByEmployee.values())
+            .sort((a, b) => a.occursOn.localeCompare(b.occursOn))
+            .slice(0, 10);
+
+        if (upcoming.length === 0) {
+            container.innerHTML = `<div class="empty-state" style="padding:16px;"><i class="fas fa-birthday-cake"></i><p>No upcoming birthdays.</p></div>`;
+            return;
+        }
+        container.innerHTML = upcoming.map(b => {
+            const initials = b.fullName.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+            const isToday = b.occursOn === today;
+            return `
+            <div class="bday-list-row">
+                <div class="bday-avatar">${initials}</div>
+                <div style="flex:1;">
+                    <div style="font-weight:700;font-size:13px;color:#26424b;">${escapeHtml(b.fullName)} ${isToday ? '<i class="fas fa-gift bday-today-icon"></i>' : ''}</div>
+                    <div style="font-size:11px;color:var(--color-secondary);">${b.designation || ''} ${b.department ? '· '+b.department : ''}</div>
+                </div>
+                <div style="font-size:11.5px;font-weight:700;color:var(--color-primary);">${formatDate(b.occursOn)}</div>
             </div>`;
         }).join('');
     }
@@ -968,16 +1111,12 @@
 
         if (!date || !name) { showToast('Please fill date and title', 'warning'); return; }
 
-        // Non-numeric ids like "default-1-1" or "apifestival-2026-4" belong to backend-computed
-        // (default) entries. Those can't be edited directly — EXCEPT a Festival's working-day /
-        // holiday status, which we allow by saving a same-date custom override entry instead
-        // (custom entries win over auto-fetched ones on a date clash — see backend merge logic).
         if (rawId && isNaN(Number(rawId))) {
             if (typeInput.value !== 'Festival') {
                 showToast('Default holidays cannot be edited directly. Add a separate custom entry instead.', 'warning');
                 return;
             }
-            rawId = ''; // drop the default id → this save becomes a new custom override entry
+            rawId = '';
         }
 
         if (typeInput.value === 'Festival' && !document.querySelector('input[name="ce_dayoff"]:checked')) {
@@ -988,14 +1127,14 @@
         const payload = {
             date,
             name,
-            type:      typeInput.value, // Holiday | Festival | Half_Day | WFH
+            type:      typeInput.value,
             recurring: document.getElementById('ce_recurring').checked,
             dayStatus: typeInput.value === 'Holiday' ? 'Holiday'
                      : typeInput.value === 'Half_Day' ? 'Half_Day'
                      : typeInput.value === 'WFH' ? 'WFH'
-                     : document.querySelector('input[name="ce_dayoff"]:checked').value, // Festival — admin's choice
+                     : document.querySelector('input[name="ce_dayoff"]:checked').value,
         };
-        if (rawId) payload.id = Number(rawId); // include only when editing an existing custom entry
+        if (rawId) payload.id = Number(rawId);
 
         try {
             const result = await apiFetch(API.CALENDAR_SAVE, { method: 'POST', body: JSON.stringify(payload) });
@@ -1004,7 +1143,6 @@
             showToast(`${payload.type.replace('_',' ')} saved for ${formatDate(payload.date)}`, 'success');
             closeModal('calendarEntryModal');
 
-            // Refetch this entry's year (and the year currently switched to, if different)
             const savedYear = parseInt(payload.date.slice(0, 4), 10);
             invalidateYear(savedYear);
             if (savedYear !== calendarState.year) invalidateYear(calendarState.year);
@@ -1038,7 +1176,7 @@
     }
 
     /* =======================================================================
-       TAB NAVIGATION (Year Calendar / Holiday List)
+       TAB NAVIGATION
        ======================================================================= */
     function initTabs() {
         const tabs     = document.querySelectorAll('.tab-btn');

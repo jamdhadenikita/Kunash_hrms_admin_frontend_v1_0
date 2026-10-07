@@ -7,35 +7,35 @@
     <title>Company Management | HRMS Admin</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    
-
     <style>
-  
-    #header-container {
-      position: fixed;
-      top: 0;
-      left: 256px;
-      right: 0;
-      height: 56px;
-      background: #ffffff;
-      border-bottom: 1px solid #3098b5;
-      z-index: 40;
-    }
-    @keyframes shimmer {
-      0%   { background-position: -400px 0; }
-      100% { background-position:  400px 0; }
-    }
-    .skeleton-box {
-      background: linear-gradient(90deg, #c5d9e0 25%, #d8e8ed 50%, #c5d9e0 75%);
-      background-size: 800px 100%;
-      animation: shimmer 1.4s ease-in-out infinite;
-      border-radius: 4px;
-    }
-  </style>
+        #header-container {
+            position: fixed;
+            top: 0;
+            left: 256px;
+            right: 0;
+            height: 56px;
+            background: #ffffff;
+            border-bottom: 1px solid #3098b5;
+            z-index: 40;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -400px 0; }
+            100% { background-position: 400px 0; }
+        }
+
+        .skeleton-box {
+            background: linear-gradient(90deg, #c5d9e0 25%, #d8e8ed 50%, #c5d9e0 75%);
+            background-size: 800px 100%;
+            animation: shimmer 1.4s ease-in-out infinite;
+            border-radius: 4px;
+        }
+    </style>
 
     <style>
         * {
@@ -124,7 +124,6 @@
         }
 
         .btn-danger {
-            /* background-color: #dc3545; */
             color: red;
             padding: 6px 14px;
             border-radius: 8px;
@@ -134,10 +133,7 @@
             font-size: 12px;
         }
 
-        /* .btn-danger:hover { background-color: #c82333; } */
-
         .btn-info {
-            /* background-color: #17a2b8; */
             color: rgb(100, 93, 17);
             padding: 6px 14px;
             border-radius: 8px;
@@ -147,10 +143,7 @@
             font-size: 12px;
         }
 
-        /* .btn-info:hover { background-color: #138496; } */
-
         .btn-warning {
-            /* background-color: #f0a500; */
             color: rgb(66, 18, 237);
             padding: 6px 14px;
             border-radius: 8px;
@@ -159,8 +152,6 @@
             border: 2px solid #dfedefa9;
             font-size: 12px;
         }
-
-        /* .btn-warning:hover { background-color: #d4920a; } */
 
         input,
         select,
@@ -185,8 +176,6 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(27, 115, 140, 0.1);
         }
-
-
 
         .form-group {
             margin-bottom: 10px;
@@ -275,28 +264,13 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .toast.success {
-            background-color: #2b7a3e;
-        }
-
-        .toast.error {
-            background-color: #dc3545;
-        }
-
-        .toast.info {
-            background-color: var(--primary);
-        }
+        .toast.success { background-color: #2b7a3e; }
+        .toast.error { background-color: #dc3545; }
+        .toast.info { background-color: var(--primary); }
 
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .badge-custom {
@@ -380,9 +354,7 @@
         }
 
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
         .dept-card {
@@ -426,14 +398,14 @@
         table th {
             font-size: 12px;
             font-weight: 600;
-            padding: 12px 10px;
+            padding: 14px 12px;
             text-align: left;
             color: var(--primary);
             background: var(--primary-bg-light);
         }
 
         table td {
-            padding: 12px 10px;
+            padding: 14px 12px;
             font-size: 13px;
             vertical-align: middle;
         }
@@ -446,10 +418,10 @@
             border-bottom: 1px solid var(--primary-soft);
         }
 
-        /* Companies main table */
         .companies-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
 
         .companies-table thead tr {
@@ -460,7 +432,53 @@
             border-bottom: 2px solid var(--primary-soft);
         }
 
-        /* View modal info grid */
+        /* ===== STICKY ACTIONS COLUMN ===== */
+        .companies-table th:last-child,
+        .companies-table td:last-child {
+            position: sticky;
+            right: 0;
+            background: #ffffff;
+            z-index: 5;
+            box-shadow: -4px 0 8px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        .companies-table thead th:last-child {
+            background: var(--primary-bg-light);
+            z-index: 10;
+        }
+
+        .companies-table tbody tr:hover td:last-child {
+            background: var(--primary-bg-light);
+        }
+
+        /* ===== THIN SCROLLBAR (4px) ===== */
+        .table-scroll-wrapper {
+            overflow-x: auto;
+            overflow-y: clip;
+            scrollbar-width: thin;
+            scrollbar-color: #BDE4EE #f0f7f9;
+        }
+
+        .table-scroll-wrapper::-webkit-scrollbar {
+            height: 4px;
+            width: 4px;
+        }
+
+        .table-scroll-wrapper::-webkit-scrollbar-track {
+            background: #f0f7f9;
+            border-radius: 10px;
+        }
+
+        .table-scroll-wrapper::-webkit-scrollbar-thumb {
+            background: #BDE4EE;
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+
+        .table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #62C9EA;
+        }
+
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -482,7 +500,6 @@
             font-weight: 500;
         }
 
-        /* Disabled form overlay */
         .view-mode input,
         .view-mode select,
         .view-mode textarea {
@@ -496,7 +513,6 @@
             display: none;
         }
 
-        /* Registered banner */
         .registered-banner {
             background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
             border: 1px solid #a5d6a7;
@@ -549,18 +565,18 @@
                 <!-- ===== COMPANIES TABLE VIEW ===== -->
                 <div id="companiesTableSection">
                     <div class="section-card">
-                        <div class="overflow-x-auto">
+                        <div class="table-scroll-wrapper">
                             <table class="companies-table">
                                 <thead>
                                     <tr>
-                                        <th style="width:50px;">#</th>
-                                        <th>Company Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>GST Number</th>
-                                        <th>Established</th>
-                                        <th>Status</th>
-                                        <th style="width:180px; text-align:center;">Actions</th>
+                                        <th style="width:40px;">#</th>
+                                        <th style="min-width:200px;">Company Name</th>
+                                        <th style="min-width:200px;">Email</th>
+                                        <th style="min-width:120px;">Phone</th>
+                                        <th style="min-width:150px;">GST Number</th>
+                                        <th style="min-width:90px;">Established</th>
+                                        <th style="min-width:80px;">Status</th>
+                                        <th style="width:150px; text-align:center;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="companiesTableBody">
@@ -620,93 +636,91 @@
                             </div>
 
                             <h3 class="text-lg font-bold mb-5" style="color: var(--primary);">Company Information</h3>
-                            <!-- Company Information section - Updated grid -->
-                            <!-- Company Information section - WITHOUT Industry Type -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-2">
-    <div class="form-group">
-        <label>Company Name <span class="text-red-500">*</span></label>
-        <input type="text" id="comp_name" placeholder="e.g., Acme Solutions Pvt Ltd" style="padding: 4px 16px ; font-size: 11px;">
-        <div class="error-message" id="comp_name_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-    </div>
 
-    <div class="form-group">
-        <label>GST Number</label>
-        <input type="text" id="comp_gst" placeholder="22AAAAA0000A1Z" maxlength="15" style="padding: 4px 16px ; font-size: 11px; text-transform: uppercase;">
-        <div class="error-message" id="comp_gst_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-        <small style="color: #666; font-size: 10px;">15 characters (Auto converts to uppercase)</small>
-    </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-2">
+                                <div class="form-group">
+                                    <label>Company Name <span class="text-red-500">*</span></label>
+                                    <input type="text" id="comp_name" placeholder="e.g., Acme Solutions Pvt Ltd" style="padding: 4px 16px ; font-size: 11px;">
+                                    <div class="error-message" id="comp_name_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                </div>
 
-    <div class="form-group">
-        <label>PAN Number</label>
-        <input type="text" id="comp_pan" placeholder="ABCDE1234F" maxlength="10" style="padding: 4px 16px ; font-size: 11px; text-transform: uppercase;">
-        <div class="error-message" id="comp_pan_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-        <small style="color: #666; font-size: 10px;">Format: ABCDE1234F (Auto converts to uppercase)</small>
-    </div>
+                                <div class="form-group">
+                                    <label>GST Number</label>
+                                    <input type="text" id="comp_gst" placeholder="22AAAAA0000A1Z" maxlength="15" style="padding: 4px 16px ; font-size: 11px; text-transform: uppercase;">
+                                    <div class="error-message" id="comp_gst_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                    <small style="color: #666; font-size: 10px;">15 characters (Auto converts to uppercase)</small>
+                                </div>
 
-    <div class="form-group">
-        <label>CIN Number</label>
-        <input type="text" id="comp_cin" placeholder="U12345DL2020PTC123456" maxlength="21" style="padding: 4px 16px ; font-size: 11px; text-transform: uppercase;">
-        <div class="error-message" id="comp_cin_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-        <small style="color: #666; font-size: 10px;">21 characters (Auto converts to uppercase)</small>
-    </div>
+                                <div class="form-group">
+                                    <label>PAN Number</label>
+                                    <input type="text" id="comp_pan" placeholder="ABCDE1234F" maxlength="10" style="padding: 4px 16px ; font-size: 11px; text-transform: uppercase;">
+                                    <div class="error-message" id="comp_pan_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                    <small style="color: #666; font-size: 10px;">Format: ABCDE1234F (Auto converts to uppercase)</small>
+                                </div>
 
-    <!-- ONLY Company Type Field (No Industry Type) -->
-    <div class="form-group">
-        <label>Company Type</label>
-        <select id="comp_type" style="padding: 4px 16px ; font-size: 11px;">
-            <option value="">Select Company Type</option>
-            <option value="Private Limited">Private Limited</option>
-            <option value="Public Limited">Public Limited</option>
-            <option value="LLP">Limited Liability Partnership (LLP)</option>
-            <option value="Partnership">Partnership</option>
-            <option value="Proprietorship">Proprietorship</option>
-            <option value="Section 8 Company">Section 8 Company (Non-Profit)</option>
-            <option value="One Person Company">One Person Company (OPC)</option>
-            <option value="Government Company">Government Company</option>
-            <option value="Foreign Company">Foreign Company</option>
-            <option value="Others">Others</option>
-        </select>
-        <div class="error-message" id="comp_type_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-        <small style="color: #666; font-size: 10px;">Select your company registration type</small>
-    </div>
+                                <div class="form-group">
+                                    <label>CIN Number</label>
+                                    <input type="text" id="comp_cin" placeholder="U12345DL2020PTC123456" maxlength="21" style="padding: 4px 16px ; font-size: 11px; text-transform: uppercase;">
+                                    <div class="error-message" id="comp_cin_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                    <small style="color: #666; font-size: 10px;">21 characters (Auto converts to uppercase)</small>
+                                </div>
 
-    <div class="form-group">
-        <label>Email <span class="text-red-500">*</span></label>
-        <input type="email" id="comp_email" placeholder="contact@company.com" style="padding: 4px 16px ; font-size: 11px;">
-        <div class="error-message" id="comp_email_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-    </div>
+                                <div class="form-group">
+                                    <label>Company Type</label>
+                                    <select id="comp_type" style="padding: 4px 16px ; font-size: 11px;">
+                                        <option value="">Select Company Type</option>
+                                        <option value="Private Limited">Private Limited</option>
+                                        <option value="Public Limited">Public Limited</option>
+                                        <option value="LLP">Limited Liability Partnership (LLP)</option>
+                                        <option value="Partnership">Partnership</option>
+                                        <option value="Proprietorship">Proprietorship</option>
+                                        <option value="Section 8 Company">Section 8 Company (Non-Profit)</option>
+                                        <option value="One Person Company">One Person Company (OPC)</option>
+                                        <option value="Government Company">Government Company</option>
+                                        <option value="Foreign Company">Foreign Company</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                    <div class="error-message" id="comp_type_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                    <small style="color: #666; font-size: 10px;">Select your company registration type</small>
+                                </div>
 
-    <div class="form-group">
-        <label>Phone <span class="text-red-500">*</span></label>
-        <input type="tel" id="comp_phone" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" title="Please enter 10 digit mobile number" style="padding: 4px 16px ; font-size: 11px;">
-        <div class="error-message" id="comp_phone_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-        <small style="color: #666; font-size: 10px;">Enter 10-digit mobile number (e.g., 9876543210)</small>
-    </div>
+                                <div class="form-group">
+                                    <label>Email <span class="text-red-500">*</span></label>
+                                    <input type="email" id="comp_email" placeholder="contact@company.com" style="padding: 4px 16px ; font-size: 11px;">
+                                    <div class="error-message" id="comp_email_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                </div>
 
-    <div class="form-group">
-        <label>Website</label>
-        <input type="url" id="comp_website" placeholder="https://www.company.com" style="padding: 4px 16px ; font-size: 11px;">
-        <div class="error-message" id="comp_website_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-    </div>
+                                <div class="form-group">
+                                    <label>Phone <span class="text-red-500">*</span></label>
+                                    <input type="tel" id="comp_phone" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" title="Please enter 10 digit mobile number" style="padding: 4px 16px ; font-size: 11px;">
+                                    <div class="error-message" id="comp_phone_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                    <small style="color: #666; font-size: 10px;">Enter 10-digit mobile number (e.g., 9876543210)</small>
+                                </div>
 
-    <div class="form-group">
-        <label>Established Year</label>
-        <input type="number" id="comp_year" placeholder="e.g., 2015" style="padding: 4px 16px ; font-size: 11px;">
-        <div class="error-message" id="comp_year_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-    </div>
+                                <div class="form-group">
+                                    <label>Website</label>
+                                    <input type="url" id="comp_website" placeholder="https://www.company.com" style="padding: 4px 16px ; font-size: 11px;">
+                                    <div class="error-message" id="comp_website_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                </div>
 
-    <div class="form-group md:col-span-2">
-        <label>Address</label>
-        <textarea id="comp_address" placeholder="Full company address" rows="2" style="resize: vertical; padding: 4px 16px ; font-size: 11px;"></textarea>
-        <div class="error-message" id="comp_address_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-    </div>
+                                <div class="form-group">
+                                    <label>Established Year</label>
+                                    <input type="number" id="comp_year" placeholder="e.g., 2015" style="padding: 4px 16px ; font-size: 11px;">
+                                    <div class="error-message" id="comp_year_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                </div>
 
-    <div class="form-group md:col-span-2">
-        <label>Description</label>
-        <textarea id="comp_desc" placeholder="Brief description about the company" rows="2" style="resize: vertical; padding: 4px 16px ; font-size: 11px;"></textarea>
-        <div class="error-message" id="comp_desc_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
-    </div>
-</div>
+                                <div class="form-group md:col-span-2">
+                                    <label>Address</label>
+                                    <textarea id="comp_address" placeholder="Full company address" rows="2" style="resize: vertical; padding: 4px 16px ; font-size: 11px;"></textarea>
+                                    <div class="error-message" id="comp_address_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                </div>
+
+                                <div class="form-group md:col-span-2">
+                                    <label>Description</label>
+                                    <textarea id="comp_desc" placeholder="Brief description about the company" rows="2" style="resize: vertical; padding: 4px 16px ; font-size: 11px;"></textarea>
+                                    <div class="error-message" id="comp_desc_error" style="color: red; font-size: 10px; margin-top: 4px; display: none;"></div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- SECTION 2: WORKING HOURS -->
@@ -737,6 +751,70 @@
                             </div>
                             <div class="error-message" id="working_days_error"
                                 style="color: red; font-size: 10px; margin-top: 8px; display: none;"></div>
+
+                            <div class="mt-5 pt-5" style="border-top: 1px dashed var(--primary-soft);">
+                                <label style="font-size:13px; margin-bottom:10px;">Saturday Working Policy</label>
+                                <div class="day-checkbox-group" style="flex-direction:column; align-items:flex-start; gap:14px;">
+                                    <div class="day-checkbox">
+                                        <input type="radio" name="sat_policy" id="sat_policy_all" value="all">
+                                        <label for="sat_policy_all">All Saturdays Working</label>
+                                    </div>
+                                    <div class="day-checkbox">
+                                        <input type="radio" name="sat_policy" id="sat_policy_none" value="none">
+                                        <label for="sat_policy_none">All Saturdays Off</label>
+                                    </div>
+                                    <div class="day-checkbox">
+                                        <input type="radio" name="sat_policy" id="sat_policy_lastNOff" value="lastNOff" checked>
+                                        <label for="sat_policy_lastNOff">Last N Saturdays of the month are Off</label>
+                                    </div>
+
+                                    <div id="satOffCountGroup" class="flex items-center gap-3" style="padding-left:26px;">
+                                        <label for="sat_off_count" style="margin-bottom:0; white-space:nowrap;">Off Saturdays per month:</label>
+                                        <select id="sat_off_count" style="width:90px; min-height:36px; padding:6px 10px;">
+                                            <option value="1">Last 1</option>
+                                            <option value="2" selected>Last 2</option>
+                                            <option value="3">Last 3</option>
+                                            <option value="4">Last 4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <p class="text-xs mt-2 opacity-70" style="color: var(--text-light);">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Example with "Last 2" selected: a month with 4 Saturdays &rarr; 1st &amp; 2nd working, 3rd &amp; 4th off.
+                                    A month with 5 Saturdays &rarr; 1st, 2nd &amp; 3rd working, 4th &amp; 5th off. This self-adjusts every
+                                    month automatically, no manual changes needed.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 3: BREAK TIMINGS -->
+                        <div class="section-card"
+                            style="border-radius:0; border-left:none; border-right:none; border-top:none; margin-bottom:0; border-bottom: 1px solid var(--primary-soft);">
+                            <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
+                                <h3 class="text-lg font-bold" style="color: var(--primary);">Break Timings</h3>
+                                <div id="breakButtonsGroup" class="flex gap-2 flex-wrap">
+                                    <button type="button" class="add-custom-btn" onclick="addQuickBreak('Morning Tea Break')">
+                                        <i class="fas fa-mug-hot"></i> Morning Tea Break
+                                    </button>
+                                    <button type="button" class="add-custom-btn" onclick="addQuickBreak('Lunch Break')">
+                                        <i class="fas fa-utensils"></i> Lunch Break
+                                    </button>
+                                    <button type="button" class="add-custom-btn" onclick="addQuickBreak('Evening Tea Break')">
+                                        <i class="fas fa-coffee"></i> Evening Tea Break
+                                    </button>
+                                    <button type="button" id="addBreakBtn" class="btn-primary text-sm" onclick="addBreak()">
+                                        <i class="fas fa-plus mr-1"></i> Custom Break
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="breaksContainer" class="space-y-3"></div>
+                            <div class="error-message" id="breaks_error"
+                                style="color: red; font-size: 10px; margin-top: 8px; display: none;"></div>
+                            <p class="text-xs mt-3 opacity-70" style="color: var(--text-light);">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                <strong>Flexible</strong> = employee can take a fixed duration (e.g. 45 min) at any time during the day.
+                                <strong>Fixed Time</strong> = the break happens at a set time only (e.g. 1:00 PM - 1:45 PM).
+                            </p>
                         </div>
 
                         <!-- DEPARTMENTS SECTION -->
@@ -786,13 +864,6 @@
 
     <!-- ============================= MODALS ============================= -->
 
-
-
-    <!-- Custom Department Modal -->
-
-
-
-
     <!-- View Company Modal -->
     <div id="viewCompanyModal" class="modal-overlay">
         <div class="modal-container-lg">
@@ -821,8 +892,7 @@
         </div>
     </div>
 
-
-    <script src="/assets/js/component-loader.js"></script>  <!-- ← ADD THIS LINE -->
+    <script src="/assets/js/component-loader.js"></script>
     <script src="/assets/js/common.js"></script>
     <script src="/assets/js/sidebar.js"></script>
     <script src="/assets/js/header.js"></script>
@@ -835,6 +905,8 @@
         let currentCompanyId = null;
         let departmentsData = [];
         let designationsData = [];
+        let breaksData = [];
+        let saturdayPolicy = { type: 'lastNOff', offCount: 2 };
         let selectedLogoFile = null;
         let currentEditDeptIndex = null;
         let currentEditDesigIndex = null;
@@ -947,8 +1019,6 @@
             }
             return true;
         }
-
-        
 
         function validateEmail() {
             const emailInput = document.getElementById('comp_email');
@@ -1113,15 +1183,9 @@
             return true;
         }
 
-        function validateDepartments() {
-            // Make departments optional - no validation error if empty
-            return true;
-        }
-
-        function validateDesignations() {
-            // Make designations optional - no validation error if empty
-            return true;
-        }
+        function validateDepartments() { return true; }
+        function validateDesignations() { return true; }
+        function validateBreaks() { return true; }
 
         function validateWorkingDays() {
             const anyDaySelected = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].some(day =>
@@ -1302,6 +1366,137 @@
             }, 100);
         }
 
+        // ========== BREAK TIMING FUNCTIONS ==========
+        function renderBreaks() {
+            const container = document.getElementById('breaksContainer');
+            if (!container) return;
+
+            if (breaksData.length === 0) {
+                container.innerHTML = '<div class="empty-state">No break added yet. Use the quick buttons above or "Custom Break".</div>';
+                return;
+            }
+
+            container.innerHTML = breaksData.map((brk, index) => `
+                <div class="dept-card" data-break-index="${index}">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+                        <div class="form-group md:col-span-3" style="margin-bottom:0;">
+                            <label>Break Name</label>
+                            <input type="text" class="break-name-input" value="${escapeHtml(brk.breakName)}" placeholder="e.g. Tea Break">
+                        </div>
+                        <div class="form-group md:col-span-3" style="margin-bottom:0;">
+                            <label>Timing Type</label>
+                            <select class="break-type-select">
+                                <option value="flexible" ${brk.type === 'flexible' ? 'selected' : ''}>Flexible (Anytime)</option>
+                                <option value="fixed" ${brk.type === 'fixed' ? 'selected' : ''}>Fixed Time</option>
+                            </select>
+                        </div>
+                        <div class="form-group break-flexible-fields md:col-span-3 ${brk.type === 'fixed' ? 'hidden' : ''}" style="margin-bottom:0;">
+                            <label>Duration (minutes)</label>
+                            <input type="number" class="break-duration-input" value="${brk.duration || 30}" min="5" max="180">
+                        </div>
+                        <div class="break-fixed-fields md:col-span-5 flex gap-2 ${brk.type === 'flexible' ? 'hidden' : ''}">
+                            <div class="form-group flex-1" style="margin-bottom:0;">
+                                <label>Start Time</label>
+                                <input type="time" class="break-start-input" value="${brk.fixedStart || '13:00'}">
+                            </div>
+                            <div class="form-group flex-1" style="margin-bottom:0;">
+                                <label>End Time</label>
+                                <input type="time" class="break-end-input" value="${brk.fixedEnd || '13:45'}">
+                            </div>
+                        </div>
+                        <div class="md:col-span-1 flex justify-end">
+                            <button type="button" class="remove-break-btn btn-danger" data-index="${index}" title="Remove">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.break-name-input').forEach((input, idx) => {
+                input.addEventListener('change', e => { breaksData[idx].breakName = e.target.value; });
+            });
+
+            document.querySelectorAll('.break-type-select').forEach((select, idx) => {
+                select.addEventListener('change', e => {
+                    breaksData[idx].type = e.target.value;
+                    renderBreaks();
+                });
+            });
+
+            document.querySelectorAll('.break-duration-input').forEach((input, idx) => {
+                input.addEventListener('change', e => { breaksData[idx].duration = parseInt(e.target.value) || 0; });
+            });
+
+            document.querySelectorAll('.break-start-input').forEach((input, idx) => {
+                input.addEventListener('change', e => { breaksData[idx].fixedStart = e.target.value; });
+            });
+
+            document.querySelectorAll('.break-end-input').forEach((input, idx) => {
+                input.addEventListener('change', e => { breaksData[idx].fixedEnd = e.target.value; });
+            });
+
+            document.querySelectorAll('.remove-break-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const index = parseInt(btn.dataset.index);
+                    breaksData.splice(index, 1);
+                    renderBreaks();
+                    showToast('Break removed', 'info');
+                });
+            });
+        }
+
+        function addBreak() {
+            breaksData.push({ breakName: '', type: 'flexible', duration: 30, fixedStart: '13:00', fixedEnd: '13:45' });
+            renderBreaks();
+            setTimeout(() => {
+                const inputs = document.querySelectorAll('.break-name-input');
+                const last = inputs[inputs.length - 1];
+                if (last) last.focus();
+            }, 100);
+        }
+
+        function addQuickBreak(name) {
+            const exists = breaksData.some(b => b.breakName.toLowerCase() === name.toLowerCase());
+            if (exists) {
+                showToast(`${name} already added`, 'info');
+                return;
+            }
+            const defaults = {
+                'Lunch Break': { type: 'flexible', duration: 45, fixedStart: '13:00', fixedEnd: '13:45' },
+                'Morning Tea Break': { type: 'flexible', duration: 20, fixedStart: '11:00', fixedEnd: '11:20' },
+                'Evening Tea Break': { type: 'flexible', duration: 20, fixedStart: '16:00', fixedEnd: '16:20' }
+            };
+            const d = defaults[name] || { type: 'flexible', duration: 15, fixedStart: '13:00', fixedEnd: '13:15' };
+            breaksData.push({ breakName: name, ...d });
+            renderBreaks();
+        }
+
+        // ========== SATURDAY WORKING POLICY FUNCTIONS ==========
+        function toggleSatOffCountGroup() {
+            const selected = document.querySelector('input[name="sat_policy"]:checked')?.value || 'lastNOff';
+            const group = document.getElementById('satOffCountGroup');
+            if (!group) return;
+            group.style.display = selected === 'lastNOff' ? 'flex' : 'none';
+        }
+
+        function getSaturdayPolicyFromUI() {
+            const type = document.querySelector('input[name="sat_policy"]:checked')?.value || 'lastNOff';
+            const offCount = parseInt(document.getElementById('sat_off_count')?.value || '2', 10);
+            return { type, offCount: type === 'lastNOff' ? offCount : (type === 'none' ? 99 : 0) };
+        }
+
+        function setSaturdayPolicyInUI(policy) {
+            const p = policy || { type: 'lastNOff', offCount: 2 };
+            const radio = document.getElementById(`sat_policy_${p.type}`) || document.getElementById('sat_policy_lastNOff');
+            if (radio) radio.checked = true;
+
+            const select = document.getElementById('sat_off_count');
+            if (select) select.value = p.type === 'lastNOff' ? String(p.offCount || 2) : '2';
+
+            toggleSatOffCountGroup();
+        }
+
         // ===== CONFIRM MODAL =====
         function showConfirmModal(msg, onConfirm) {
             document.getElementById('confirmDeleteMessage').innerText = msg;
@@ -1367,6 +1562,8 @@
             document.getElementById('uploadLogoBtn').style.display = 'none';
             document.getElementById('addDeptBtn').style.display = 'none';
             document.getElementById('addDesigBtn').style.display = 'none';
+            document.getElementById('breakButtonsGroup').style.display = 'none';
+            document.getElementById('sat_off_count').disabled = true;
 
             window.scrollTo(0, 0);
         }
@@ -1384,8 +1581,7 @@
         // ===== FORM RESET =====
         function resetForm() {
             document.getElementById('comp_name').value = '';
-            document.getElementById('comp_type').value = ''; 
-            // document.getElementById('comp_industry').value = '';
+            document.getElementById('comp_type').value = '';
             document.getElementById('comp_gst').value = '';
             document.getElementById('comp_pan').value = '';
             document.getElementById('comp_cin').value = '';
@@ -1408,8 +1604,11 @@
             currentCompanyId = null;
             departmentsData = [];
             designationsData = [];
+            breaksData = [];
             renderDepartments();
             renderDesignations();
+            renderBreaks();
+            setSaturdayPolicyInUI({ type: 'lastNOff', offCount: 2 });
         }
 
         // ===== POPULATE FORM DATA =====
@@ -1421,7 +1620,6 @@
 
             document.getElementById('comp_name').value = d.companyName || '';
             document.getElementById('comp_type').value = d.companyType || '';
-            // document.getElementById('comp_industry').value = d.industryType || '';
             document.getElementById('comp_gst').value = d.gstNumber || '';
             document.getElementById('comp_pan').value = d.panNumber || '';
             document.getElementById('comp_cin').value = d.cinNumber || '';
@@ -1446,11 +1644,13 @@
 
             departmentsData = (d.departments && Array.isArray(d.departments)) ? [...d.departments] : [];
             designationsData = (d.designations && Array.isArray(d.designations)) ? [...d.designations] : [];
+            breaksData = (d.breaks && Array.isArray(d.breaks)) ? [...d.breaks] : [];
 
             renderDepartments();
             renderDesignations();
+            renderBreaks();
+            setSaturdayPolicyInUI(d.saturdayPolicy);
 
-            // Load logo from URL if available
             if (d.logoUrl) {
                 const fullLogoUrl = API_BASE_URL + d.logoUrl;
                 document.getElementById('logoPreview').innerHTML = `<img src="${fullLogoUrl}" class="w-full h-full object-cover rounded-2xl" onerror="this.parentElement.innerHTML='<i class=\'fas fa-building text-4xl\' style=\'color: var(--primary-light);\'></i>'">`;
@@ -1475,7 +1675,6 @@
                     const companyData = result.data[0];
                     console.log('[Company] Found company:', companyData.companyName);
 
-                    // Store only logo URL in localStorage (not base64)
                     if (companyData.logoUrl) {
                         localStorage.setItem('companyLogo', companyData.logoUrl);
                         setTimeout(() => updateSidebarLogo(), 500);
@@ -1494,10 +1693,15 @@
                         establishedYear: companyData.establishedYear,
                         address: companyData.address,
                         description: companyData.description,
-                        logoUrl: companyData.logoUrl, // Store only URL
+                        logoUrl: companyData.logoUrl,
                         workingDays: parseJsonField(companyData.workingDaysJson),
                         departments: parseJsonField(companyData.departmentsJson),
                         designations: parseJsonField(companyData.designationsJson),
+                        breaks: parseJsonField(companyData.breakTimingsJson || companyData.breakTimings),
+                        saturdayPolicy: (() => {
+                            const arr = parseJsonField(companyData.saturdayPolicyJson || companyData.saturdayPolicy);
+                            return Array.isArray(arr) ? (arr[0] || null) : arr;
+                        })(),
                         registeredAt: companyData.createdAt,
                         updatedAt: companyData.updatedAt
                     };
@@ -1533,7 +1737,6 @@
 
         function saveCompanyToStorage(data) {
             try {
-                // Make a copy without any large data
                 const storageData = {
                     dbId: data.dbId || currentCompanyId,
                     companyName: data.companyName,
@@ -1547,10 +1750,12 @@
                     establishedYear: data.establishedYear,
                     address: data.address,
                     description: data.description,
-                    logoUrl: data.logoUrl, // Store only URL, not base64
+                    logoUrl: data.logoUrl,
                     workingDays: data.workingDays,
                     departments: data.departments,
                     designations: data.designations,
+                    breaks: data.breaks,
+                    saturdayPolicy: data.saturdayPolicy,
                     registeredAt: data.registeredAt,
                     updatedAt: data.updatedAt
                 };
@@ -1559,7 +1764,6 @@
                 localStorage.setItem(COMPANY_STORAGE_KEY, 'true');
             } catch (e) {
                 console.error('Failed to save to localStorage:', e);
-                // If quota exceeded, clear old data and try again
                 if (e.name === 'QuotaExceededError') {
                     localStorage.removeItem(COMPANY_DATA_KEY);
                     showToast('Storage limit reached. Old data cleared.', 'warning');
@@ -1576,36 +1780,57 @@
 
         // ===== COMPANIES TABLE =====
         function renderCompaniesTable() {
-    const tbody = document.getElementById('companiesTableBody');
-    const company = getStoredCompany();
-    const registerBtn = document.getElementById('registerNewBtn');
+            const tbody = document.getElementById('companiesTableBody');
+            const company = getStoredCompany();
+            const registerBtn = document.getElementById('registerNewBtn');
 
-    if (!company) {
-        registerBtn.style.display = '';
-        tbody.innerHTML = `...`;
-        return;
-    }
+            if (!company) {
+                registerBtn.style.display = '';
+                tbody.innerHTML = '';
+                return;
+            }
 
-    registerBtn.style.display = 'none';
-    
-    const logoHtml = company.logoUrl ? 
-        `<img src="${API_BASE_URL + company.logoUrl}" style="width:36px;height:36px;border-radius:8px;object-fit:cover;border:1px solid var(--primary-soft);" onerror="this.style.display='none';this.nextSibling.style.display='flex';">` :
-        `<div style="width:36px;height:36px;border-radius:8px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;"><i class="fas fa-building" style="color:var(--primary);font-size:16px;"></i></div>`;
+            registerBtn.style.display = 'none';
 
-    tbody.innerHTML = `
+            const logoHtml = company.logoUrl
+                ? `<img src="${API_BASE_URL + company.logoUrl}" 
+                        style="width:42px; height:42px; border-radius:10px; object-fit:cover; 
+                               border:1px solid var(--primary-soft); flex-shrink:0; display:block;" 
+                        onerror="this.onerror=null; this.style.display='none';">`
+                : `<div style="width:42px; height:42px; border-radius:10px; 
+                             background:var(--primary-soft); display:flex; align-items:center; 
+                             justify-content:center; flex-shrink:0;">
+                        <i class="fas fa-building" style="color:var(--primary); font-size:18px;"></i>
+                   </div>`;
+
+            tbody.innerHTML = `
         <tr>
             <td class="font-bold" style="color:var(--primary);">1</td>
             <td>
-                <div class="flex items-center gap-3">
+                <div style="display:flex; align-items:center; gap:10px; min-width:0;">
                     ${logoHtml}
-                    <div>
-                        <div class="font-semibold" style="color:var(--primary);">${escapeHtml(company.companyName)}</div>
-                        <div style="font-size:11px; color:var(--text-light);">${escapeHtml(company.companyType || '—')}</div>
+                    <div style="min-width:0; flex:1;">
+                        <div class="font-semibold" 
+                             style="color:var(--primary); font-size:13px; 
+                                    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
+                             title="${escapeHtml(company.companyName)}">
+                            ${escapeHtml(company.companyName)}
+                        </div>
+                        <div style="font-size:11px; color:var(--text-light); 
+                                    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
+                             title="${escapeHtml(company.companyType || '—')}">
+                            ${escapeHtml(company.companyType || '—')}
+                        </div>
                     </div>
                 </div>
             </td>
-            <td style="color:var(--text-light);">${escapeHtml(company.email)}</td>
-            <td style="color:var(--text-light);">${escapeHtml(company.phone)}</td>
+            <td style="color:var(--text-light); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" 
+                title="${escapeHtml(company.email)}">
+                ${escapeHtml(company.email)}
+            </td>
+            <td style="color:var(--text-light); white-space:nowrap;">
+                ${escapeHtml(company.phone)}
+            </td>
             <td>${company.gstNumber ? `<span class="badge-custom">${escapeHtml(company.gstNumber)}</span>` : '<span style="color:var(--text-light);">—</span>'}</td>
             <td style="color:var(--text-light);">${company.establishedYear || '—'}</td>
             <td><span style="background:#d4edda; color:#155724; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;">Active</span></td>
@@ -1623,7 +1848,7 @@
                 </div>
             </td>
         </tr>`;
-}
+        }
 
         // ===== ACTION HANDLERS =====
         function handleViewCompany() {
@@ -1691,8 +1916,7 @@
             const isValid = validateCompanyName() &&
                 validateEmail() &&
                 validatePhone() &&
-                validateCompanyType() &&  // ADD THIS
-              
+                validateCompanyType() &&
                 validateGST() &&
                 validatePAN() &&
                 validateCIN() &&
@@ -1700,6 +1924,7 @@
                 validateYear() &&
                 validateDepartments() &&
                 validateDesignations() &&
+                validateBreaks() &&
                 validateWorkingDays();
 
             if (!isValid) {
@@ -1726,6 +1951,8 @@
                     desig.designationName && desig.designationName.trim() !== '' &&
                     desig.departmentName && desig.departmentName.trim() !== ''
                 );
+                const validBreaks = breaksData.filter(brk => brk.breakName && brk.breakName.trim() !== '');
+                const saturdayPolicyData = getSaturdayPolicyFromUI();
 
                 const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
                 const dayNames = { mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun' };
@@ -1736,12 +1963,10 @@
                     endTime: document.getElementById('global_end_time').value
                 }));
 
-                // In your form submit handler, add these lines to the payload:
                 const payload = {
                     id: isEditMode ? currentCompanyId : null,
                     companyName: name,
-                    companyType: document.getElementById('comp_type').value || null,  // ADD THIS
-                     // ADD THIS
+                    companyType: document.getElementById('comp_type').value || null,
                     gstNumber: document.getElementById('comp_gst').value.trim() || null,
                     panNumber: document.getElementById('comp_pan').value.trim() || null,
                     cinNumber: document.getElementById('comp_cin').value.trim() || null,
@@ -1752,7 +1977,8 @@
                     address: document.getElementById('comp_address').value.trim() || null,
                     description: document.getElementById('comp_desc').value.trim() || null,
                     workingDays: JSON.stringify(workingDays),
-                    breakTimings: JSON.stringify({ lunchStart: "13:00", lunchEnd: "14:00" }),
+                    breakTimings: JSON.stringify(validBreaks),
+                    saturdayPolicy: JSON.stringify(saturdayPolicyData),
                     holidays: "[]",
                     departments: JSON.stringify(validDepartments),
                     designations: JSON.stringify(validDesignations),
@@ -1799,10 +2025,10 @@
                         }
                     }
 
-                    // Save to localStorage without base64
                     const companyObj = {
                         dbId: currentCompanyId,
                         companyName: name,
+                        companyType: payload.companyType,
                         gstNumber: payload.gstNumber,
                         panNumber: payload.panNumber,
                         cinNumber: payload.cinNumber,
@@ -1815,6 +2041,8 @@
                         workingDays: workingDays,
                         departments: validDepartments,
                         designations: validDesignations,
+                        breaks: validBreaks,
+                        saturdayPolicy: saturdayPolicyData,
                         logoUrl: logoRelativeUrl || (result.data.logoUrl ? result.data.logoUrl : null),
                         registeredAt: isEditMode ? getStoredCompany()?.registeredAt : new Date().toISOString(),
                         updatedAt: new Date().toISOString()
@@ -1846,17 +2074,27 @@
 
             document.getElementById('addDeptBtn')?.addEventListener('click', addDepartment);
             document.getElementById('addDesigBtn')?.addEventListener('click', addDesignation);
+            document.querySelectorAll('input[name="sat_policy"]').forEach(r =>
+                r.addEventListener('change', toggleSatOffCountGroup)
+            );
+            toggleSatOffCountGroup();
 
             const backendCompany = await fetchCompaniesFromBackend();
 
             if (backendCompany) {
                 departmentsData = backendCompany.departments || [];
                 designationsData = backendCompany.designations || [];
+                breaksData = backendCompany.breaks || [];
+                saturdayPolicy = backendCompany.saturdayPolicy || { type: 'lastNOff', offCount: 2 };
                 renderDepartments();
                 renderDesignations();
+                renderBreaks();
+                setSaturdayPolicyInUI(saturdayPolicy);
             } else {
                 renderDepartments();
                 renderDesignations();
+                renderBreaks();
+                setSaturdayPolicyInUI(saturdayPolicy);
             }
 
             renderCompaniesTable();

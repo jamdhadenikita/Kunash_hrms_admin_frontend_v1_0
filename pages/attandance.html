@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Management | SIEC</title>
+    <title>Attendance Management | HRMS Admin</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -413,6 +414,29 @@
 .geo-reveal-link i {
   font-size: 10px;
 }
+
+/* ── Break time badge in History table — NEW ── */
+.break-time-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 40px; font-size: 11px; font-weight: 600;
+  background: #fff3e0; color: #b7791f; cursor: default;
+}
+.break-time-badge.none {
+  background: rgba(201,158,187,0.08); color: #999; font-weight: 500;
+}
+
+/* ── Overtime badge — NEW ── */
+.overtime-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 40px; font-size: 11px; font-weight: 600;
+  background: rgba(245,158,11,0.14); color: #b7791f; cursor: default;
+}
+.overtime-badge.ontime {
+  background: rgba(30,142,92,0.12); color: #1e8e5c;
+}
+.overtime-badge.none {
+  background: rgba(201,158,187,0.08); color: #999; font-weight: 500;
+}
     </style>
 </head>
 <body>
@@ -556,6 +580,7 @@
                                         <th>Check In</th>
                                         <th>Check Out</th>
                                         <th>Hours</th>
+                                        <th>Overtime</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -563,7 +588,7 @@
                                 <tbody id="dailyAttendanceList">
                                     <!-- Populated by JS -->
                                     <tr class="loading-row">
-                                        <td colspan="8"><span class="spinner"></span> Loading attendance data…</td>
+                                        <td colspan="9"><span class="spinner"></span> Loading attendance data…</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -896,12 +921,14 @@
                                 <th>Check In</th>
                                 <th>Check Out</th>
                                 <th>Hours</th>
+                                <th>Breaks</th>
+                                <th>Overtime</th>
                                 <th>Status</th>
                                 <th>Notes</th>
                             </tr>
                         </thead>
                         <tbody id="summaryTableBody">
-                            <tr class="loading-row"><td colspan="6"><span class="spinner"></span> Loading…</td></tr>
+                            <tr class="loading-row"><td colspan="8"><span class="spinner"></span> Loading…</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -963,6 +990,8 @@
          // Geofencing endpoints — NEW
         GEO_BY_EMPLOYEE:   (id) => `/api/attendance-geo/by-employee/${id}`,
         GEO_BY_ATTENDANCE: (id) => `/api/attendance-geo/by-attendance/${id}`,
+        // Company profile — for scheduled working hours (Overtime calc) — NEW
+        COMPANY_PROFILES: '/api/company/profiles',
         // Summary endpoints — wire these once your backend exposes them
         // (see provided Spring controller spec at the bottom of this file)
         SUMMARY_DAILY:    '/api/attendance/summary/daily',        // ?date=YYYY-MM-DD
@@ -1007,6 +1036,55 @@
        ======================================================================= */
     let monthlyChart       = null;
     let attendancePieChart = null;
+
+    /* =======================================================================
+       OVERTIME — scheduled end-time-per-weekday from Company Management
+       ======================================================================= */
+    let scheduledEndTimeByDay = {}; // { Mon: "18:00", Tue: "18:00", ... }
+
+    async function loadCompanyWorkingHours() {
+        try {
+            const result = await apiFetch(API.COMPANY_PROFILES);
+            if (result?.success && result.data?.length) {
+                const company = result.data[0];
+                const workingDays = company.workingDaysJson ? JSON.parse(company.workingDaysJson) : [];
+                scheduledEndTimeByDay = {};
+                workingDays.forEach(d => {
+                    if (d.active) scheduledEndTimeByDay[d.dayOfWeek] = d.endTime;
+                });
+            }
+        } catch (err) {
+            console.warn('[Overtime] Could not load company working hours:', err.message);
+        }
+    }
+
+    /** "YYYY-MM-DD" -> "Mon"/"Tue"/etc, matching workingDaysJson's dayOfWeek format */
+    function weekdayAbbrevFromDate(dateStr) {
+        const names = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        const d = new Date(dateStr + 'T00:00:00');
+        return names[d.getDay()];
+    }
+
+    /** Returns { minutes, html } — minutes null when not computable */
+    function computeOvertimeForRecord(rec) {
+        const dayAbbrev = weekdayAbbrevFromDate(rec.attendanceDate);
+        const scheduledEnd = scheduledEndTimeByDay[dayAbbrev];
+
+        if (!scheduledEnd || !rec.checkOutTime) {
+            return { minutes: null, html: '<span class="overtime-badge none">--</span>' };
+        }
+
+        const [sh, sm] = scheduledEnd.split(':').map(Number);
+        const [ah, am] = rec.checkOutTime.split(':').map(Number);
+        const diffMin = (ah * 60 + am) - (sh * 60 + sm);
+
+        if (diffMin > 0) {
+            const h = Math.floor(diffMin / 60), m = diffMin % 60;
+            const label = h > 0 ? `${h}h ${m}m` : `${m}m`;
+            return { minutes: diffMin, html: `<span class="overtime-badge"><i class="fas fa-hourglass-half" style="font-size:9px;"></i> ${label}</span>` };
+        }
+        return { minutes: 0, html: '<span class="overtime-badge ontime"><i class="fas fa-check" style="font-size:9px;"></i> On time</span>' };
+    }
 
     /* =======================================================================
        GLOBAL STATE — single source of truth for Daily Attendance
@@ -1061,6 +1139,14 @@
     function formatHours(h) {
         if (h === null || h === undefined) return '—';
         return `${parseFloat(h).toFixed(1)} hrs`;
+    }
+
+    /** Format minutes as "1h 5m" / "35m" — used for break-time badges */
+    function formatBreakMinutes(mins) {
+        if (!mins || mins <= 0) return '0m';
+        const h = Math.floor(mins / 60);
+        const m = Math.round(mins % 60);
+        return h > 0 ? `${h}h ${m}m` : `${m}m`;
     }
 
     /** Badge HTML from status string */
@@ -1146,30 +1232,6 @@
 
 
     /** Fetch latest geo log for employee and render on map */
-    // async function loadAndRenderLocation(empPrimeId, isInitialLoad) {
-    //     try {
-    //         const logs = await apiFetch(API.GEO_BY_EMPLOYEE(empPrimeId));
-
-    //         if (!logs || logs.length === 0) {
-    //             document.getElementById('locationCoordsText').textContent  = 'No location data available for this employee';
-    //             document.getElementById('locationLastUpdated').textContent = '--';
-    //             if (isInitialLoad) initEmptyMap();
-    //             return;
-    //         }
-
-    //         // Backend returns logs sorted by capturedAt desc — first entry is most recent
-    //         const latest = logs[0];
-    //         renderLocationOnMap(latest, isInitialLoad);
-    //     } catch (err) {
-    //         console.error('[Location Tracking]', err);
-    //         if (isInitialLoad) {
-    //             document.getElementById('locationCoordsText').textContent = 'Failed to load location data';
-    //             initEmptyMap();
-    //         }
-    //     }
-    // }
-
-
      /** Fetch latest geo log for employee and render on map */
     async function loadAndRenderLocation(empPrimeId, isInitialLoad) {
         try {
@@ -1229,40 +1291,6 @@
             maxZoom: 19
         }).addTo(locationMap);
     }
-
-    /** Plot / update marker with latest coordinate */
-    // function renderLocationOnMap(geoLog, isInitialLoad) {
-    //     const lat = geoLog.latitude;
-    //     const lng = geoLog.longitude;
-    //     const capturedAt = geoLog.capturedAt ? new Date(geoLog.capturedAt).toLocaleString('en-IN') : '--';
-
-    //     document.getElementById('locationCoordsText').textContent =
-    //         `Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)} (${geoLog.logType || 'CHECK_IN'})`;
-    //     document.getElementById('locationLastUpdated').textContent = capturedAt;
-
-    //     if (!locationMap) {
-    //         locationMap = L.map('locationMapContainer').setView([lat, lng], 16);
-    //         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //             attribution: '&copy; OpenStreetMap contributors',
-    //             maxZoom: 19
-    //         }).addTo(locationMap);
-    //     }
-
-    //     if (locationMarker) {
-    //         locationMarker.setLatLng([lat, lng]);
-    //     } else {
-    //         locationMarker = L.marker([lat, lng]).addTo(locationMap);
-    //     }
-
-    //     locationMarker.bindPopup(
-    //         `<b>${geoLog.logType || 'Location'}</b><br>Accuracy: ${geoLog.accuracy ? geoLog.accuracy.toFixed(1) + ' m' : '--'}<br>${capturedAt}`
-    //     );
-
-    //     if (isInitialLoad) {
-    //         locationMap.setView([lat, lng], 16);
-    //         locationMarker.openPopup();
-    //     }
-    // }
 
     /** Plot / update marker with latest coordinate */
     async function renderLocationOnMap(geoLog, isInitialLoad) {
@@ -1575,7 +1603,7 @@
     function setTableLoading(on) {
         if (on) {
             document.getElementById('dailyAttendanceList').innerHTML =
-                `<tr class="loading-row"><td colspan="8"><span class="spinner"></span> Loading attendance data…</td></tr>`;
+                `<tr class="loading-row"><td colspan="9"><span class="spinner"></span> Loading attendance data…</td></tr>`;
         }
         // false: do nothing — renderDailyTable() replaces the spinner row
     }
@@ -1585,7 +1613,7 @@
         if (!records || records.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="8">
+                    <td colspan="9">
                         <div class="empty-state">
                             <i class="fas fa-calendar-times"></i>
                             <p>No attendance records found for the selected filters.</p>
@@ -1604,6 +1632,7 @@
             const checkOut = formatTime(rec.checkOutTime);
             const hours    = formatHours(rec.totalHours);
             const badge    = statusBadge(rec.status);
+            const overtime = computeOvertimeForRecord(rec).html;
 
             // Encode record for edit — use data attributes to avoid XSS
             return `
@@ -1624,6 +1653,7 @@
                 <td>${checkIn}</td>
                 <td>${checkOut}</td>
                 <td>${hours}</td>
+                <td>${overtime}</td>
                 <td>${badge}</td>
                 <td style="white-space:nowrap;">
                     <button class="btn-icon" onclick="openEditModal(this)" title="Edit Attendance">
@@ -1748,18 +1778,22 @@
             return;
         }
 
-        const headers = ['Employee Name', 'Employee ID', 'Department', 'Date', 'Check In', 'Check Out', 'Total Hours', 'Status', 'Notes'];
-        const rows = records.map(rec => [
-            `${rec.firstName || ''} ${rec.lastName || ''}`.trim(),
-            rec.employeeId || rec.employeePrimeId || '',
-            rec.department || '',
-            rec.attendanceDate || '',
-            formatTime(rec.checkInTime),
-            formatTime(rec.checkOutTime),
-            rec.totalHours != null ? rec.totalHours : '',
-            rec.status || '',
-            rec.notes || '',
-        ]);
+        const headers = ['Employee Name', 'Employee ID', 'Department', 'Date', 'Check In', 'Check Out', 'Total Hours', 'Overtime (min)', 'Status', 'Notes'];
+        const rows = records.map(rec => {
+            const ot = computeOvertimeForRecord(rec).minutes;
+            return [
+                `${rec.firstName || ''} ${rec.lastName || ''}`.trim(),
+                rec.employeeId || rec.employeePrimeId || '',
+                rec.department || '',
+                rec.attendanceDate || '',
+                formatTime(rec.checkInTime),
+                formatTime(rec.checkOutTime),
+                rec.totalHours != null ? rec.totalHours : '',
+                ot != null ? ot : '',
+                rec.status || '',
+                rec.notes || '',
+            ];
+        });
 
         const csv = [headers, ...rows]
             .map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
@@ -2022,7 +2056,7 @@
 function renderSummaryTable(records) {
         const tbody = document.getElementById('summaryTableBody');
         if (records.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fas fa-calendar-times"></i><p>No records.</p></div></td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><i class="fas fa-calendar-times"></i><p>No records.</p></div></td></tr>`;
             return;
         }
         const sorted = [...records].sort((a, b) => (a.attendanceDate || '').localeCompare(b.attendanceDate || ''));
@@ -2045,6 +2079,10 @@ function renderSummaryTable(records) {
                     <div class="geo-checkout-inline" style="font-size:10.5px; color:var(--color-secondary); margin-top:2px;"></div>
                 </td>
                 <td>${formatHours(rec.totalHours)}</td>
+                <td class="break-time-cell" data-att-id="${rec.attendanceId || ''}">
+                    <span class="break-time-badge none"><i class="fas fa-circle-notch fa-spin" style="font-size:9px;"></i> Loading</span>
+                </td>
+                <td>${computeOvertimeForRecord(rec).html}</td>
                 <td>${statusBadge(rec.status)}</td>
                 <td style="color:#666; font-size:12px;">${escapeHtml(rec.notes || '—')}</td>
             </tr>`).join('');
@@ -2055,7 +2093,10 @@ function renderSummaryTable(records) {
         tbody.querySelectorAll('.geo-reveal-link').forEach(link => {
             link.addEventListener('click', onGeoRevealClick);
         });
-    
+
+        // Fill in the Breaks column for every visible row — NEW
+        populateBreakTimesForVisibleRows();
+
     }
 
     let historyGeoLogsByAttendance = null;
@@ -2082,6 +2123,73 @@ function renderSummaryTable(records) {
             });
 
         return historyGeoFetchPromise;
+    }
+
+    /* =======================================================================
+       BREAK HISTORY — NEW
+       Pairs BREAK_OUT -> BREAK_IN geo logs (same mechanism used by the
+       employee-side punch page: AttendanceGeoEntity.logType) into
+       completed break sessions for a given attendanceId, and renders a
+       total-duration badge (with a hover tooltip listing each session)
+       in the "Breaks" column of the History table.
+       ======================================================================= */
+    function computeBreakSessionsForAttendance(attendanceId) {
+        const logs = (historyGeoLogsByAttendance?.[attendanceId] || [])
+            .filter(l => l.logType === 'BREAK_OUT' || l.logType === 'BREAK_IN')
+            .sort((a, b) => new Date(a.capturedAt) - new Date(b.capturedAt));
+
+        const sessions = [];
+        let openOut = null;
+        logs.forEach(l => {
+            if (l.logType === 'BREAK_OUT') {
+                openOut = l;
+            } else if (l.logType === 'BREAK_IN' && openOut) {
+                sessions.push({
+                    label: l.notes || openOut.notes || 'Break',
+                    outTime: openOut.capturedAt,
+                    inTime: l.capturedAt,
+                    minutes: (new Date(l.capturedAt) - new Date(openOut.capturedAt)) / 60000
+                });
+                openOut = null;
+            }
+        });
+        if (openOut) {
+            // Break was started but never ended (e.g. still ongoing, or employee forgot to punch back in)
+            sessions.push({ label: openOut.notes || 'Break', outTime: openOut.capturedAt, inTime: null, minutes: null });
+        }
+        return sessions;
+    }
+
+    async function populateBreakTimesForVisibleRows() {
+        await primeHistoryGeoCache();
+
+        document.querySelectorAll('#summaryTableBody .break-time-cell').forEach(cell => {
+            const attId = cell.dataset.attId;
+            if (!attId) { cell.innerHTML = '<span class="break-time-badge none">—</span>'; return; }
+
+            const sessions = computeBreakSessionsForAttendance(attId);
+            if (!sessions.length) {
+                cell.innerHTML = '<span class="break-time-badge none">No breaks</span>';
+                return;
+            }
+
+            const totalMin = sessions.reduce((sum, s) => sum + (s.minutes || 0), 0);
+            const hasOngoing = sessions.some(s => s.inTime === null);
+
+            const tooltipLines = sessions.map(s => {
+                const outStr = new Date(s.outTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+                const inStr  = s.inTime ? new Date(s.inTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Ongoing';
+                const durStr = s.minutes != null ? formatBreakMinutes(s.minutes) : '—';
+                return `${s.label}: ${outStr} - ${inStr} (${durStr})`;
+            }).join('\n');
+
+            cell.innerHTML = `
+                <span class="break-time-badge" title="${escapeAttr(tooltipLines)}">
+                    <i class="fas fa-mug-hot" style="font-size:10px;"></i>
+                    ${formatBreakMinutes(totalMin)}${hasOngoing ? ' (ongoing)' : ''}
+                    <span style="opacity:.7;">· ${sessions.length} break${sessions.length > 1 ? 's' : ''}</span>
+                </span>`;
+        });
     }
 
     /** Single click — reveals BOTH check-in and check-out location for that row */
@@ -2568,6 +2676,9 @@ function renderSummaryTable(records) {
 
         populateMonthSelector();
         initTabs();
+
+        // Load company working hours (for Overtime column) — NEW
+        await loadCompanyWorkingHours();
 
         // Load daily data — date inputs are set inside this call after data arrives
         await loadAllAttendanceData();

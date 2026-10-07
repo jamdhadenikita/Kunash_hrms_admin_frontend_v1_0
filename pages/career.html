@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Career Management | HRMS Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -16,55 +17,189 @@
             --primary-soft: #BDE4EE;
             --primary-bg-light: #e9f2f4;
             --button-hover: #166278;
-            --border-color: #1B738C;
             --text-dark: #1B738C;
             --text-light: #5a7c8a;
         }
-        .section-card { background: white; border-radius: 12px; border: 1px solid var(--primary-light); padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(27, 115, 140, 0.04); }
-        .btn-primary { background-color: var(--primary); transition: all 0.3s ease; color: white; padding: 10px 26px; border-radius: 12px; cursor: pointer; font-weight: 600; border: none; }
-        .btn-primary:hover { background-color: var(--button-hover); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(27,115,140,0.2); }
+        body { background-color: #f0f7f9; }
+
+        .section-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid var(--primary-light);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(27, 115, 140, 0.05);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            transition: all 0.2s;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            font-size: 13px;
+        }
+        .btn-primary:hover { background-color: var(--button-hover); transform: translateY(-1px); }
         .btn-primary:disabled { background-color: var(--primary-soft); cursor: not-allowed; transform: none; }
-        .btn-secondary { background-color: var(--primary-light); transition: all 0.3s ease; color: var(--primary); padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: 500; border: none; }
+
+        .btn-secondary {
+            background-color: var(--primary-light);
+            transition: all 0.2s;
+            color: var(--primary);
+            padding: 8px 18px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            font-size: 13px;
+        }
         .btn-secondary:hover { background-color: var(--primary); color: white; }
-        .btn-outline { border: 1px solid var(--primary-light); color: var(--primary); padding: 8px 18px; border-radius: 10px; background: transparent; cursor: pointer; font-weight: 500; }
+
+        .btn-outline {
+            border: 1px solid var(--primary-light);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 9px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
         .btn-outline:hover { background-color: var(--primary-bg-light); border-color: var(--primary); }
-        .btn-success { background-color: #2b7a3e; transition: all 0.3s ease; color: white; padding: 10px 26px; border-radius: 12px; cursor: pointer; font-weight: 600; border: none; }
+
+        .btn-success {
+            background-color: #2b7a3e;
+            transition: all 0.2s;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            font-size: 13px;
+        }
         .btn-success:hover:not(:disabled) { background-color: #1e5a2e; transform: translateY(-1px); }
         .btn-success:disabled { background-color: #a0c4a8; cursor: not-allowed; }
-        .btn-danger { background-color: #dc3545; color: white; padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: 500; border: none; }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            font-size: 13px;
+        }
         .btn-danger:hover { background-color: #c82333; }
+
+        .btn-info {
+            color: var(--primary);
+            padding: 6px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid var(--primary-soft);
+            font-size: 12px;
+            transition: all 0.2s;
+            background: transparent;
+        }
+        .btn-info:hover { background-color: var(--primary); color: white; }
+
+        .btn-warning {
+            color: #856404;
+            padding: 6px 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid #e5d8a9;
+            font-size: 12px;
+            transition: all 0.2s;
+            background: transparent;
+        }
+        .btn-warning:hover { background-color: #f0a500; color: white; }
+
         .btn-sm { padding: 6px 14px !important; font-size: 12px !important; border-radius: 8px !important; }
-        input, select, textarea { border: 1px solid var(--primary-soft); border-radius: 12px; padding: 10px 14px; width: 100%; transition: 0.2s; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(27,115,140,0.1); }
-        label { font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 6px; display: block; }
-        .submodule-nav { display: flex; gap: 10px; margin-bottom: 28px; padding-bottom: 12px; border-bottom: 2px solid var(--primary-soft); flex-wrap: wrap; }
-        .tab-btn { padding: 8px 24px; border-radius: 40px; text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.2s; background: transparent; color: var(--primary); cursor: pointer; border: none; }
-        .tab-btn:hover { background-color: var(--primary-bg-light); color: var(--button-hover); }
+
+        /* INPUTS - same as Leave Management */
+        input, select, textarea {
+            border: 1px solid var(--primary-soft);
+            border-radius: 10px;
+            padding: 8px 12px;
+            width: 100%;
+            font-size: 13px;
+            transition: 0.2s;
+            color: var(--text-dark);
+            background: white;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(27,115,140,0.1);
+        }
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .submodule-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-soft);
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            background: transparent;
+            color: var(--primary);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+        .tab-btn:hover { background-color: var(--primary-bg-light); }
         .tab-btn.active { background-color: var(--primary); color: white; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 24px; border-radius: 40px; color: white; z-index: 1200; animation: slideIn 0.3s ease; font-weight: 500; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .toast.success { background-color: #2b7a3e; }
-        .toast.error   { background-color: #dc3545; }
-        .toast.info    { background-color: var(--primary); }
-        @keyframes slideIn { from { transform: translateX(100%); opacity:0; } to { transform: translateX(0); opacity:1; } }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-overlay.active { display: flex; }
-        .modal-container { background: white; border-radius: 24px; padding: 24px; width: 600px; max-width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--primary-soft); }
-        .modal-header h3 { font-weight: 700; color: var(--primary); font-size: 1.25rem; }
-        .modal-close { cursor: pointer; font-size: 24px; color: var(--primary-light); transition: 0.2s; }
-        .modal-close:hover { color: var(--primary); }
-        .confirm-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
-        .confirm-modal-overlay.active { display: flex; }
-        .confirm-modal-container { background: white; border-radius: 24px; padding: 24px; width: 400px; max-width: 90%; text-align: center; }
-        .confirm-modal-container h3 { color: var(--primary); font-size: 1.25rem; margin-bottom: 16px; }
-        .confirm-modal-container p { color: var(--text-light); margin-bottom: 24px; }
-        .confirm-buttons { display: flex; gap: 12px; justify-content: center; }
-        .form-group { margin-bottom: 18px; }
-        .form-grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; margin-bottom: 16px; }
-        .sec-title { font-size: 13px; font-weight: 700; color: var(--primary); margin: 20px 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--primary-soft); display: flex; align-items: center; gap: 8px; }
-        .badge { padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+
+        /* TABLE */
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: left;
+            padding: 11px 10px;
+            background: var(--primary-bg-light);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--primary-soft);
+        }
+        td {
+            padding: 11px 10px;
+            font-size: 13px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--primary-soft);
+        }
+        tbody tr { transition: background 0.15s; }
+        tbody tr:hover td { background-color: var(--primary-bg-light); }
+
+        /* BADGES */
+        .badge { padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
         .badge-open       { background: rgba(43,122,62,0.15);   color: #155724; }
         .badge-closed     { background: rgba(220,53,69,0.15);   color: #721c24; }
         .badge-paused     { background: rgba(255,193,7,0.18);   color: #856404; }
@@ -74,33 +209,88 @@
         .badge-shortlisted{ background: rgba(43,122,62,0.15);   color: #155724; }
         .badge-rejected   { background: rgba(220,53,69,0.15);   color: #721c24; }
         .badge-hired      { background: rgba(84,8,99,0.15);     color: #4a0960; }
-        table { width: 100%; border-collapse: collapse; }
-        th { font-weight: 600; font-size: 12px; color: var(--text-light); text-align: left; padding: 12px 8px; }
-        td { padding: 10px 8px; }
-        tr:hover td { background-color: var(--primary-bg-light); }
-        .stat-card { background: white; border-radius: 12px; border: 1px solid var(--primary-soft); padding: 18px; transition: all 0.3s; }
-        .stat-card:hover { box-shadow: 0 4px 12px rgba(27,115,140,0.12); transform: translateY(-2px); }
-        .job-card { border: 1px solid var(--primary-soft); border-radius: 12px; padding: 18px; background: white; transition: all 0.3s; }
-        .job-card:hover { border-color: var(--primary-light); box-shadow: 0 4px 14px rgba(27,115,140,0.1); }
-        .skills-tag { display: inline-flex; align-items: center; gap: 4px; background: var(--primary-bg-light); border: 1px solid var(--primary-soft); color: var(--primary); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
-        .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 700; flex-shrink: 0; }
-        .error-message { background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: none; }
+
+        /* STAT CARDS */
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--primary-light);
+            padding: 18px;
+            transition: all 0.3s;
+        }
+        .stat-card:hover { box-shadow: 0 6px 16px rgba(27,115,140,0.10); transform: translateY(-2px); }
+
+        /* SKILLS TAG */
+        .skills-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--primary-bg-light);
+            border: 1px solid var(--primary-soft);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* AVATAR */
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* ALERTS */
+        .error-message {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
         .error-message.show { display: block; }
-        .success-message { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .success-message {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
         .success-message.show { display: block; }
-        .error-message { background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: none; }
-        .error-message.show { display: block; }
-        .success-message { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: none; }
-        .success-message.show { display: block; }
-        #appSourcePanel { background: var(--primary-bg-light); border: 1px solid var(--primary-soft); border-radius: 12px; padding: 16px; margin-bottom: 18px; display: none; }
+
+        /* APP SOURCE PANEL */
+        #appSourcePanel {
+            background: var(--primary-bg-light);
+            border: 1px solid var(--primary-soft);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 18px;
+            display: none;
+        }
         #appSourcePanel.show { display: block; }
+
         .gf-field-row { display: grid; grid-template-columns: 2fr 1.5fr 2fr auto; gap: 8px; align-items: center; margin-bottom: 8px; }
         .gf-field-row input, .gf-field-row select { font-size: 12px; padding: 7px 10px; }
         .gf-remove-btn { background: rgba(220,53,69,0.1); border: none; color: #dc3545; border-radius: 8px; width: 30px; height: 30px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .gf-remove-btn:hover { background: rgba(220,53,69,0.2); }
+
         #gfLinkBox { background: white; border: 2px solid var(--primary-soft); border-radius: 10px; padding: 12px; display: none; margin-top: 12px; }
         #gfLinkBox.show { display: block; }
         #gfLinkBox input { border: 1px solid var(--primary-soft); border-radius: 8px; font-size: 12px; padding: 8px 10px; background: var(--primary-bg-light); color: var(--primary); font-weight: 500; }
+
         .source-info-banner { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: 10px; font-size: 13px; }
         .source-info-banner.linkedin  { background: rgba(0,119,181,0.08); color: #005582; border: 1px solid rgba(0,119,181,0.2); }
         .source-info-banner.career    { background: rgba(27,115,140,0.08); color: var(--primary); border: 1px solid var(--primary-soft); }
@@ -108,14 +298,106 @@
         .source-info-banner.naukri    { background: rgba(255,102,0,0.08); color: #cc5200; border: 1px solid rgba(255,102,0,0.2); }
         .source-info-banner.monster   { background: rgba(0,84,148,0.08); color: #003b6a; border: 1px solid rgba(0,84,148,0.2); }
         .source-info-banner.indeed    { background: rgba(0,102,204,0.08); color: #003d66; border: 1px solid rgba(0,102,204,0.2); }
-        #formPreviewModal .modal-container { width: 680px; }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-container {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid var(--primary-soft);
+        }
+        .modal-header h3 { font-weight: 700; color: var(--primary); font-size: 1.05rem; }
+        .modal-close { cursor: pointer; font-size: 22px; color: var(--primary-light); transition: color 0.2s; }
+        .modal-close:hover { color: var(--primary); }
+
+        .confirm-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .confirm-modal-overlay.active { display: flex; }
+        .confirm-modal-container {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            width: 380px;
+            max-width: 95%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .confirm-modal-container h3 { color: var(--primary); font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+        .confirm-modal-container p { color: var(--text-light); margin-bottom: 24px; font-size: 14px; }
+        .confirm-buttons { display: flex; gap: 12px; justify-content: center; }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 12px 20px;
+            border-radius: 40px;
+            color: white;
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+            font-weight: 500;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+        .toast.success { background-color: #2b7a3e; }
+        .toast.error   { background-color: #dc3545; }
+        .toast.info    { background-color: var(--primary); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* FORM GROUP */
+        .form-group { margin-bottom: 18px; }
+        .form-grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; margin-bottom: 16px; }
+        .sec-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 20px 0 14px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-soft);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
+
         @media (max-width: 768px) {
             .section-card { padding: 18px; }
             .tab-btn { padding: 6px 16px; }
             .modal-container { width: 95%; padding: 18px; }
-            .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+            .form-grid-2 { grid-template-columns: 1fr; }
             .gf-field-row { grid-template-columns: 1fr 1fr; }
         }
     </style>
@@ -132,7 +414,6 @@
             </div>
             <div id="errorContainer" class="error-message"></div>
             <div id="successContainer" class="success-message"></div>
-            <!-- Stats Row -->
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-5">
                 <div class="stat-card"><p style="font-size:11px;color:var(--text-light);">Total Openings</p><p style="font-size:26px;font-weight:800;color:var(--primary);" id="statTotal">0</p><p style="font-size:11px;color:var(--text-light);">active positions</p></div>
                 <div class="stat-card"><p style="font-size:11px;color:var(--text-light);">Open Jobs</p><p style="font-size:26px;font-weight:800;color:#2b7a3e;" id="statOpen">0</p><p style="font-size:11px;color:#2b7a3e;">currently hiring</p></div>
@@ -140,18 +421,17 @@
                 <div class="stat-card"><p style="font-size:11px;color:var(--text-light);">Referrals</p><p style="font-size:26px;font-weight:800;color:#856404;" id="statRefs">0</p><p style="font-size:11px;color:#856404;">by employees</p></div>
                 <div class="stat-card"><p style="font-size:11px;color:var(--text-light);">Hired</p><p style="font-size:26px;font-weight:800;color:#2b7a3e;" id="statHired">0</p><p style="font-size:11px;color:#2b7a3e;">this quarter</p></div>
             </div>
-            <!-- Navigation Tabs -->
             <div class="submodule-nav">
                 <button class="tab-btn active" data-tab="openings">Job Openings</button>
                 <button class="tab-btn" data-tab="applications">Applications</button>
                 <button class="tab-btn" data-tab="referrals">Referrals</button>
                 <button class="tab-btn" data-tab="jd">Job Descriptions</button>
             </div>
-            <!-- ====== JOB OPENINGS TAB ====== -->
+
             <div id="tab-openings" class="tab-content active">
                 <div class="section-card">
                     <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
-                        <h3 class="text-lg font-bold" style="color:var(--primary);">All Job Openings</h3>
+                        <h3 class="text-base font-bold" style="color:var(--primary);">All Job Openings</h3>
                         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
                             <select id="filterJobStatus" onchange="renderJobOpenings()" style="width:130px;">
                                 <option value="all">All Status</option>
@@ -171,19 +451,36 @@
                             <button onclick="openJobModal()" class="btn-primary btn-sm"><i class="fas fa-plus mr-1"></i>Post New Job</button>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="jobOpeningsList"></div>
-                    <div id="jobEmpty" style="display:none;text-align:center;padding:50px 20px;">
-                        <i class="fas fa-briefcase" style="font-size:36px;color:var(--primary-soft);display:block;margin-bottom:12px;"></i>
-                        <p style="color:var(--text-light);font-size:13px;">No job openings found.</p>
-                        <button onclick="openJobModal()" class="btn-primary btn-sm" style="margin-top:12px;"><i class="fas fa-plus mr-1"></i>Post First Job</button>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Position</th>
+                                    <th>Department</th>
+                                    <th>Location</th>
+                                    <th>Type</th>
+                                    <th>Openings</th>
+                                    <th>App Source</th>
+                                    <th>Status</th>
+                                    <th style="text-align:center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jobOpeningsTableBody"></tbody>
+                        </table>
+                        <div id="jobEmpty" style="display:none;text-align:center;padding:50px 20px;">
+                            <i class="fas fa-briefcase" style="font-size:36px;color:var(--primary-soft);display:block;margin-bottom:12px;"></i>
+                            <p style="color:var(--text-light);font-size:13px;">No job openings found.</p>
+                            <button onclick="openJobModal()" class="btn-primary btn-sm" style="margin-top:12px;"><i class="fas fa-plus mr-1"></i>Post First Job</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- ====== APPLICATIONS TAB ====== -->
+
             <div id="tab-applications" class="tab-content">
                 <div class="section-card">
                     <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
-                        <h3 class="text-lg font-bold" style="color:var(--primary);">All Applications</h3>
+                        <h3 class="text-base font-bold" style="color:var(--primary);">All Applications</h3>
                         <div style="display:flex;gap:8px;flex-wrap:wrap;">
                             <select id="filterAppStatus" onchange="renderApplications()" style="width:140px;">
                                 <option value="all">All Status</option>
@@ -209,15 +506,15 @@
                     <div class="overflow-x-auto">
                         <table>
                             <thead>
-                                <tr style="border-bottom:1px solid var(--primary-soft);">
-                                    <th style="color:var(--primary);">Applicant</th>
-                                    <th style="color:var(--primary);">Position</th>
-                                    <th style="color:var(--primary);">Department</th>
-                                    <th style="color:var(--primary);">Applied On</th>
-                                    <th style="color:var(--primary);">Application Source</th>
-                                    <th style="color:var(--primary);">Referred By</th>
-                                    <th style="color:var(--primary);">Status</th>
-                                    <th style="color:var(--primary);">Action</th>
+                                <tr>
+                                    <th>Applicant</th>
+                                    <th>Position</th>
+                                    <th>Department</th>
+                                    <th>Applied On</th>
+                                    <th>App Source</th>
+                                    <th>Referred By</th>
+                                    <th>Status</th>
+                                    <th style="text-align:center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="appTableBody"></tbody>
@@ -229,11 +526,11 @@
                     </div>
                 </div>
             </div>
-            <!-- ====== REFERRALS TAB ====== -->
+
             <div id="tab-referrals" class="tab-content">
                 <div class="section-card">
                     <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
-                        <h3 class="text-lg font-bold" style="color:var(--primary);">Employee Referrals</h3>
+                        <h3 class="text-base font-bold" style="color:var(--primary);">Employee Referrals</h3>
                         <div style="display:flex;gap:8px;flex-wrap:wrap;">
                             <select id="filterRefStatus" onchange="renderReferrals()" style="width:140px;">
                                 <option value="all">All Status</option>
@@ -245,18 +542,34 @@
                             <input type="text" id="searchRef" placeholder="Search referral..." onkeyup="renderReferrals()" style="width:170px;">
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="referralsList"></div>
-                    <div id="refEmpty" style="display:none;text-align:center;padding:50px;color:var(--text-light);">
-                        <i class="fas fa-user-friends" style="font-size:32px;color:var(--primary-soft);display:block;margin-bottom:10px;"></i>
-                        <p style="font-size:13px;">No referrals received yet.</p>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Candidate</th>
+                                    <th>Position</th>
+                                    <th>Department</th>
+                                    <th>Referred By</th>
+                                    <th>Relationship</th>
+                                    <th>Referred On</th>
+                                    <th>Status</th>
+                                    <th style="text-align:center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="referralsTableBody"></tbody>
+                        </table>
+                        <div id="refEmpty" style="display:none;text-align:center;padding:50px;color:var(--text-light);">
+                            <i class="fas fa-user-friends" style="font-size:32px;color:var(--primary-soft);display:block;margin-bottom:10px;"></i>
+                            <p style="font-size:13px;">No referrals received yet.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- ====== JD LIBRARY TAB ====== -->
+
             <div id="tab-jd" class="tab-content">
                 <div class="section-card">
                     <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
-                        <h3 class="text-lg font-bold" style="color:var(--primary);">Job Description Library</h3>
+                        <h3 class="text-base font-bold" style="color:var(--primary);">Job Description Library</h3>
                         <button onclick="openJDModal()" class="btn-primary btn-sm"><i class="fas fa-plus mr-1"></i>Add JD Template</button>
                     </div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
@@ -265,19 +578,35 @@
                             <option value="all">All Departments</option>
                         </select>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="jdList"></div>
-                    <div id="jdEmpty" style="display:none;text-align:center;padding:50px;color:var(--text-light);">
-                        <i class="fas fa-file-alt" style="font-size:32px;color:var(--primary-soft);display:block;margin-bottom:10px;"></i>
-                        <p style="font-size:13px;">No JD templates yet. Add your first one!</p>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Template Name</th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Experience</th>
+                                    <th>Skills</th>
+                                    <th style="text-align:center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="jdTableBody"></tbody>
+                        </table>
+                        <div id="jdEmpty" style="display:none;text-align:center;padding:50px;color:var(--text-light);">
+                            <i class="fas fa-file-alt" style="font-size:32px;color:var(--primary-soft);display:block;margin-bottom:10px;"></i>
+                            <p style="font-size:13px;">No JD templates yet. Add your first one!</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 </div>
+
 <!-- ========== POST JOB MODAL ========== -->
 <div id="jobModal" class="modal-overlay">
-    <div class="modal-container" style="width:720px;">
+    <div class="modal-container" style="max-width:720px;">
         <div class="modal-header">
             <h3 id="jobModalTitle">Post Job Opening</h3>
             <span class="modal-close" onclick="closeModal('jobModal')">&times;</span>
@@ -288,13 +617,6 @@
             <div class="form-group"><label>Department *</label>
                 <select id="jm-dept">
                     <option value="">Select Department</option>
-                    <option>Information Technology</option>
-                    <option>Human Resources</option>
-                    <option>Sales & Marketing</option>
-                    <option>Finance & Accounts</option>
-                    <option>Operations</option>
-                    <option>Product</option>
-                    <option>Design</option>
                 </select>
             </div>
             <div class="form-group"><label>Location</label><input id="jm-location" placeholder="e.g. Mumbai / Remote / Hybrid"></div>
@@ -327,7 +649,6 @@
                 </select>
             </div>
         </div>
-        <!-- Application Source Selector with 8+ Job Portals -->
         <div class="sec-title"><i class="fas fa-share-alt"></i> Application Source & Job Portals</div>
         <div class="form-group">
             <label>Where will candidates apply? *</label>
@@ -345,7 +666,6 @@
                 <option value="Foundit">🚀 foundit (formerly Monster APAC)</option>
             </select>
         </div>
-        <!-- Application Source Dynamic Panel -->
         <div id="appSourcePanel">
             <div id="gfPanel" style="display:none;">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
@@ -372,28 +692,28 @@
                 <div class="source-info-banner linkedin"><i class="fab fa-linkedin" style="font-size:22px;"></i><div><p style="font-weight:700;">Post on LinkedIn</p><p style="font-size:12px;">Click below to open LinkedIn's job posting page. Copy job details and paste them there.</p><button onclick="openLinkedInPosting()" style="background:#0077B5;color:white;border:none;padding:8px 18px;border-radius:8px;font-size:12px;cursor:pointer;"><i class="fab fa-linkedin mr-1"></i>Open LinkedIn Posting</button><button onclick="copyJobDetailsForPortal()" class="btn-outline btn-sm ml-2">Copy Job Details</button></div></div>
             </div>
             <div id="careerWebPanel" style="display:none;">
-                <div class="source-info-banner career"><i class="fas fa-globe"></i><div><p style="font-weight:700;">Career Website</p><p style="font-size:12px;">Job will be listed on your internal career site. Configure API endpoint for auto-sync.</p><input id="jm-careerUrl" placeholder="API Endpoint / Career Page URL" style="margin-top:8px;font-size:12px;"></div></div>
+                <div class="source-info-banner career"><i class="fas fa-globe"></i><div><p style="font-weight:700;">Career Website</p><p style="font-size:12px;">Job will be listed on your internal career site.</p><input id="jm-careerUrl" placeholder="API Endpoint / Career Page URL" style="margin-top:8px;font-size:12px;"></div></div>
             </div>
             <div id="referralPanel" style="display:none;">
-                <div class="source-info-banner referral"><i class="fas fa-user-friends"></i><div><p style="font-weight:700;">Internal Referral Only</p><p style="font-size:12px;">Employees can refer candidates. Referral submissions appear in Referrals tab.</p><input id="jm-refBonus" placeholder="Referral bonus amount" style="margin-top:8px;font-size:12px;"></div></div>
+                <div class="source-info-banner referral"><i class="fas fa-user-friends"></i><div><p style="font-weight:700;">Internal Referral Only</p><p style="font-size:12px;">Employees can refer candidates.</p><input id="jm-refBonus" placeholder="Referral bonus amount" style="margin-top:8px;font-size:12px;"></div></div>
             </div>
             <div id="naukriPanel" style="display:none;">
-                <div class="source-info-banner naukri"><i class="fas fa-file-alt"></i><div><p style="font-weight:700;">Naukri.com Integration</p><p style="font-size:12px;">Post to Naukri.com via API. Configure your Naukri API credentials in the integration settings.</p><button onclick="openPortalGuide('naukri')" class="btn-outline btn-sm mt-2">View API Setup Guide</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Job Details for Naukri</button></div></div>
+                <div class="source-info-banner naukri"><i class="fas fa-file-alt"></i><div><p style="font-weight:700;">Naukri.com Integration</p><p style="font-size:12px;">Post to Naukri.com via API.</p><button onclick="openPortalGuide('naukri')" class="btn-outline btn-sm mt-2">View API Setup Guide</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Job Details for Naukri</button></div></div>
             </div>
             <div id="monsterPanel" style="display:none;">
-                <div class="source-info-banner monster"><i class="fas fa-monster"></i><div><p style="font-weight:700;">Monster India Integration</p><p style="font-size:12px;">Sync job postings with Monster India. Requires API key from Monster partner portal.</p><button onclick="openPortalGuide('monster')" class="btn-outline btn-sm mt-2">API Documentation</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Job Details</button></div></div>
+                <div class="source-info-banner monster"><i class="fas fa-monster"></i><div><p style="font-weight:700;">Monster India Integration</p><p style="font-size:12px;">Sync job postings with Monster India.</p><button onclick="openPortalGuide('monster')" class="btn-outline btn-sm mt-2">API Documentation</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Job Details</button></div></div>
             </div>
             <div id="indeedPanel" style="display:none;">
-                <div class="source-info-banner indeed"><i class="fas fa-briefcase"></i><div><p style="font-weight:700;">Indeed Integration</p><p style="font-size:12px;">Post jobs to Indeed using Indeed Apply API. Supports XML feed or direct API integration.</p><button onclick="openPortalGuide('indeed')" class="btn-outline btn-sm mt-2">Indeed API Setup</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Job Details</button></div></div>
+                <div class="source-info-banner indeed"><i class="fas fa-briefcase"></i><div><p style="font-weight:700;">Indeed Integration</p><p style="font-size:12px;">Post jobs to Indeed using Indeed Apply API.</p><button onclick="openPortalGuide('indeed')" class="btn-outline btn-sm mt-2">Indeed API Setup</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Job Details</button></div></div>
             </div>
             <div id="shinePanel" style="display:none;">
-                <div class="source-info-banner career"><i class="fas fa-star"></i><div><p style="font-weight:700;">Shine.com Integration</p><p style="font-size:12px;">Integrate with Shine.com recruitment platform. Use their REST API for automated posting.</p><button onclick="openPortalGuide('shine')" class="btn-outline btn-sm mt-2">Get API Credentials</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Job Details</button></div></div>
+                <div class="source-info-banner career"><i class="fas fa-star"></i><div><p style="font-weight:700;">Shine.com Integration</p><p style="font-size:12px;">Integrate with Shine.com recruitment platform.</p><button onclick="openPortalGuide('shine')" class="btn-outline btn-sm mt-2">Get API Credentials</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Job Details</button></div></div>
             </div>
             <div id="timesjobsPanel" style="display:none;">
-                <div class="source-info-banner linkedin"><i class="fas fa-newspaper"></i><div><p style="font-weight:700;">TimesJobs Integration</p><p style="font-size:12px;">Post jobs to TimesJobs via their Job Posting API. Contact TimesJobs for API access.</p><button onclick="openPortalGuide('timesjobs')" class="btn-outline btn-sm mt-2">Integration Guide</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Details</button></div></div>
+                <div class="source-info-banner linkedin"><i class="fas fa-newspaper"></i><div><p style="font-weight:700;">TimesJobs Integration</p><p style="font-size:12px;">Post jobs to TimesJobs via their Job Posting API.</p><button onclick="openPortalGuide('timesjobs')" class="btn-outline btn-sm mt-2">Integration Guide</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Details</button></div></div>
             </div>
             <div id="founditPanel" style="display:none;">
-                <div class="source-info-banner monster"><i class="fas fa-rocket"></i><div><p style="font-weight:700;">foundit (formerly Monster) Integration</p><p style="font-size:12px;">Post jobs to foundit using their unified API. Supports bulk posting and analytics.</p><button onclick="openPortalGuide('foundit')" class="btn-outline btn-sm mt-2">API Reference</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Details</button></div></div>
+                <div class="source-info-banner monster"><i class="fas fa-rocket"></i><div><p style="font-weight:700;">foundit Integration</p><p style="font-size:12px;">Post jobs to foundit using their unified API.</p><button onclick="openPortalGuide('foundit')" class="btn-outline btn-sm mt-2">API Reference</button><button onclick="copyJobDetailsForPortal()" class="btn-primary btn-sm mt-2 ml-2">Copy Details</button></div></div>
             </div>
         </div>
         <div class="sec-title"><i class="fas fa-file-alt"></i> Job Description</div>
@@ -408,11 +728,12 @@
         </div>
     </div>
 </div>
+
 <!-- ========== JD MODAL ========== -->
 <div id="jdModal" class="modal-overlay">
-    <div class="modal-container" style="width:660px;">
+    <div class="modal-container" style="max-width:660px;">
         <div class="modal-header"><h3 id="jdModalTitle">Add JD Template</h3><span class="modal-close" onclick="closeModal('jdModal')">&times;</span></div>
-        <div class="form-grid-2"><div class="form-group"><label>Template Name *</label><input id="jd-name"></div><div class="form-group"><label>Department *</label><select id="jd-dept"><option value="">Select Department</option><option>Information Technology</option><option>Human Resources</option><option>Sales & Marketing</option><option>Finance & Accounts</option><option>Operations</option><option>Product</option><option>Design</option></select></div></div>
+        <div class="form-grid-2"><div class="form-group"><label>Template Name *</label><input id="jd-name"></div><div class="form-group"><label>Department *</label><select id="jd-dept"><option value="">Select Department</option></select></div></div>
         <div class="form-group"><label>Designation / Role</label><input id="jd-role"></div>
         <div class="form-group"><label>Roles & Responsibilities *</label><textarea id="jd-roles" rows="5"></textarea></div>
         <div class="form-group"><label>Required Skills *</label><input id="jd-skills"></div>
@@ -422,26 +743,62 @@
         <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:12px;padding-top:12px;border-top:2px solid var(--primary-soft);"><button onclick="closeModal('jdModal')" class="btn-outline">Cancel</button><button onclick="saveJD()" class="btn-primary">Save Template</button></div>
     </div>
 </div>
+
 <!-- ========== VIEW APPLICATION MODAL ========== -->
 <div id="viewAppModal" class="modal-overlay"><div class="modal-container"><div class="modal-header"><h3>Applicant Details</h3><span class="modal-close" onclick="closeModal('viewAppModal')">&times;</span></div><div id="viewAppBody"></div><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;"><button onclick="closeModal('viewAppModal')" class="btn-outline">Close</button></div></div></div>
+
 <!-- ========== VIEW JOB MODAL ========== -->
 <div id="viewJobModal" class="modal-overlay"><div class="modal-container"><div class="modal-header"><h3>Job Opening Details</h3><span class="modal-close" onclick="closeModal('viewJobModal')">&times;</span></div><div id="viewJobBody"></div><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;"><button onclick="closeModal('viewJobModal')" class="btn-outline">Close</button></div></div></div>
+
 <!-- ========== CONFIRM MODAL ========== -->
 <div id="confirmDeleteModal" class="confirm-modal-overlay"><div class="confirm-modal-container"><h3>Confirm Delete</h3><p id="confirmDeleteMessage"></p><div class="confirm-buttons"><button onclick="closeConfirmModal()" class="btn-outline">Cancel</button><button id="confirmDeleteBtn" class="btn-danger">Delete</button></div></div></div>
+
 <!-- ========== FORM PREVIEW MODAL ========== -->
-<div id="formPreviewModal" class="modal-overlay"><div class="modal-container"><div class="modal-header"><h3 id="formPreviewTitle">Application Form Preview</h3><span class="modal-close" onclick="closeModal('formPreviewModal')">&times;</span></div><div id="formPreviewBody"></div><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;"><button onclick="closeModal('formPreviewModal')" class="btn-outline">Close Preview</button><button onclick="copyFormLink()" class="btn-primary btn-sm">Copy Link</button></div></div></div>
+<div id="formPreviewModal" class="modal-overlay"><div class="modal-container" style="max-width:680px;"><div class="modal-header"><h3 id="formPreviewTitle">Application Form Preview</h3><span class="modal-close" onclick="closeModal('formPreviewModal')">&times;</span></div><div id="formPreviewBody"></div><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;"><button onclick="closeModal('formPreviewModal')" class="btn-outline">Close Preview</button><button onclick="copyFormLink()" class="btn-primary btn-sm">Copy Link</button></div></div></div>
+
 <!-- ========== STANDALONE FORM PAGE ========== -->
 <div id="standaloneFormPage" style="display:none;position:fixed;inset:0;background:white;z-index:9999;overflow-y:auto;"><div style="max-width:680px;margin:0 auto;padding:40px 24px;"><div style="text-align:center;margin-bottom:32px;"><div style="width:56px;height:56px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;"><i class="fas fa-briefcase" style="color:white;font-size:22px;"></i></div><h1 id="sfJobTitle" style="font-size:22px;font-weight:800;color:var(--primary);"></h1><p id="sfJobMeta"></p></div><div id="sfFormBody"></div><div style="text-align:center;margin-top:24px;"><button onclick="submitStandaloneForm()" class="btn-primary" style="padding:12px 40px;"><i class="fas fa-paper-plane mr-2"></i>Submit Application</button></div><p style="text-align:center;font-size:11px;color:var(--text-light);margin-top:16px;">Powered by HRMS Career Portal</p></div></div>
+
 <div id="formSuccessPage" style="display:none;position:fixed;inset:0;background:white;z-index:10000;"><div style="max-width:480px;margin:80px auto;text-align:center;padding:24px;"><div style="width:80px;height:80px;background:rgba(43,122,62,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;"><i class="fas fa-check-circle" style="font-size:40px;color:#2b7a3e;"></i></div><h2 style="font-size:22px;font-weight:800;color:var(--primary);">Application Submitted!</h2><p style="font-size:14px;color:var(--text-light);margin-bottom:24px;">Thank you for applying. Our team will review your application.</p><button onclick="closeFormSuccess()" class="btn-primary">Back to Home</button></div></div>
+
 <script>
 (function(){['common','sidebar','header'].forEach(function(n){var s=document.createElement('script');s.src='/assets/js/'+n+'.js';s.onerror=function(){console.warn(n+'.js not found');};document.head.appendChild(s);});})();
 </script>
-<script>
-// ========== FULL CAREER MANAGEMENT SCRIPT WITH BACKEND INTEGRATION ==========
-// Integrated with backend APIs on port 8086
 
+<script>
 const BASE_URL = 'http://localhost:8086';
 const CAREER_URL = `${BASE_URL}/api/career`;
+const COMPANY_API_BASE = `${BASE_URL}/api/company`;
+
+let ALL_DEPARTMENTS = [];
+
+async function loadDepartmentsFromAPI() {
+    try {
+        const res = await fetch(`${COMPANY_API_BASE}/departments`);
+        const json = await res.json();
+        const departments = json?.data?.departments || [];
+        ALL_DEPARTMENTS = Array.isArray(departments) ? departments : [];
+        console.log('Departments loaded:', ALL_DEPARTMENTS);
+    } catch (err) {
+        console.warn('Could not load departments:', err);
+        ALL_DEPARTMENTS = [];
+    }
+}
+
+function populateDeptDropdowns() {
+    const jmDept = document.getElementById('jm-dept');
+    if (jmDept) {
+        const prev = jmDept.value;
+        jmDept.innerHTML = '<option value="">Select Department</option>' +
+            ALL_DEPARTMENTS.map(d => `<option value="${d}" ${d === prev ? 'selected' : ''}>${d}</option>`).join('');
+    }
+    const jdDept = document.getElementById('jd-dept');
+    if (jdDept) {
+        const prev = jdDept.value;
+        jdDept.innerHTML = '<option value="">Select Department</option>' +
+            ALL_DEPARTMENTS.map(d => `<option value="${d}" ${d === prev ? 'selected' : ''}>${d}</option>`).join('');
+    }
+}
 
 let jobOpenings = [], applications = [], referrals = [], jdTemplates = [];
 let editingJobId = null, editingJDId = null;
@@ -468,64 +825,36 @@ function statusBadge(status){const map={'Open':'open','Closed':'closed','Paused'
 function appSourceBadgeStyle(source){const styles={'Referral':{bg:'rgba(84,8,99,0.12)',color:'#4a0960'},'LinkedIn':{bg:'rgba(0,119,181,0.12)',color:'#005582'},'Career Website':{bg:'rgba(27,115,140,0.12)',color:'var(--primary)'},'Custom Forms':{bg:'rgba(234,67,53,0.12)',color:'#c0392b'},'Naukri':{bg:'rgba(255,102,0,0.12)',color:'#cc5200'},'Monster':{bg:'rgba(0,84,148,0.12)',color:'#003b6a'},'Indeed':{bg:'rgba(0,102,204,0.12)',color:'#003d66'},'Shine':{bg:'rgba(255,193,7,0.12)',color:'#856404'},'TimesJobs':{bg:'rgba(0,123,255,0.12)',color:'#004085'},'Foundit':{bg:'rgba(50,205,50,0.12)',color:'#228b22'}};const s=styles[source]||{bg:'rgba(108,117,125,0.12)',color:'#495057'};return `background:${s.bg};color:${s.color};`;}
 function appSourceIcon(source){const icons={'Referral':'fas fa-user-friends','LinkedIn':'fab fa-linkedin','Career Website':'fas fa-globe','Custom Forms':'fab fa-google','Naukri':'fas fa-file-alt','Monster':'fas fa-monster','Indeed':'fas fa-briefcase','Shine':'fas fa-star','TimesJobs':'fas fa-newspaper','Foundit':'fas fa-rocket'};return icons[source]||'fas fa-file-alt';}
 
-// ========== API CALL FUNCTIONS ==========
 async function apiCall(url, method = 'GET', data = null) {
     try {
-        const options = { 
-            method, 
-            headers: getAuthHeaders()
-        };
+        const options = { method, headers: getAuthHeaders() };
         if (data) options.body = JSON.stringify(data);
         const response = await fetch(url, options);
-        const result = await response.json();
-        return result;
+        return await response.json();
     } catch (error) {
         console.error('API Error:', error);
         return { success: false, message: error.message };
     }
 }
 
-// ========== LOAD DATA FROM BACKEND ==========
 async function loadJobOpeningsFromBackend() {
     const result = await apiCall(`${CAREER_URL}/get-all-job-openings/openings`);
     if (result.success && result.list) {
         jobOpenings = result.list.map(job => ({
-            id: job.id,
-            title: job.title,
-            dept: job.department,
-            location: job.location,
-            emptype: job.employmentType,
-            exp: job.experienceRequired,
-            count: job.numberOfOpenings,
-            salary: job.salaryRange,
-            deadline: job.applicationDeadline,
-            status: job.status,
-            priority: job.priority,
-            roles: job.rolesResponsibilities,
-            skills: job.requiredSkills,
-            qual: job.qualifications,
-            perks: job.additionalBenefits,
-            appSource: job.applicationSource,
+            id: job.id, title: job.title, dept: job.department, location: job.location,
+            emptype: job.employmentType, exp: job.experienceRequired, count: job.numberOfOpenings,
+            salary: job.salaryRange, deadline: job.applicationDeadline, status: job.status,
+            priority: job.priority, roles: job.rolesResponsibilities, skills: job.requiredSkills,
+            qual: job.qualifications, perks: job.additionalBenefits, appSource: job.applicationSource,
             addedOn: job.postedOn
         }));
     } else if (result.data && Array.isArray(result.data)) {
         jobOpenings = result.data.map(job => ({
-            id: job.id,
-            title: job.title,
-            dept: job.department,
-            location: job.location,
-            emptype: job.employmentType,
-            exp: job.experienceRequired,
-            count: job.numberOfOpenings,
-            salary: job.salaryRange,
-            deadline: job.applicationDeadline,
-            status: job.status,
-            priority: job.priority,
-            roles: job.rolesResponsibilities,
-            skills: job.requiredSkills,
-            qual: job.qualifications,
-            perks: job.additionalBenefits,
-            appSource: job.applicationSource,
+            id: job.id, title: job.title, dept: job.department, location: job.location,
+            emptype: job.employmentType, exp: job.experienceRequired, count: job.numberOfOpenings,
+            salary: job.salaryRange, deadline: job.applicationDeadline, status: job.status,
+            priority: job.priority, roles: job.rolesResponsibilities, skills: job.requiredSkills,
+            qual: job.qualifications, perks: job.additionalBenefits, appSource: job.applicationSource,
             addedOn: job.postedOn
         }));
     }
@@ -540,40 +869,24 @@ async function loadApplicationsFromBackend() {
         applications = result.list.map(app => {
             const job = jobOpenings.find(j => j.id === app.jobId);
             return {
-                id: app.id,
-                name: app.applicantName,
-                email: app.applicantEmail,
-                phone: app.applicantPhone,
-                position: job ? job.title : 'Unknown',
-                dept: job ? job.dept : app.department,
-                appliedOn: app.appliedOn,
-                appSource: app.applicationSource,
+                id: app.id, name: app.applicantName, email: app.applicantEmail, phone: app.applicantPhone,
+                position: job ? job.title : 'Unknown', dept: job ? job.dept : app.department,
+                appliedOn: app.appliedOn, appSource: app.applicationSource,
                 referredBy: app.referredByEmployeeId ? `Employee ${app.referredByEmployeeId}` : null,
-                status: app.status,
-                jobId: app.jobId,
-                resume: app.resumeUrl,
-                experience: app.yearsOfExperience,
-                notes: app.recruiterNotes
+                status: app.status, jobId: app.jobId, resume: app.resumeUrl,
+                experience: app.yearsOfExperience, notes: app.recruiterNotes
             };
         });
     } else if (result.data && Array.isArray(result.data)) {
         applications = result.data.map(app => {
             const job = jobOpenings.find(j => j.id === app.jobId);
             return {
-                id: app.id,
-                name: app.applicantName,
-                email: app.applicantEmail,
-                phone: app.applicantPhone,
-                position: job ? job.title : 'Unknown',
-                dept: job ? job.dept : app.department,
-                appliedOn: app.appliedOn,
-                appSource: app.applicationSource,
+                id: app.id, name: app.applicantName, email: app.applicantEmail, phone: app.applicantPhone,
+                position: job ? job.title : 'Unknown', dept: job ? job.dept : app.department,
+                appliedOn: app.appliedOn, appSource: app.applicationSource,
                 referredBy: app.referredByEmployeeId ? `Employee ${app.referredByEmployeeId}` : null,
-                status: app.status,
-                jobId: app.jobId,
-                resume: app.resumeUrl,
-                experience: app.yearsOfExperience,
-                notes: app.recruiterNotes
+                status: app.status, jobId: app.jobId, resume: app.resumeUrl,
+                experience: app.yearsOfExperience, notes: app.recruiterNotes
             };
         });
     }
@@ -587,36 +900,22 @@ async function loadReferralsFromBackend() {
         referrals = result.list.map(ref => {
             const job = jobOpenings.find(j => j.id === ref.jobId);
             return {
-                id: ref.id,
-                referredBy: ref.referringEmployeeName,
-                referrerId: ref.referringEmployeeCode,
-                referredName: ref.referredCandidateName,
-                referredEmail: ref.referredCandidateEmail,
-                referredPhone: ref.referredCandidatePhone,
-                position: job ? job.title : 'Unknown',
-                dept: job ? job.dept : ref.department,
-                referredOn: ref.referredOn,
-                status: ref.referralStatus,
-                relationship: ref.relationship,
-                notes: ref.referralNotes
+                id: ref.id, referredBy: ref.referringEmployeeName, referrerId: ref.referringEmployeeCode,
+                referredName: ref.referredCandidateName, referredEmail: ref.referredCandidateEmail,
+                referredPhone: ref.referredCandidatePhone, position: job ? job.title : 'Unknown',
+                dept: job ? job.dept : ref.department, referredOn: ref.referredOn,
+                status: ref.referralStatus, relationship: ref.relationship, notes: ref.referralNotes
             };
         });
     } else if (result.data && Array.isArray(result.data)) {
         referrals = result.data.map(ref => {
             const job = jobOpenings.find(j => j.id === ref.jobId);
             return {
-                id: ref.id,
-                referredBy: ref.referringEmployeeName,
-                referrerId: ref.referringEmployeeCode,
-                referredName: ref.referredCandidateName,
-                referredEmail: ref.referredCandidateEmail,
-                referredPhone: ref.referredCandidatePhone,
-                position: job ? job.title : 'Unknown',
-                dept: job ? job.dept : ref.department,
-                referredOn: ref.referredOn,
-                status: ref.referralStatus,
-                relationship: ref.relationship,
-                notes: ref.referralNotes
+                id: ref.id, referredBy: ref.referringEmployeeName, referrerId: ref.referringEmployeeCode,
+                referredName: ref.referredCandidateName, referredEmail: ref.referredCandidateEmail,
+                referredPhone: ref.referredCandidatePhone, position: job ? job.title : 'Unknown',
+                dept: job ? job.dept : ref.department, referredOn: ref.referredOn,
+                status: ref.referralStatus, relationship: ref.relationship, notes: ref.referralNotes
             };
         });
     }
@@ -628,29 +927,15 @@ async function loadJDTemplatesFromBackend() {
     const result = await apiCall(`${CAREER_URL}/get-all-jd-templates/jd-templates`);
     if (result.success && result.list) {
         jdTemplates = result.list.map(jd => ({
-            id: jd.id,
-            name: jd.templateName,
-            dept: jd.department,
-            role: jd.designation,
-            roles: jd.rolesResponsibilities,
-            skills: jd.requiredSkills,
-            qual: jd.qualifications,
-            exp: jd.experience,
-            notes: jd.additionalNotes,
-            addedOn: jd.createdOn
+            id: jd.id, name: jd.templateName, dept: jd.department, role: jd.designation,
+            roles: jd.rolesResponsibilities, skills: jd.requiredSkills, qual: jd.qualifications,
+            exp: jd.experience, notes: jd.additionalNotes, addedOn: jd.createdOn
         }));
     } else if (result.data && Array.isArray(result.data)) {
         jdTemplates = result.data.map(jd => ({
-            id: jd.id,
-            name: jd.templateName,
-            dept: jd.department,
-            role: jd.designation,
-            roles: jd.rolesResponsibilities,
-            skills: jd.requiredSkills,
-            qual: jd.qualifications,
-            exp: jd.experience,
-            notes: jd.additionalNotes,
-            addedOn: jd.createdOn
+            id: jd.id, name: jd.templateName, dept: jd.department, role: jd.designation,
+            roles: jd.rolesResponsibilities, skills: jd.requiredSkills, qual: jd.qualifications,
+            exp: jd.experience, notes: jd.additionalNotes, addedOn: jd.createdOn
         }));
     }
     renderJDs();
@@ -669,7 +954,6 @@ async function loadDashboardStatsFromBackend() {
     }
 }
 
-// ========== JOB OPENING FUNCTIONS ==========
 function handleAppSourceChange(){
     const val=document.getElementById('jm-appSource').value;
     const panel=document.getElementById('appSourcePanel');
@@ -698,51 +982,207 @@ function addGFField(){gfFields.push({label:'New Field',type:'text',placeholder:'
 function removeGFField(idx){if(gfFields.length<=1){showToast('At least one field required','error');return;}gfFields.splice(idx,1);renderGFFields();}
 function generateFormLink(){const valid=gfFields.filter(f=>f.label.trim());if(!valid.length){showToast('Add at least one field','error');return;}const jobTitle=document.getElementById('jm-title').value.trim()||'Job Application';const dept=document.getElementById('jm-dept').value||'';const loc=document.getElementById('jm-location').value.trim()||'';const emp=document.getElementById('jm-emptype').value||'';const formData={jobTitle,jobMeta:[dept,loc,emp].filter(Boolean).join(' · '),fields:valid};const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(formData))));const link=`${window.location.href.split('#')[0]}#form=${encoded}`;document.getElementById('gfGeneratedLink').value=link;document.getElementById('gfLinkBox').classList.add('show');showToast('Form link generated!','success');}
 function copyFormLink(){const inp=document.getElementById('gfGeneratedLink');if(!inp||!inp.value){showToast('Generate link first','error');return;}navigator.clipboard.writeText(inp.value).then(()=>showToast('Link copied!','success')).catch(()=>{inp.select();document.execCommand('copy');showToast('Link copied!','success');});}
-function previewForm(){const valid=gfFields.filter(f=>f.label.trim());if(!valid.length){showToast('Add fields first','error');return;}const title=document.getElementById('jm-title').value.trim()||'Job';const dept=document.getElementById('jm-dept').value||'';const meta=[dept,document.getElementById('jm-location').value.trim(),document.getElementById('jm-emptype').value].filter(Boolean).join(' · ');document.getElementById('formPreviewTitle').innerText=`Preview — ${title}`;let html=valid.map(f=>`<div><label style="font-size:13px;font-weight:600;">${escapeHtml(f.label)}</label><input type="${f.type}" placeholder="${escapeHtml(f.placeholder)}" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--primary-soft);"></div>`).join('');document.getElementById('formPreviewBody').innerHTML=`<div style="background:var(--primary-bg-light);padding:14px;text-align:center;margin-bottom:18px;"><p style="font-weight:800;">${escapeHtml(title)}</p><p style="font-size:12px;">${escapeHtml(meta)}</p></div><div style="opacity:0.7;pointer-events:none;">${html}</div>`;openModal('formPreviewModal');}
+function previewForm(){const valid=gfFields.filter(f=>f.label.trim());if(!valid.length){showToast('Add fields first','error');return;}const title=document.getElementById('jm-title').value.trim()||'Job';const dept=document.getElementById('jm-dept').value||'';const meta=[dept,document.getElementById('jm-location').value.trim(),document.getElementById('jm-emptype').value].filter(Boolean).join(' · ');document.getElementById('formPreviewTitle').innerText=`Preview — ${title}`;let html=valid.map(f=>`<div><label style="font-size:13px;font-weight:600;">${escapeHtml(f.label)}</label><input type="${f.type}" placeholder="${escapeHtml(f.placeholder)}" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--primary-soft);"></div>`).join('');document.getElementById('formPreviewBody').innerHTML=`<div style="background:var(--primary-bg-light);padding:14px;text-align:center;margin-bottom:18px;border-radius:10px;"><p style="font-weight:800;">${escapeHtml(title)}</p><p style="font-size:12px;">${escapeHtml(meta)}</p></div><div style="opacity:0.7;pointer-events:none;">${html}</div>`;openModal('formPreviewModal');}
 function checkForFormInUrl(){const hash=window.location.hash;if(!hash.startsWith('#form='))return;try{const encoded=hash.replace('#form=','');const decoded=JSON.parse(decodeURIComponent(escape(atob(encoded))));document.getElementById('standaloneFormPage').style.display='block';document.getElementById('sfJobTitle').innerText=decoded.jobTitle||'Job Application';document.getElementById('sfJobMeta').innerText=decoded.jobMeta||'';window._activeFormData=decoded;const body=document.getElementById('sfFormBody');body.innerHTML=decoded.fields.map(f=>`<div style="margin-bottom:16px;"><label style="font-size:13px;font-weight:600;">${escapeHtml(f.label)} <span style="color:#dc3545;">*</span></label><input type="${f.type}" id="sf_${f.label.replace(/\s+/g,'_')}" placeholder="${escapeHtml(f.placeholder)}" required style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--primary-soft);"></div>`).join('');}catch(e){console.error(e);}}
 function submitStandaloneForm(){if(!window._activeFormData)return;let all=true;const resp={};window._activeFormData.fields.forEach(f=>{const id='sf_'+f.label.replace(/\s+/g,'_');const el=document.getElementById(id);if(el){const val=el.value.trim();if(!val)all=false;else resp[f.label]=val;}});if(!all){showToast('Please fill all fields','error');return;}const storeKey='gf_responses_'+btoa(window._activeFormData.jobTitle||'job');let existing=[];try{existing=JSON.parse(localStorage.getItem(storeKey)||'[]');}catch(e){}existing.push({...resp,submittedAt:new Date().toISOString()});localStorage.setItem(storeKey,JSON.stringify(existing));document.getElementById('standaloneFormPage').style.display='none';document.getElementById('formSuccessPage').style.display='block';}
 function closeFormSuccess(){document.getElementById('formSuccessPage').style.display='none';history.pushState('',document.title,window.location.pathname+window.location.search);location.reload();}
 function openLinkedInPosting(){window.open('https://www.linkedin.com/job-posting/create','_blank');}
 function openPortalGuide(portal){showToast(`API setup guide for ${portal} would open here. Configure API keys in integration settings.`,'info');}
 function copyJobDetailsForPortal(){const title=document.getElementById('jm-title').value.trim()||'';const dept=document.getElementById('jm-dept').value||'';const loc=document.getElementById('jm-location').value.trim()||'';const exp=document.getElementById('jm-exp').value.trim()||'';const salary=document.getElementById('jm-salary').value.trim()||'';const roles=document.getElementById('jm-roles').value.trim()||'';const skills=document.getElementById('jm-skills').value.trim()||'';const text=`Job Title: ${title}\nDepartment: ${dept}\nLocation: ${loc}\nExperience: ${exp}\nSalary: ${salary}\n\nRoles & Responsibilities:\n${roles}\n\nRequired Skills: ${skills}`;navigator.clipboard.writeText(text).then(()=>showToast('Job details copied!','success')).catch(()=>showToast('Copy failed','error'));}
-function populateFilters(){const depts=[...new Set(jobOpenings.map(j=>j.dept).filter(Boolean))];['filterJobDept','filterJDDept'].forEach(id=>{const sel=document.getElementById(id);if(sel){const prev=sel.value;sel.innerHTML=`<option value="all">All Departments</option>`+depts.map(d=>`<option value="${d}">${d}</option>`).join('');if(prev)sel.value=prev;}});const appDeptSel=document.getElementById('filterAppDept');if(appDeptSel){const prev=appDeptSel.value;const appDepts=[...new Set(applications.map(a=>a.dept).filter(Boolean))];appDeptSel.innerHTML=`<option value="all">All Departments</option>`+appDepts.map(d=>`<option value="${d}">${d}</option>`).join('');if(prev)appDeptSel.value=prev;}const positions=[...new Set(applications.map(a=>a.position).filter(Boolean))];const appJobSel=document.getElementById('filterAppJob');if(appJobSel)appJobSel.innerHTML=`<option value="all">All Positions</option>`+positions.map(p=>`<option value="${p}">${p}</option>`).join('');const jdSel=document.getElementById('jm-jdTemplate');if(jdSel)jdSel.innerHTML=`<option value="">— or fill manually below —</option>`+jdTemplates.map(jd=>`<option value="${jd.id}">${jd.name}</option>`).join('');const sourceFilter=document.getElementById('filterJobAppSource');if(sourceFilter){const sources=['Referral','LinkedIn','Career Website','Custom Forms','Naukri','Monster','Indeed','Shine','TimesJobs','Foundit'];sourceFilter.innerHTML=`<option value="all">All App Sources</option>`+sources.map(s=>`<option value="${s}">${s}</option>`).join('');}const appSourceFilter=document.getElementById('filterAppSource');if(appSourceFilter){const sources=['Referral','LinkedIn','Career Website','Custom Forms','Naukri','Monster','Indeed','Shine','TimesJobs','Foundit'];appSourceFilter.innerHTML=`<option value="all">All App Sources</option>`+sources.map(s=>`<option value="${s}">${s}</option>`).join('');}}
+
+function populateFilters(){
+    const depts = ALL_DEPARTMENTS;
+    ['filterJobDept','filterJDDept'].forEach(id=>{const sel=document.getElementById(id);if(sel){const prev=sel.value;sel.innerHTML=`<option value="all">All Departments</option>`+depts.map(d=>`<option value="${d}">${d}</option>`).join('');if(prev)sel.value=prev;}});
+    const appDeptSel=document.getElementById('filterAppDept');if(appDeptSel){const prev=appDeptSel.value;const appDepts=[...new Set(applications.map(a=>a.dept).filter(Boolean))];appDeptSel.innerHTML=`<option value="all">All Departments</option>`+appDepts.map(d=>`<option value="${d}">${d}</option>`).join('');if(prev)appDeptSel.value=prev;}
+    const positions=[...new Set(applications.map(a=>a.position).filter(Boolean))];const appJobSel=document.getElementById('filterAppJob');if(appJobSel)appJobSel.innerHTML=`<option value="all">All Positions</option>`+positions.map(p=>`<option value="${p}">${p}</option>`).join('');
+    const jdSel=document.getElementById('jm-jdTemplate');if(jdSel)jdSel.innerHTML=`<option value="">— or fill manually below —</option>`+jdTemplates.map(jd=>`<option value="${jd.id}">${jd.name}</option>`).join('');
+    const sourceFilter=document.getElementById('filterJobAppSource');if(sourceFilter){const sources=['Referral','LinkedIn','Career Website','Custom Forms','Naukri','Monster','Indeed','Shine','TimesJobs','Foundit'];sourceFilter.innerHTML=`<option value="all">All App Sources</option>`+sources.map(s=>`<option value="${s}">${s}</option>`).join('');}
+    const appSourceFilter=document.getElementById('filterAppSource');if(appSourceFilter){const sources=['Referral','LinkedIn','Career Website','Custom Forms','Naukri','Monster','Indeed','Shine','TimesJobs','Foundit'];appSourceFilter.innerHTML=`<option value="all">All App Sources</option>`+sources.map(s=>`<option value="${s}">${s}</option>`).join('');}
+}
+
 function updateStats(){document.getElementById('statTotal').textContent=jobOpenings.length;document.getElementById('statOpen').textContent=jobOpenings.filter(j=>j.status==='Open').length;document.getElementById('statApps').textContent=applications.length;document.getElementById('statRefs').textContent=referrals.length;document.getElementById('statHired').textContent=applications.filter(a=>a.status==='Hired').length;}
-function renderJobOpenings(){const statusF=document.getElementById('filterJobStatus').value;const deptF=document.getElementById('filterJobDept').value;const appSourceF=document.getElementById('filterJobAppSource').value;const search=document.getElementById('searchJob').value.toLowerCase();let list=[...jobOpenings];if(statusF!=='all')list=list.filter(j=>j.status===statusF);if(deptF!=='all')list=list.filter(j=>j.dept===deptF);if(search)list=list.filter(j=>j.title.toLowerCase().includes(search)||j.dept.toLowerCase().includes(search));if(appSourceF!=='all')list=list.filter(j=>j.appSource===appSourceF);const container=document.getElementById('jobOpeningsList');const empty=document.getElementById('jobEmpty');if(!list.length){container.innerHTML='';empty.style.display='block';return;}empty.style.display='none';container.innerHTML=list.map(j=>{const appCount=applications.filter(a=>a.jobId===j.id).length;const skills=(j.skills||'').split(',').filter(Boolean).slice(0,4);const skillsHtml=skills.map(s=>`<span class="skills-tag">${s.trim()}</span>`).join(' ');const jobAppSourceBadge=j.appSource?`<span style="font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;${appSourceBadgeStyle(j.appSource)}"><i class="${appSourceIcon(j.appSource)} mr-1"></i>${j.appSource}</span>`:'';return `<div class="job-card"><div style="display:flex;justify-content:space-between;margin-bottom:10px;"><div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span style="font-size:14px;font-weight:700;color:var(--primary);">${escapeHtml(j.title)}</span>${statusBadge(j.status)}${jobAppSourceBadge}</div><div style="font-size:12px;color:var(--text-light);"><i class="fas fa-building mr-1"></i>${escapeHtml(j.dept)} · <i class="fas fa-map-marker-alt mr-1"></i>${escapeHtml(j.location||'—')}</div></div><div style="text-align:right;"><div style="font-size:11px;">Openings</div><div style="font-size:20px;font-weight:800;">${j.count||1}</div></div></div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">${skillsHtml}</div><div style="display:flex;gap:16px;flex-wrap:wrap;font-size:11px;"><span><i class="fas fa-clock mr-1"></i>${escapeHtml(j.exp||'Any')}</span><span><i class="fas fa-rupee-sign mr-1"></i>${escapeHtml(j.salary||'Not disclosed')}</span><span><i class="fas fa-users mr-1"></i>${appCount} apps</span></div><div style="display:flex;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--primary-soft);"><button onclick="viewJobDetail(${j.id})" class="btn-secondary btn-sm"><i class="fas fa-eye mr-1"></i>View</button><button onclick="editJob(${j.id})" class="btn-outline btn-sm"><i class="fas fa-edit mr-1"></i>Edit</button><button onclick="toggleJobStatus(${j.id})" class="btn-sm" style="background:${j.status==='Open'?'rgba(220,53,69,0.1)':'rgba(43,122,62,0.1)'};color:${j.status==='Open'?'#dc3545':'#2b7a3e'};border:1px solid ${j.status==='Open'?'rgba(220,53,69,0.3)':'rgba(43,122,62,0.3)'};border-radius:8px;padding:6px 12px;">${j.status==='Open'?'Pause':'Reopen'}</button></div></div>`;}).join('');}
-function viewJobDetail(id){const j=jobOpenings.find(x=>x.id===id);if(!j)return;const skills=(j.skills||'').split(',').filter(Boolean).map(s=>`<span class="skills-tag">${s.trim()}</span>`).join(' ');document.getElementById('viewJobBody').innerHTML=`<div style="background:var(--primary-bg-light);padding:16px;margin-bottom:16px;border-radius:12px;"><h2 style="font-size:18px;font-weight:800;">${escapeHtml(j.title)}</h2><p>${escapeHtml(j.dept)} · ${escapeHtml(j.location||'N/A')}</p>${statusBadge(j.status)}</div><div><p><strong>Experience:</strong> ${escapeHtml(j.exp||'—')}</p><p><strong>Salary:</strong> ${escapeHtml(j.salary||'Not disclosed')}</p><p><strong>Skills:</strong></p><div>${skills}</div><p><strong>Roles:</strong></p><div style="white-space:pre-line;">${escapeHtml(j.roles||'—')}</div></div>`;openModal('viewJobModal');}
+
+function renderJobOpenings(){
+    const statusF=document.getElementById('filterJobStatus').value;
+    const deptF=document.getElementById('filterJobDept').value;
+    const appSourceF=document.getElementById('filterJobAppSource').value;
+    const search=document.getElementById('searchJob').value.toLowerCase();
+    let list=[...jobOpenings];
+    if(statusF!=='all')list=list.filter(j=>j.status===statusF);
+    if(deptF!=='all')list=list.filter(j=>j.dept===deptF);
+    if(search)list=list.filter(j=>j.title.toLowerCase().includes(search)||j.dept.toLowerCase().includes(search));
+    if(appSourceF!=='all')list=list.filter(j=>j.appSource===appSourceF);
+    const tbody=document.getElementById('jobOpeningsTableBody');
+    const empty=document.getElementById('jobEmpty');
+    if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+    empty.style.display='none';
+    tbody.innerHTML=list.map((j,i)=>{
+        const jobAppSourceBadge=j.appSource?`<span class="badge" style="${appSourceBadgeStyle(j.appSource)}"><i class="${appSourceIcon(j.appSource)} mr-1"></i>${j.appSource}</span>`:'<span style="color:var(--text-light);">—</span>';
+        return `<tr>
+            <td><strong style="color:var(--primary);">${i+1}</strong></td>
+            <td><strong style="color:var(--primary);">${escapeHtml(j.title)}</strong></td>
+            <td>${escapeHtml(j.dept)}</td>
+            <td>${escapeHtml(j.location||'—')}</td>
+            <td>${escapeHtml(j.emptype||'—')}</td>
+            <td>${j.count||1}</td>
+            <td>${jobAppSourceBadge}</td>
+            <td>${statusBadge(j.status)}</td>
+            <td style="text-align:center;">
+                <div style="display:flex; gap:6px; justify-content:center;">
+                    <button onclick="viewJobDetail(${j.id})" class="btn-info" title="View"><i class="fas fa-eye"></i></button>
+                    <button onclick="editJob(${j.id})" class="btn-warning" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button onclick="toggleJobStatus(${j.id})" class="${j.status==='Open'?'btn-danger':'btn-success'}" style="padding:6px 10px;border-radius:7px;font-size:12px;border:none;cursor:pointer;color:white;" title="${j.status==='Open'?'Pause':'Reopen'}">
+                        <i class="fas ${j.status==='Open'?'fa-pause':'fa-play'}"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function viewJobDetail(id){const j=jobOpenings.find(x=>x.id===id);if(!j)return;const skills=(j.skills||'').split(',').filter(Boolean).map(s=>`<span class="skills-tag">${s.trim()}</span>`).join(' ');document.getElementById('viewJobBody').innerHTML=`<div style="background:var(--primary-bg-light);padding:16px;margin-bottom:16px;border-radius:12px;"><h2 style="font-size:18px;font-weight:800;">${escapeHtml(j.title)}</h2><p>${escapeHtml(j.dept)} · ${escapeHtml(j.location||'N/A')}</p>${statusBadge(j.status)}</div><div><p style="margin-bottom:8px;"><strong>Experience:</strong> ${escapeHtml(j.exp||'—')}</p><p style="margin-bottom:8px;"><strong>Salary:</strong> ${escapeHtml(j.salary||'Not disclosed')}</p><p style="margin-bottom:8px;"><strong>Skills:</strong></p><div style="margin-bottom:12px;">${skills}</div><p style="margin-bottom:8px;"><strong>Roles:</strong></p><div style="white-space:pre-line;">${escapeHtml(j.roles||'—')}</div></div>`;openModal('viewJobModal');}
+
 function editJob(id){const j=jobOpenings.find(x=>x.id===id);if(!j)return;editingJobId=id;document.getElementById('jobModalTitle').innerText='Edit Job Opening';document.getElementById('jm-title').value=j.title;document.getElementById('jm-dept').value=j.dept;document.getElementById('jm-location').value=j.location||'';document.getElementById('jm-emptype').value=j.emptype;document.getElementById('jm-exp').value=j.exp||'';document.getElementById('jm-count').value=j.count||1;document.getElementById('jm-salary').value=j.salary||'';document.getElementById('jm-deadline').value=j.deadline||'';document.getElementById('jm-status').value=j.status;document.getElementById('jm-priority').value=j.priority;document.getElementById('jm-roles').value=j.roles||'';document.getElementById('jm-skills').value=j.skills||'';document.getElementById('jm-qual').value=j.qual||'';document.getElementById('jm-perks').value=j.perks||'';if(j.appSource){document.getElementById('jm-appSource').value=j.appSource;handleAppSourceChange();}openModal('jobModal');}
+
 async function saveJob(){const title=document.getElementById('jm-title').value.trim();const dept=document.getElementById('jm-dept').value;const roles=document.getElementById('jm-roles').value.trim();const skills=document.getElementById('jm-skills').value.trim();if(!title||!dept||!roles||!skills){showToast('Please fill required fields','error');return;}const appSource=document.getElementById('jm-appSource').value;const backendPayload={title:title,department:dept,location:document.getElementById('jm-location').value.trim(),employmentType:document.getElementById('jm-emptype').value,experienceRequired:document.getElementById('jm-exp').value.trim(),numberOfOpenings:parseInt(document.getElementById('jm-count').value)||1,salaryRange:document.getElementById('jm-salary').value.trim(),applicationDeadline:document.getElementById('jm-deadline').value,status:document.getElementById('jm-status').value,priority:document.getElementById('jm-priority').value,rolesResponsibilities:roles,requiredSkills:skills,qualifications:document.getElementById('jm-qual').value.trim(),additionalBenefits:document.getElementById('jm-perks').value.trim(),applicationSource:appSource||'',postedByEmployeeId:101};let result;if(editingJobId){result=await apiCall(`${CAREER_URL}/update-job-opening/openings/${editingJobId}`,'PUT',backendPayload);}else{result=await apiCall(`${CAREER_URL}/create-job-opening/openings`,'POST',backendPayload);}if(result.success){editingJobId=null;closeModal('jobModal');document.getElementById('jobModalTitle').innerText='Post Job Opening';['jm-title','jm-location','jm-exp','jm-salary','jm-deadline','jm-roles','jm-skills','jm-qual','jm-perks'].forEach(id=>document.getElementById(id).value='');document.getElementById('jm-count').value='';document.getElementById('jm-dept').value='';document.getElementById('jm-status').value='Open';document.getElementById('jm-priority').value='Normal';document.getElementById('jm-appSource').value='';gfFields=[];document.getElementById('appSourcePanel').classList.remove('show');await loadJobOpeningsFromBackend();await loadApplicationsFromBackend();await loadDashboardStatsFromBackend();showToast('Job saved successfully!','success');}else{showToast(result.message||'Failed to save job','error');}}
+
 function openJobModal(){editingJobId=null;document.getElementById('jobModalTitle').innerText='Post Job Opening';['jm-title','jm-location','jm-exp','jm-salary','jm-deadline','jm-roles','jm-skills','jm-qual','jm-perks'].forEach(id=>document.getElementById(id).value='');document.getElementById('jm-count').value='';document.getElementById('jm-dept').value='';document.getElementById('jm-status').value='Open';document.getElementById('jm-priority').value='Normal';document.getElementById('jm-appSource').value='';gfFields=[];document.getElementById('appSourcePanel').classList.remove('show');openModal('jobModal');}
+
 function applyJDTemplate(){const jdId=parseInt(document.getElementById('jm-jdTemplate').value);if(!jdId)return;const jd=jdTemplates.find(j=>j.id===jdId);if(jd){document.getElementById('jm-roles').value=jd.roles||'';document.getElementById('jm-skills').value=jd.skills||'';document.getElementById('jm-qual').value=jd.qual||'';showToast('JD template applied','info');}}
+
 async function toggleJobStatus(id){const j=jobOpenings.find(x=>x.id===id);if(!j)return;const newStatus=j.status==='Open'?'Paused':'Open';const result=await apiCall(`${CAREER_URL}/patch-job-opening/openings/${id}`,'PATCH',{updates:{status:newStatus}});if(result.success){await loadJobOpeningsFromBackend();showToast(`Job ${newStatus}`,'info');}else{showToast('Failed to update status','error');}}
-function renderApplications(){const statusF=document.getElementById('filterAppStatus').value;const jobF=document.getElementById('filterAppJob').value;const deptF=document.getElementById('filterAppDept').value;const srcF=document.getElementById('filterAppSource').value;const search=document.getElementById('searchApp').value.toLowerCase();let list=[...applications];if(statusF!=='all')list=list.filter(a=>a.status===statusF);if(jobF!=='all')list=list.filter(a=>a.position===jobF);if(deptF!=='all')list=list.filter(a=>a.dept===deptF);if(srcF!=='all')list=list.filter(a=>a.appSource===srcF);if(search)list=list.filter(a=>a.name.toLowerCase().includes(search));const tbody=document.getElementById('appTableBody');const empty=document.getElementById('appEmpty');if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}empty.style.display='none';tbody.innerHTML=list.map(a=>`<tr style="border-bottom:1px solid var(--primary-soft);cursor:pointer;" onclick="viewApp(${a.id})"><td><div><strong>${escapeHtml(a.name)}</strong><br><small>${escapeHtml(a.email)}</small></div></td><td>${escapeHtml(a.position)}</td><td>${escapeHtml(a.dept)}</td><td>${fmtDate(a.appliedOn)}</td><td><span class="badge" style="${appSourceBadgeStyle(a.appSource)}"><i class="${appSourceIcon(a.appSource)} mr-1"></i>${escapeHtml(a.appSource)}</span></td><td>${escapeHtml(a.referredBy||'—')}</td><td>${statusBadge(a.status)}</td><td onclick="event.stopPropagation()"><select onchange="updateAppStatus(${a.id},this.value)" style="padding:4px 8px;border-radius:6px;min-width:110px;"><option value="Pending" ${a.status==='Pending'?'selected':''}>Pending</option><option value="Reviewed" ${a.status==='Reviewed'?'selected':''}>Reviewed</option><option value="Shortlisted" ${a.status==='Shortlisted'?'selected':''}>Shortlisted</option><option value="Rejected" ${a.status==='Rejected'?'selected':''}>Rejected</option><option value="Hired" ${a.status==='Hired'?'selected':''}>Hired</option></select></td></tr>`).join('');}
+
+function renderApplications(){
+    const statusF=document.getElementById('filterAppStatus').value;
+    const jobF=document.getElementById('filterAppJob').value;
+    const deptF=document.getElementById('filterAppDept').value;
+    const srcF=document.getElementById('filterAppSource').value;
+    const search=document.getElementById('searchApp').value.toLowerCase();
+    let list=[...applications];
+    if(statusF!=='all')list=list.filter(a=>a.status===statusF);
+    if(jobF!=='all')list=list.filter(a=>a.position===jobF);
+    if(deptF!=='all')list=list.filter(a=>a.dept===deptF);
+    if(srcF!=='all')list=list.filter(a=>a.appSource===srcF);
+    if(search)list=list.filter(a=>a.name.toLowerCase().includes(search));
+    const tbody=document.getElementById('appTableBody');
+    const empty=document.getElementById('appEmpty');
+    if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+    empty.style.display='none';
+    tbody.innerHTML=list.map(a=>`<tr style="cursor:pointer;" onclick="viewApp(${a.id})">
+        <td><div><strong style="color:var(--primary);">${escapeHtml(a.name)}</strong><br><small style="color:var(--text-light);">${escapeHtml(a.email)}</small></div></td>
+        <td>${escapeHtml(a.position)}</td>
+        <td>${escapeHtml(a.dept)}</td>
+        <td>${fmtDate(a.appliedOn)}</td>
+        <td><span class="badge" style="${appSourceBadgeStyle(a.appSource)}"><i class="${appSourceIcon(a.appSource)} mr-1"></i>${escapeHtml(a.appSource)}</span></td>
+        <td>${escapeHtml(a.referredBy||'—')}</td>
+        <td>${statusBadge(a.status)}</td>
+        <td onclick="event.stopPropagation()" style="text-align:center;">
+            <select onchange="updateAppStatus(${a.id},this.value)" style="padding:4px 8px;border-radius:6px;min-width:110px;font-size:12px;">
+                <option value="Pending" ${a.status==='Pending'?'selected':''}>Pending</option>
+                <option value="Reviewed" ${a.status==='Reviewed'?'selected':''}>Reviewed</option>
+                <option value="Shortlisted" ${a.status==='Shortlisted'?'selected':''}>Shortlisted</option>
+                <option value="Rejected" ${a.status==='Rejected'?'selected':''}>Rejected</option>
+                <option value="Hired" ${a.status==='Hired'?'selected':''}>Hired</option>
+            </select>
+        </td>
+    </tr>`).join('');
+}
+
 function viewApp(id){const a=applications.find(x=>x.id===id);if(!a)return;const ini=a.name.split(' ').filter(Boolean).map(x=>x[0]).join('').slice(0,2).toUpperCase();document.getElementById('viewAppBody').innerHTML=`<div style="display:flex;align-items:center;gap:14px;background:var(--primary-bg-light);border-radius:12px;padding:16px;margin-bottom:16px;"><div class="avatar" style="width:48px;height:48px;font-size:16px;">${ini}</div><div><h3 style="font-size:16px;font-weight:700;">${escapeHtml(a.name)}</h3><p style="font-size:12px;">${escapeHtml(a.email)} · ${escapeHtml(a.phone||'—')}</p></div><div>${statusBadge(a.status)}</div></div><div class="grid grid-cols-2 gap-3 mb-4"><div class="bg-gray-50 p-3 rounded-lg"><p class="text-xs text-gray-500">Applied For</p><p class="font-semibold">${escapeHtml(a.position)}</p></div><div class="bg-gray-50 p-3 rounded-lg"><p class="text-xs text-gray-500">Experience</p><p class="font-semibold">${escapeHtml(a.experience||'—')} years</p></div><div class="bg-gray-50 p-3 rounded-lg"><p class="text-xs text-gray-500">Applied On</p><p class="font-semibold">${fmtDate(a.appliedOn)}</p></div><div class="bg-gray-50 p-3 rounded-lg"><p class="text-xs text-gray-500">Source</p><p class="font-semibold">${escapeHtml(a.appSource)}</p></div></div>${a.notes?`<div class="bg-blue-50 p-3 rounded-lg mb-4"><p class="text-xs font-semibold">Recruiter Notes</p><p>${escapeHtml(a.notes)}</p></div>`:''}<div><label class="text-sm font-semibold">Update Status</label><div class="flex gap-2 mt-2 flex-wrap"><button onclick="updateAppStatus(${a.id},'Pending')" class="btn-sm btn-outline">Pending</button><button onclick="updateAppStatus(${a.id},'Reviewed')" class="btn-sm btn-outline">Reviewed</button><button onclick="updateAppStatus(${a.id},'Shortlisted')" class="btn-sm btn-primary">Shortlisted</button><button onclick="updateAppStatus(${a.id},'Rejected')" class="btn-sm btn-danger">Rejected</button><button onclick="updateAppStatus(${a.id},'Hired')" class="btn-sm btn-success">Hired</button></div></div>`;openModal('viewAppModal');}
+
 async function updateAppStatus(id,status){const result=await apiCall(`${CAREER_URL}/update-application-status/applications/${id}/status?status=${status}&reviewedByEmployeeId=101`,'PUT');if(result.success){await loadApplicationsFromBackend();await loadDashboardStatsFromBackend();showToast(`Status updated to ${status}`,'success');}else{showToast('Failed to update status','error');}}
-function renderReferrals(){const statusF=document.getElementById('filterRefStatus').value;const search=document.getElementById('searchRef').value.toLowerCase();let list=[...referrals];if(statusF!=='all')list=list.filter(r=>r.status===statusF);if(search)list=list.filter(r=>r.referredName.toLowerCase().includes(search));const container=document.getElementById('referralsList');const empty=document.getElementById('refEmpty');if(!list.length){container.innerHTML='';empty.style.display='block';return;}empty.style.display='none';container.innerHTML=list.map(r=>`<div class="job-card"><div class="flex items-center gap-3 mb-3"><div class="avatar">${(r.referredName||'R').charAt(0)}</div><div><p class="font-bold">${escapeHtml(r.referredName)}</p><p class="text-sm text-gray-500">${escapeHtml(r.position)}</p></div>${statusBadge(r.status)}</div><div class="bg-gray-50 p-3 rounded-lg mb-3"><p class="text-xs text-gray-500">Referred by</p><p class="font-semibold">${escapeHtml(r.referredBy)} (${escapeHtml(r.referrerId||'')})</p><p class="text-sm">${escapeHtml(r.relationship||'No relationship specified')}</p></div>${r.notes?`<p class="text-sm italic">"${escapeHtml(r.notes)}"</p>`:''}<div class="flex gap-2 mt-3 pt-3 border-t"><button onclick="updateRefStatus(${r.id},'Shortlisted')" class="btn-sm btn-primary">Shortlist</button><button onclick="updateRefStatus(${r.id},'Hired')" class="btn-sm btn-success">Hire</button><button onclick="updateRefStatus(${r.id},'Rejected')" class="btn-sm btn-danger">Reject</button></div></div>`).join('');}
+
+function renderReferrals(){
+    const statusF=document.getElementById('filterRefStatus').value;
+    const search=document.getElementById('searchRef').value.toLowerCase();
+    let list=[...referrals];
+    if(statusF!=='all')list=list.filter(r=>r.status===statusF);
+    if(search)list=list.filter(r=>r.referredName.toLowerCase().includes(search));
+    const tbody=document.getElementById('referralsTableBody');
+    const empty=document.getElementById('refEmpty');
+    if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+    empty.style.display='none';
+    tbody.innerHTML=list.map(r=>`<tr>
+        <td><strong style="color:var(--primary);">${escapeHtml(r.referredName)}</strong><br><small style="color:var(--text-light);">${escapeHtml(r.referredEmail||'')}</small></td>
+        <td>${escapeHtml(r.position)}</td>
+        <td>${escapeHtml(r.dept)}</td>
+        <td><strong>${escapeHtml(r.referredBy)}</strong><br><small style="color:var(--text-light);">${escapeHtml(r.referrerId||'')}</small></td>
+        <td>${escapeHtml(r.relationship||'—')}</td>
+        <td>${fmtDate(r.referredOn)}</td>
+        <td>${statusBadge(r.status)}</td>
+        <td style="text-align:center;">
+            <div style="display:flex; gap:6px; justify-content:center;">
+                <button onclick="updateRefStatus(${r.id},'Shortlisted')" class="btn-info" title="Shortlist"><i class="fas fa-check"></i></button>
+                <button onclick="updateRefStatus(${r.id},'Hired')" class="btn-success" style="padding:6px 10px;border-radius:7px;font-size:12px;border:none;cursor:pointer;color:white;" title="Hire"><i class="fas fa-user-check"></i></button>
+                <button onclick="updateRefStatus(${r.id},'Rejected')" class="btn-danger" title="Reject"><i class="fas fa-times"></i></button>
+            </div>
+        </td>
+    </tr>`).join('');
+}
+
 async function updateRefStatus(id,status){const result=await apiCall(`${CAREER_URL}/update-referral-status/referrals/${id}/status?status=${status}`,'PUT');if(result.success){await loadReferralsFromBackend();showToast(`Referral ${status}`,'success');}else{showToast('Failed to update status','error');}}
-function renderJDs(){const deptF=document.getElementById('filterJDDept').value;const search=document.getElementById('searchJD').value.toLowerCase();let list=[...jdTemplates];if(deptF!=='all')list=list.filter(j=>j.dept===deptF);if(search)list=list.filter(j=>j.name.toLowerCase().includes(search));const container=document.getElementById('jdList');const empty=document.getElementById('jdEmpty');if(!list.length){container.innerHTML='';empty.style.display='block';return;}empty.style.display='none';container.innerHTML=list.map(j=>`<div class="job-card"><div><p class="font-bold">${escapeHtml(j.name)}</p><p class="text-sm text-gray-500">${escapeHtml(j.dept)} · ${escapeHtml(j.role||'')}</p></div><div class="flex flex-wrap gap-1 my-2">${(j.skills||'').split(',').slice(0,3).map(s=>`<span class="skills-tag">${s.trim()}</span>`).join('')}</div><div class="flex gap-2 mt-3 pt-3 border-t"><button onclick="useJDForJob(${j.id})" class="btn-primary btn-sm"><i class="fas fa-plus mr-1"></i>Use for Job</button><button onclick="editJD(${j.id})" class="btn-outline btn-sm"><i class="fas fa-edit mr-1"></i>Edit</button><button onclick="deleteJD(${j.id})" class="btn-danger btn-sm"><i class="fas fa-trash mr-1"></i>Delete</button></div></div>`).join('');}
+
+function renderJDs(){
+    const deptF=document.getElementById('filterJDDept').value;
+    const search=document.getElementById('searchJD').value.toLowerCase();
+    let list=[...jdTemplates];
+    if(deptF!=='all')list=list.filter(j=>j.dept===deptF);
+    if(search)list=list.filter(j=>j.name.toLowerCase().includes(search));
+    const tbody=document.getElementById('jdTableBody');
+    const empty=document.getElementById('jdEmpty');
+    if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+    empty.style.display='none';
+    tbody.innerHTML=list.map((j,i)=>{
+        const skills=(j.skills||'').split(',').slice(0,3).map(s=>`<span class="skills-tag">${s.trim()}</span>`).join(' ');
+        return `<tr>
+            <td><strong style="color:var(--primary);">${i+1}</strong></td>
+            <td><strong style="color:var(--primary);">${escapeHtml(j.name)}</strong></td>
+            <td>${escapeHtml(j.dept)}</td>
+            <td>${escapeHtml(j.role||'—')}</td>
+            <td>${escapeHtml(j.exp||'—')}</td>
+            <td>${skills}</td>
+            <td style="text-align:center;">
+                <div style="display:flex; gap:6px; justify-content:center;">
+                    <button onclick="useJDForJob(${j.id})" class="btn-info" title="Use for Job"><i class="fas fa-plus"></i></button>
+                    <button onclick="editJD(${j.id})" class="btn-warning" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button onclick="deleteJD(${j.id})" class="btn-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
 function openJDModal(){editingJDId=null;document.getElementById('jdModalTitle').innerText='Add JD Template';['jd-name','jd-role','jd-roles','jd-skills','jd-qual','jd-exp','jd-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('jd-dept').value='';openModal('jdModal');}
+
 function editJD(id){const j=jdTemplates.find(x=>x.id===id);if(j){editingJDId=id;document.getElementById('jdModalTitle').innerText='Edit JD Template';document.getElementById('jd-name').value=j.name;document.getElementById('jd-dept').value=j.dept;document.getElementById('jd-role').value=j.role||'';document.getElementById('jd-roles').value=j.roles||'';document.getElementById('jd-skills').value=j.skills||'';document.getElementById('jd-qual').value=j.qual||'';document.getElementById('jd-exp').value=j.exp||'';document.getElementById('jd-notes').value=j.notes||'';openModal('jdModal');}}
+
 async function saveJD(){const name=document.getElementById('jd-name').value.trim();const dept=document.getElementById('jd-dept').value;const roles=document.getElementById('jd-roles').value.trim();const skills=document.getElementById('jd-skills').value.trim();if(!name||!dept||!roles||!skills){showToast('Please fill required fields','error');return;}const payload={templateName:name,department:dept,designation:document.getElementById('jd-role').value.trim(),rolesResponsibilities:roles,requiredSkills:skills,qualifications:document.getElementById('jd-qual').value.trim(),experience:document.getElementById('jd-exp').value.trim(),additionalNotes:document.getElementById('jd-notes').value.trim(),createdByEmployeeId:101};let result;if(editingJDId){result=await apiCall(`${CAREER_URL}/update-jd-template/jd-templates/${editingJDId}`,'PUT',payload);}else{result=await apiCall(`${CAREER_URL}/create-jd-template/jd-templates`,'POST',payload);}if(result.success){editingJDId=null;closeModal('jdModal');await loadJDTemplatesFromBackend();showToast('JD saved successfully!','success');}else{showToast(result.message||'Failed to save JD','error');}}
+
 async function deleteJD(id){showConfirmModal('Delete this JD template?',async()=>{const result=await apiCall(`${CAREER_URL}/delete-jd-template/jd-templates/${id}`,'DELETE');if(result.success){await loadJDTemplatesFromBackend();showToast('JD template deleted','info');}else{showToast('Failed to delete','error');}});}
+
 function useJDForJob(id){const jd=jdTemplates.find(j=>j.id===id);if(jd){document.getElementById('jm-roles').value=jd.roles||'';document.getElementById('jm-skills').value=jd.skills||'';document.getElementById('jm-qual').value=jd.qual||'';openModal('jobModal');showToast('JD applied to job form','info');}}
-function exportOpenings(){const csv=['Title,Department,Location,Status,App Source',...jobOpenings.map(j=>`"${j.title}", "${j.dept}", "${j.location||''}", "${j.status}", "${j.appSource||''}"`)].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=`openings_${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast('Exported!','success');}
-function exportApplications(){const csv=['Name,Email,Position,Status,Source',...applications.map(a=>`"${a.name}", "${a.email}", "${a.position}", "${a.status}", "${a.appSource||''}"`)].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=`apps_${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast('Exported!','success');}
+
+function exportOpenings(){const csv=['Title,Department,Location,Status,App Source',...jobOpenings.map(j=>`"${j.title}","${j.dept}","${j.location||''}","${j.status}","${j.appSource||''}"`)].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=`openings_${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast('Exported!','success');}
+
+function exportApplications(){const csv=['Name,Email,Position,Status,Source',...applications.map(a=>`"${a.name}","${a.email}","${a.position}","${a.status}","${a.appSource||''}"`)].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=`apps_${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast('Exported!','success');}
+
 function switchTab(tab){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.querySelector(`.tab-btn[data-tab="${tab}"]`)?.classList.add('active');document.getElementById(`tab-${tab}`)?.classList.add('active');}
+
 async function initPage(){
     document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',function(){
         switchTab(this.getAttribute('data-tab'));
     }));
+    await loadDepartmentsFromAPI();
+    populateDeptDropdowns();
     await loadJobOpeningsFromBackend();
     await loadApplicationsFromBackend();
     await loadReferralsFromBackend();
     await loadJDTemplatesFromBackend();
     await loadDashboardStatsFromBackend();
     checkForFormInUrl();
-    
-    // ✅ CALL DIRECTLY - NO setTimeout
     if(typeof loadSidebar === 'function') loadSidebar();
     if(typeof loadHeader === 'function') loadHeader();
-    if(typeof setActiveMenu === 'function') setActiveMenu('career');
+    if(typeof setActiveMenu === 'function') setActiveMenu('workflow');
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initPage);else initPage();
 </script>

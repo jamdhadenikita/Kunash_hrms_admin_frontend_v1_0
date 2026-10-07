@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | HRMS Admin</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        #header-container {
+            position: fixed; top: 0; left: 256px; right: 0;
+            height: 56px; background: #ffffff;
+            border-bottom: 1px solid #3098b5; z-index: 40;
+        }
+    </style>
+
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+
+        :root {
+            --primary: #1B738C;
+            --primary-light: #62C9EA;
+            --primary-soft: #BDE4EE;
+            --primary-bg-light: #e9f2f4;
+            --button-hover: #166278;
+            --border-color: #1B738C;
+            --text-dark: #1B738C;
+            --text-light: #5a7c8a;
+        }
+
+        body { background-color: #f0f7f9; }
+        .main-content { margin-top: 64px; }
+
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--primary-light);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(27, 115, 140, 0.04);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            transition: all 0.3s ease;
+            color: white;
+            padding: 10px 26px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            font-size: 13px;
+        }
+        .btn-primary:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(27, 115, 140, 0.2);
+        }
+        .btn-primary:disabled { background-color: var(--primary-soft); cursor: not-allowed; transform: none; }
+
+        .btn-outline {
+            border: 1px solid var(--primary-light);
+            color: var(--primary);
+            padding: 8px 18px;
+            border-radius: 10px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .btn-outline:hover { background-color: var(--primary-bg-light); border-color: var(--primary); }
+        .btn-sm { padding: 6px 14px !important; font-size: 12px !important; border-radius: 8px !important; }
+
+        input, select, textarea {
+            border: 1px solid var(--primary-soft);
+            border-radius: 12px;
+            padding: 10px 14px;
+            width: 100%;
+            font-size: 13px;
+            transition: 0.2s;
+            color: var(--text-dark);
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(27, 115, 140, 0.1);
+        }
+        label { font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 6px; display: block; }
+        .req { color: #dc3545; font-size: 12px; }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--primary-soft);
+            font-size: 13px;
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-light);
+            font-size: 12px;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(27, 115, 140, 0.1);
+        }
+
+        .submodule-nav {
+            display: flex; gap: 10px; margin-bottom: 28px; padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-soft); flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 8px 24px; border-radius: 40px; font-size: 14px; font-weight: 600;
+            transition: all 0.2s; background: transparent; color: var(--primary);
+            cursor: pointer; border: none;
+        }
+        .tab-btn:hover { background-color: var(--primary-bg-light); color: var(--button-hover); }
+        .tab-btn.active { background-color: var(--primary); color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .sec-title {
+            font-size: 14px; font-weight: 700; color: var(--primary);
+            margin: 24px 0 16px 0; padding-bottom: 10px; border-bottom: 2px solid var(--primary-soft);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .sec-title:first-child { margin-top: 0; }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .form-group { margin-bottom: 18px; }
+
+        .toggle-switch-wrap { display: flex; align-items: center; gap: 10px; }
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 22px; flex-shrink: 0; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-thumb {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--primary-soft); transition: 0.3s; border-radius: 22px;
+        }
+        .toggle-thumb:before {
+            position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px;
+            background-color: white; transition: 0.3s; border-radius: 50%;
+        }
+        input:checked + .toggle-thumb { background-color: var(--primary); }
+        input:checked + .toggle-thumb:before { transform: translateX(22px); }
+        input:disabled + .toggle-thumb { opacity: 0.5; cursor: not-allowed; }
+
+        .module-pill {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 8px; padding: 10px 14px; border-radius: 10px; background: var(--primary-bg-light);
+            border: 1px solid var(--primary-soft);
+        }
+        .module-pill span { font-size: 12px; color: var(--primary); font-weight: 500; }
+
+        .avatar {
+            width: 34px; height: 34px; border-radius: 50%; background-color: var(--primary);
+            display: flex; align-items: center; justify-content: center; color: white;
+            font-size: 13px; font-weight: 600; flex-shrink: 0;
+        }
+
+        .badge-custom {
+            background: var(--primary-bg-light); padding: 4px 12px; border-radius: 40px;
+            font-size: 12px; color: var(--primary); font-weight: 500;
+        }
+
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; padding: 12px 24px;
+            border-radius: 40px; color: white; z-index: 1200; animation: slideIn 0.3s ease;
+            font-weight: 500; font-size: 13px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .toast.success { background-color: #2b7a3e; }
+        .toast.error { background-color: #dc3545; }
+        .toast.info { background-color: var(--primary); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        .admin-row { border-bottom: 1px solid var(--primary-soft); padding: 18px 0; }
+        .admin-row:last-child { border-bottom: none; }
+
+        .inline-banner {
+            padding: 12px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .inline-banner.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .inline-banner.info  { background: var(--primary-bg-light); color: var(--primary); border: 1px solid var(--primary-soft); }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #f0f7f9; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
+
+        @media (max-width: 768px) {
+            .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .section-card { padding: 16px; }
+            .tab-btn { padding: 6px 16px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flex h-screen overflow-hidden">
+        <div id="sidebar-container"></div>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <div id="header-container"></div>
+
+            <main class="flex-1 overflow-y-auto p-5 main-content">
+
+                <div class="mb-5 flex items-center justify-between flex-wrap gap-3">
+                    <div>
+                        <h1 class="text-xl font-bold" style="color: var(--primary);">Settings</h1>
+                        <p class="text-sm mt-1" style="color: var(--text-light);">Create admins and control which modules each one can access</p>
+                    </div>
+                </div>
+
+                <div id="permissionBanner" class="inline-banner error" style="display:none;">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <span>Only SUPER_ADMIN can create admins or change module access. You can still view this page, but actions will be blocked by the server.</span>
+                </div>
+
+                <div class="submodule-nav">
+                    <div class="tab-btn active" data-tab="createAdminTab">Create Admin</div>
+                    <div class="tab-btn" data-tab="manageAccessTab">Manage Access</div>
+                </div>
+
+                <!-- ==================== TAB 1: CREATE ADMIN ==================== -->
+                <div id="createAdminTab" class="tab-content active">
+                    <div class="section-card">
+                        <div class="sec-title"><i class="fas fa-user-plus"></i>Create New Admin</div>
+
+                        <form id="createAdminForm">
+                            <div class="grid-3">
+                                <div class="form-group">
+                                    <label>First Name <span class="req">*</span></label>
+                                    <input type="text" id="cFirstName" placeholder="e.g. Rohan" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" id="cLastName" placeholder="e.g. Verma">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mobile Number <span class="req">*</span></label>
+                                    <input type="text" id="cMobile" placeholder="10-digit mobile number" required>
+                                </div>
+                            </div>
+                            <div class="grid-3">
+                                <div class="form-group">
+                                    <label>Password <span class="req">*</span></label>
+                                    <input type="password" id="cPassword" placeholder="Min 6 characters" required minlength="6">
+                                </div>
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <select id="cDepartment">
+                                        <option value="">Select</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Role <span class="req">*</span></label>
+                                    <input type="text" id="cRole" placeholder="e.g. ADMIN, HR_ADMIN, IT_ADMIN" required>
+                                </div>
+                            </div>
+
+                            <div class="sec-title"><i class="fas fa-sliders-h"></i>Initial Module Access</div>
+                            <div class="grid-4" id="createModuleGrid"></div>
+
+                            <div class="flex items-center gap-3 mt-5 pt-4" style="border-top: 2px solid var(--primary-soft);">
+                                <button type="submit" class="btn-primary" id="createAdminBtn">
+                                    <i class="fas fa-check mr-1"></i>Create Admin
+                                </button>
+                                <span id="createAdminMsg" class="text-xs"></span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ==================== TAB 2: MANAGE ACCESS ==================== -->
+                <div id="manageAccessTab" class="tab-content">
+                    <div class="section-card">
+                        <div class="flex justify-between items-center mb-1 flex-wrap gap-3">
+                            <div class="sec-title" style="margin:0;border:none;padding:0;"><i class="fas fa-users-cog"></i>Manage Admin Module Access</div>
+                            <button onclick="loadAdmins()" class="btn-outline btn-sm">
+                                <i class="fas fa-sync-alt mr-1"></i>Refresh
+                            </button>
+                        </div>
+                        <p class="text-xs mb-4" style="color: var(--text-light);">Toggle a module ON/OFF for each admin below. Changes save automatically.</p>
+                        <div id="adminList">
+                            <p class="text-xs" style="color: var(--text-light);"><i class="fas fa-spinner fa-spin mr-2"></i>Loading admins...</p>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="/assets/js/component-loader.js"></script>
+    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/sidebar.js"></script>
+    <script src="/assets/js/header.js"></script>
+
+    <script>
+    /* =========================================================================
+       MODULE REGISTRY — single source of truth
+       Must match SIDEBAR_MODULES in sidebar.js exactly (same keys)
+       To add a new module: add here AND in sidebar.js SIDEBAR_MODULES
+    ========================================================================= */
+    const MODULES = [
+        { key: 'dashboard',        label: 'Dashboard',           icon: 'fa-tachometer-alt' },
+        { key: 'company',          label: 'Company Management',  icon: 'fa-building' },
+        { key: 'employees',        label: 'Employee Management', icon: 'fa-users' },
+        { key: 'onboarding',       label: 'Onboarding',          icon: 'fa-user-plus' },
+        { key: 'asset',            label: 'Asset Management',    icon: 'fa-laptop' },
+        { key: 'exit',             label: 'Exit Management',     icon: 'fa-sign-out-alt' },
+        { key: 'attendance',       label: 'Attendance',          icon: 'fa-clock' },
+        { key: 'leave',            label: 'Leave Management',    icon: 'fa-calendar-alt' },
+        { key: 'expense',          label: 'Expense Management',  icon: 'fa-wallet' },
+        { key: 'payroll',          label: 'Payroll',             icon: 'fa-rupee-sign' },
+        { key: 'workflow',         label: 'Careers',             icon: 'fa-tasks' },
+        { key: 'policy',           label: 'Policy Management',   icon: 'fa-file-contract' },
+        { key: 'calendar',         label: 'Calendar Management', icon: 'fa-calendar' },
+        { key: 'executive-report', label: 'Executive Report',    icon: 'fa-chart-pie' },
+        { key: 'settings',         label: 'Settings',            icon: 'fa-cog' }
+    ];
+
+    const API_BASE_ADMIN = 'http://localhost:8086/api/admin';
+    const COMPANY_API_BASE = 'http://localhost:8086/api/company';
+
+    async function loadDepartmentsForAdminForm() {
+        const select = document.getElementById('cDepartment');
+        if (!select) return;
+        try {
+            const res = await fetch(`${COMPANY_API_BASE}/departments`);
+            const json = await res.json();
+            const departments = json?.data?.departments || [];
+            select.innerHTML = '<option value="">Select</option>' +
+                departments.map(d => `<option value="${d}">${d}</option>`).join('');
+        } catch (err) {
+            console.warn('Could not load departments:', err);
+        }
+    }
+
+    function showToast(message, type) {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    function showPermissionBanner() {
+        const b = document.getElementById('permissionBanner');
+        if (b) b.style.display = 'flex';
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    (function () {
+        window.loadSidebar?.();
+        window.loadHeader?.();
+
+        const role = localStorage.getItem('hrms_role');
+        if (role && role !== 'SUPER_ADMIN') showPermissionBanner();
+
+        initTabs();
+        renderModuleGrid();
+        bindCreateForm();
+        loadDepartmentsForAdminForm();
+        loadAdmins();
+    })();
+
+    function initTabs() {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function () {
+                const tabId = this.getAttribute('data-tab');
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                contents.forEach(c => c.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    }
+
+    function renderModuleGrid() {
+        const grid = document.getElementById('createModuleGrid');
+        grid.innerHTML = MODULES.map(m => `
+            <label class="module-pill cursor-pointer">
+                <span><i class="fas ${m.icon} mr-1.5"></i>${m.label}</span>
+                <div class="toggle-switch-wrap">
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="create-module-toggle" value="${m.key}">
+                        <span class="toggle-thumb"></span>
+                    </label>
+                </div>
+            </label>
+        `).join('');
+    }
+
+    function bindCreateForm() {
+        document.getElementById('createAdminForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('createAdminBtn');
+            const msg = document.getElementById('createAdminMsg');
+            btn.disabled = true;
+            msg.textContent = '';
+
+            const selectedModules = Array.from(document.querySelectorAll('.create-module-toggle:checked'))
+                .map(el => el.value);
+
+            const selectedRole = document.getElementById('cRole').value.trim().toUpperCase();
+            if (!selectedRole) {
+                msg.textContent = 'Please enter a role.';
+                msg.style.color = '#dc3545';
+                btn.disabled = false;
+                return;
+            }
+            if (selectedRole === 'SUPER_ADMIN') {
+                msg.textContent = 'SUPER_ADMIN cannot be created here — only via bootstrap.';
+                msg.style.color = '#dc3545';
+                btn.disabled = false;
+                return;
+            }
+
+            const payload = {
+                adminFirstName: document.getElementById('cFirstName').value.trim(),
+                adminLastName:  document.getElementById('cLastName').value.trim(),
+                adminMobileNumber: document.getElementById('cMobile').value.trim(),
+                adminPassword: document.getElementById('cPassword').value,
+                adminDepartment: document.getElementById('cDepartment').value,
+                adminRole: selectedRole,
+                moduleAccess: selectedModules
+            };
+
+            try {
+                const res = await fetch(`${API_BASE_ADMIN}/create-admin`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const text = await res.text();
+
+                if (res.status === 403 || res.status === 401) {
+                    showPermissionBanner();
+                    msg.textContent = 'Not authorized.';
+                    msg.style.color = '#dc3545';
+                } else if (res.ok) {
+                    showToast(text, 'success');
+                    document.getElementById('createAdminForm').reset();
+                    document.querySelectorAll('.create-module-toggle').forEach(el => el.checked = false);
+                    loadAdmins();
+                } else {
+                    msg.textContent = text;
+                    msg.style.color = '#dc3545';
+                }
+            } catch (err) {
+                msg.textContent = 'Network error. Is the backend running on localhost:8086?';
+                msg.style.color = '#dc3545';
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    }
+
+    async function loadAdmins() {
+        const container = document.getElementById('adminList');
+        container.innerHTML = `<p class="text-xs" style="color: var(--text-light);"><i class="fas fa-spinner fa-spin mr-2"></i>Loading admins...</p>`;
+
+        try {
+            const res = await fetch(`${API_BASE_ADMIN}/get-all-admin`, { credentials: 'include' });
+
+            if (res.status === 403 || res.status === 401) {
+                showPermissionBanner();
+                container.innerHTML = `<p class="text-xs" style="color:#dc3545;">You don't have permission to view the admin list.</p>`;
+                return;
+            }
+
+            const data = await res.json();
+
+            if (!Array.isArray(data) || data.length === 0) {
+                container.innerHTML = `<p class="text-xs" style="color: var(--text-light);">No admins found.</p>`;
+                return;
+            }
+
+            container.innerHTML = data.map(renderAdminRow).join('');
+
+            data.forEach(admin => {
+                if (admin.adminRole === 'SUPER_ADMIN') return;
+                MODULES.forEach(m => {
+                    const el = document.getElementById(`toggle-${admin.adminId}-${m.key}`);
+                    if (el) el.addEventListener('change', () => onToggleChange(admin.adminId));
+                });
+            });
+
+        } catch (err) {
+            console.error('Failed to load admins:', err);
+            container.innerHTML = `<p class="text-xs" style="color:#dc3545;">Could not reach the server. Is it running on localhost:8086?</p>`;
+        }
+    }
+
+    function renderAdminRow(admin) {
+        const isSuper = admin.adminRole === 'SUPER_ADMIN';
+        const enabled = new Set(admin.moduleAccess || []);
+        const name = `${admin.adminFirstName || ''} ${admin.adminLastName || ''}`.trim();
+        const initial = name.charAt(0).toUpperCase() || 'A';
+
+        const modulesHtml = MODULES.map(m => `
+            <label class="module-pill ${isSuper ? '' : 'cursor-pointer'}">
+                <span><i class="fas ${m.icon} mr-1.5"></i>${m.label}</span>
+                <div class="toggle-switch-wrap">
+                    <label class="toggle-switch">
+                        <input type="checkbox"
+                               id="toggle-${admin.adminId}-${m.key}"
+                               ${(isSuper || enabled.has(m.key)) ? 'checked' : ''}
+                               ${isSuper ? 'disabled' : ''}>
+                        <span class="toggle-thumb"></span>
+                    </label>
+                </div>
+            </label>
+        `).join('');
+
+        return `
+            <div class="admin-row">
+                <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                    <div class="flex items-center gap-2">
+                        <div class="avatar">${initial}</div>
+                        <div>
+                            <p class="text-sm font-medium" style="color: var(--primary);">${escapeHtml(name)}</p>
+                            <p class="text-xs" style="color: var(--text-light);">
+                                ${escapeHtml(admin.adminMobileNumber || '')} · ${escapeHtml(admin.adminDepartment || '—')}
+                            </p>
+                        </div>
+                    </div>
+                    <span class="badge-custom" style="${isSuper ? 'background:rgba(220,53,69,0.12);color:#c0396b;' : ''}">
+                        ${admin.adminRole}
+                    </span>
+                </div>
+                ${isSuper
+                    ? `<p class="text-xs" style="color: var(--text-light);"><i class="fas fa-infinity mr-1"></i>Full access to all modules</p>`
+                    : `<div class="grid-4">${modulesHtml}</div>
+                       <p class="text-[11px] mt-2" id="saveStatus-${admin.adminId}" style="color: var(--text-light);"></p>`
+                }
+            </div>
+        `;
+    }
+
+    let saveTimers = {};
+    function onToggleChange(adminId) {
+        clearTimeout(saveTimers[adminId]);
+        saveTimers[adminId] = setTimeout(() => saveModuleAccess(adminId), 500);
+    }
+
+    async function saveModuleAccess(adminId) {
+        const statusEl = document.getElementById(`saveStatus-${adminId}`);
+        const selected = MODULES
+            .filter(m => document.getElementById(`toggle-${adminId}-${m.key}`)?.checked)
+            .map(m => m.key);
+
+        if (statusEl) { statusEl.textContent = 'Saving...'; statusEl.style.color = 'var(--text-light)'; }
+
+        try {
+            const res = await fetch(`${API_BASE_ADMIN}/update-admin-modules/${adminId}`, {
+                method: 'PATCH',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ moduleAccess: selected })
+            });
+
+            if (res.status === 403 || res.status === 401) {
+                showPermissionBanner();
+                if (statusEl) { statusEl.textContent = 'Not authorized'; statusEl.style.color = '#dc3545'; }
+                return;
+            }
+
+            const data = await res.json();
+
+            if (res.ok) {
+                if (statusEl) { statusEl.textContent = 'Saved ✓'; statusEl.style.color = '#2b7a3e'; }
+                setTimeout(() => { if (statusEl) statusEl.textContent = ''; }, 1500);
+            } else {
+                if (statusEl) { statusEl.textContent = data.error || 'Save failed'; statusEl.style.color = '#dc3545'; }
+            }
+        } catch (err) {
+            if (statusEl) { statusEl.textContent = 'Network error'; statusEl.style.color = '#dc3545'; }
+        }
+    }
+    </script>
+
+    <script>
+    (function () {
+        const isLoggedIn = localStorage.getItem('hrms_logged_in');
+        if (isLoggedIn !== 'true') {
+            window.location.href = 'index.html';
+        }
+    })();
+    </script>
+</body>
+</html>

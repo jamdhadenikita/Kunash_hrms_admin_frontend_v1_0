@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Policy Management | HRMS Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-   
     #header-container {
       position: fixed;
       top: 0;
@@ -31,8 +31,7 @@
       animation: shimmer 1.4s ease-in-out infinite;
       border-radius: 4px;
     }
-  </style>
-
+    </style>
 
     <style>
         * { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -242,7 +241,6 @@
         .visibility-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
         .emp-filter-bar { background: white; border: 1px solid var(--primary-soft); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
 
-        /* Loading spinner overlay */
         .loading-overlay {
             position: fixed; inset: 0; background: rgba(255,255,255,0.7);
             display: none; align-items: center; justify-content: center; z-index: 9999;
@@ -259,7 +257,6 @@
 
 <body>
 
-<!-- Loading Overlay -->
 <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
 </div>
@@ -271,7 +268,6 @@
         <main class="flex-1 overflow-y-auto p-5">
             <div style="max-width:1400px; margin:0 auto; padding-top: 4rem;">
 
-                <!-- Page Header -->
                 <div class="mb-5 flex items-center justify-between flex-wrap gap-3">
                     <div>
                         <h1 class="text-xl font-bold" style="color:var(--primary);">Policy Management</h1>
@@ -282,7 +278,6 @@
                     </button>
                 </div>
 
-                <!-- Stats -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
                     <div class="stat-mini">
                         <div>
@@ -314,14 +309,12 @@
                     </div>
                 </div>
 
-                <!-- Tabs -->
                 <div class="submodule-nav">
                     <button class="tab-btn active" data-tab="tab-list">All Policies</button>
                     <button class="tab-btn" data-tab="tab-categories">Categories</button>
                     <button class="tab-btn" data-tab="tab-preview">Employee Preview</button>
                 </div>
 
-                <!-- ======= TAB 1: ALL POLICIES ======= -->
                 <div id="tab-list" class="tab-content active">
                     <div class="section-card">
                         <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
@@ -374,7 +367,6 @@
                     </div>
                 </div>
 
-                <!-- ======= TAB 2: CATEGORIES ======= -->
                 <div id="tab-categories" class="tab-content">
                     <div class="section-card">
                         <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
@@ -387,7 +379,6 @@
                     </div>
                 </div>
 
-                <!-- ======= TAB 3: EMPLOYEE PREVIEW ======= -->
                 <div id="tab-preview" class="tab-content">
                     <div class="section-card" style="background:var(--primary-bg-light);border-style:dashed;padding:14px 18px;">
                         <div class="flex items-center gap-3">
@@ -432,7 +423,6 @@
     </div>
 </div>
 
-<!-- ======= ADD/EDIT POLICY MODAL ======= -->
 <div id="policyModal" class="modal-overlay">
     <div class="modal-container-lg">
         <div class="modal-header">
@@ -469,7 +459,6 @@
                 </div>
             </div>
 
-            <!-- Audience Section -->
             <div class="audience-section">
                 <div class="audience-section-title">
                     <i class="fas fa-bullseye"></i> Policy Audience — Who should see this policy?
@@ -528,7 +517,6 @@
                 </div>
             </div>
 
-            <!-- File Upload -->
             <div class="form-group mt-4">
                 <label>Policy Document (PDF / Image)</label>
                 <div class="file-input-wrapper" id="fileDropZone">
@@ -554,7 +542,6 @@
     </div>
 </div>
 
-<!-- ======= VIEW POLICY MODAL ======= -->
 <div id="viewPolicyModal" class="modal-overlay">
     <div class="modal-container-lg">
         <div class="modal-header">
@@ -569,7 +556,6 @@
     </div>
 </div>
 
-<!-- ======= CATEGORY MODAL ======= -->
 <div id="categoryModal" class="modal-overlay">
     <div class="modal-container" style="max-width:420px;">
         <div class="modal-header">
@@ -598,7 +584,6 @@
     </div>
 </div>
 
-<!-- ======= CONFIRM DELETE MODAL ======= -->
 <div id="confirmDeleteModal" class="confirm-modal-overlay">
     <div class="confirm-modal-container">
         <div style="width:56px;height:56px;background:#fde8ea;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
@@ -613,35 +598,44 @@
     </div>
 </div>
 
-<script src="/assets/js/component-loader.js"></script>  <!-- ← ADD THIS LINE -->
+<script src="/assets/js/component-loader.js"></script>
 <script src="/assets/js/common.js"></script>
 <script src="/assets/js/sidebar.js"></script>
 <script src="/assets/js/header.js"></script>
 
 <script>
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  CONFIG — change BASE_URL to match your Spring Boot server
-    // ═══════════════════════════════════════════════════════════════════════
+    // CONFIG
     const BASE_URL = 'http://localhost:8086/api/v1/policies';
+    const COMPANY_API_BASE = 'http://localhost:8086/api/company';
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  MASTER DATA (static lists — same as backend ALL_DEPARTMENTS)
-    // ═══════════════════════════════════════════════════════════════════════
-    const ALL_DEPARTMENTS = [
-        'Engineering','Human Resources','Finance','Marketing','Sales',
-        'Operations','Legal','Customer Support','Product','Design',
-        'Administration','IT','Procurement','Logistics','R&D'
-    ];
+    // Dynamic Departments (from API)
+    let ALL_DEPARTMENTS = [];
+
+    // Static Employee Types
     const ALL_EMP_TYPES = [
-        'Full-Time','Part-Time','Contract','Intern','Probation',
-        'Remote','Freelancer','Consultant','Trainee','Senior Management'
+        'Full-Time',
+        'Part-Time',
+        'Contract',
+        'Intern'
     ];
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  STATE
-    // ═══════════════════════════════════════════════════════════════════════
-    let categoriesCache = [];       // loaded once, used in dropdowns
+    // Load departments from Company API
+    async function loadDepartmentsFromAPI() {
+        try {
+            const res = await fetch(`${COMPANY_API_BASE}/departments`);
+            const json = await res.json();
+            const departments = json?.data?.departments || [];
+            ALL_DEPARTMENTS = Array.isArray(departments) ? departments : [];
+            console.log('Departments loaded:', ALL_DEPARTMENTS);
+        } catch (err) {
+            console.warn('Could not load departments:', err);
+            ALL_DEPARTMENTS = [];
+        }
+    }
+
+    // STATE
+    let categoriesCache = [];
     let editingPolicyId  = null;
     let editingCatId     = null;
     let selectedFile     = null;
@@ -652,9 +646,7 @@
 
     const multiSelectState = { dept: [], empType: [] };
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  UTILITIES
-    // ═══════════════════════════════════════════════════════════════════════
+    // UTILITIES
     function showToast(msg, type = 'success') {
         const t = document.createElement('div');
         t.className = `toast ${type}`;
@@ -685,43 +677,26 @@
         searchDebounceTimer = setTimeout(() => { currentPage = 0; fetchPolicies(); }, 400);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  HTTP HELPERS
-    // ═══════════════════════════════════════════════════════════════════════
-
-    /**
-     * Generic API call wrapper
-     * Method  : GET | POST | PUT | DELETE
-     * Returns : parsed JSON or null (on 204)
-     * Throws  : Error with backend message string
-     */
+    // HTTP helper
     async function apiCall(method, url, body = null) {
         const options = {
             method,
             headers: { 'Content-Type': 'application/json' }
-            // Add Authorization header here if you use JWT:
-            // 'Authorization': 'Bearer ' + localStorage.getItem('token')
         };
         if (body) options.body = JSON.stringify(body);
 
         const response = await fetch(url, options);
-
-        if (response.status === 204) return null;   // DELETE success
+        if (response.status === 204) return null;
 
         const data = await response.json();
-
         if (!response.ok) {
-            // Backend returns { message: "..." } from GlobalExceptionHandler
             throw new Error(data.message || `HTTP ${response.status}`);
         }
-
         return data;
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  INIT
-    // ═══════════════════════════════════════════════════════════════════════
-    document.addEventListener('DOMContentLoaded', () => {
+    // INIT
+    document.addEventListener('DOMContentLoaded', async () => {
         if (typeof loadSidebar === 'function') loadSidebar();
         if (typeof loadHeader  === 'function') loadHeader();
         setTimeout(() => {
@@ -729,19 +704,22 @@
         }, 500);
 
         initTabs();
+
+        showLoader();
+        await loadDepartmentsFromAPI();
+        hideLoader();
+
         populateStaticDropdowns();
         loadPageData();
     });
 
     async function loadPageData() {
-        await fetchCategories();      // categories first (needed for dropdowns)
+        await fetchCategories();
         fetchStats();
         fetchPolicies();
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  STATS  →  GET /api/v1/policies/stats
-    // ═══════════════════════════════════════════════════════════════════════
+    // STATS
     async function fetchStats() {
         try {
             const data = await apiCall('GET', `${BASE_URL}/stats`);
@@ -754,9 +732,7 @@
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  POLICIES LIST  →  GET /api/v1/policies
-    // ═══════════════════════════════════════════════════════════════════════
+    // POLICIES LIST
     async function fetchPolicies() {
         showLoader();
         try {
@@ -778,7 +754,7 @@
 
             const data = await apiCall('GET', `${BASE_URL}?${params}`);
             renderPoliciesTable(data);
-            fetchStats(); // refresh stat cards after any change
+            fetchStats();
         } catch (err) {
             showToast('Failed to load policies: ' + err.message, 'error');
         } finally {
@@ -840,7 +816,6 @@
         document.getElementById('policyCount').textContent =
             `Showing ${pageData.content.length} of ${pageData.totalElements} policies`;
 
-        // Pagination buttons
         let pagHtml = '';
         for (let i = 0; i < totalPages; i++) {
             pagHtml += `<button onclick="goToPage(${i})"
@@ -852,9 +827,7 @@
 
     function goToPage(page) { currentPage = page; fetchPolicies(); }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  VIEW POLICY  →  GET /api/v1/policies/{id}
-    // ═══════════════════════════════════════════════════════════════════════
+    // VIEW POLICY
     async function viewPolicy(id) {
         showLoader();
         try {
@@ -939,9 +912,7 @@
 
     function closeViewModal() { document.getElementById('viewPolicyModal').classList.remove('active'); }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  DOCUMENT DOWNLOAD  →  GET /api/v1/policies/{id}/document
-    // ═══════════════════════════════════════════════════════════════════════
+    // DOWNLOAD DOCUMENT
     async function downloadPolicyDocument(id, fallbackName) {
         showLoader();
         try {
@@ -963,9 +934,7 @@
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  ADD MODAL
-    // ═══════════════════════════════════════════════════════════════════════
+    // ADD MODAL
     function openAddModal() {
         editingPolicyId = null;
         selectedFile    = null;
@@ -985,9 +954,7 @@
         document.getElementById('policyModal').classList.add('active');
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  EDIT MODAL  →  GET /api/v1/policies/{id}  (pre-fill form)
-    // ═══════════════════════════════════════════════════════════════════════
+    // EDIT MODAL
     async function openEditModal(id) {
         showLoader();
         try {
@@ -1044,9 +1011,7 @@
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  SAVE/UPDATE POLICY  →  POST or PUT /api/v1/policies
-    // ═══════════════════════════════════════════════════════════════════════
+    // SAVE/UPDATE POLICY
     async function submitPolicyForm(e) {
         e.preventDefault();
         const btn = document.getElementById('policySubmitBtn');
@@ -1054,7 +1019,6 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Saving...';
 
         try {
-            // Build the request body
             const body = {
                 title:         document.getElementById('pTitle').value.trim(),
                 categoryId:    parseInt(document.getElementById('pCategory').value),
@@ -1065,20 +1029,16 @@
                 employeeTypes: [...multiSelectState.empType],
             };
 
-            // Attach file as base64 if a new file was selected
             if (selectedFile) {
                 body.fileData = await fileToBase64(selectedFile);
                 body.fileName = selectedFile.name;
             }
 
-            let result;
             if (editingPolicyId) {
-                // UPDATE
-                result = await apiCall('PUT', `${BASE_URL}/${editingPolicyId}`, body);
+                await apiCall('PUT', `${BASE_URL}/${editingPolicyId}`, body);
                 showToast('Policy updated successfully!', 'success');
             } else {
-                // CREATE
-                result = await apiCall('POST', BASE_URL, body);
+                await apiCall('POST', BASE_URL, body);
                 showToast('Policy added successfully!', 'success');
             }
 
@@ -1105,9 +1065,7 @@
         });
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  DELETE POLICY  →  DELETE /api/v1/policies/{id}
-    // ═══════════════════════════════════════════════════════════════════════
+    // DELETE POLICY
     function confirmDeletePolicy(id, title) {
         document.getElementById('confirmDeleteMsg').innerHTML =
             `Delete policy <strong>"${escHtml(title)}"</strong>?`;
@@ -1133,9 +1091,7 @@
         });
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  CATEGORIES  →  GET /api/v1/policies/categories
-    // ═══════════════════════════════════════════════════════════════════════
+    // CATEGORIES
     async function fetchCategories() {
         try {
             categoriesCache = await apiCall('GET', `${BASE_URL}/categories`);
@@ -1181,20 +1137,17 @@
     }
 
     function populateCategoryFilterDropdowns() {
-        // Main list filter
         const filterSel = document.getElementById('filterCategory');
         const filterPrev = filterSel.value;
         filterSel.innerHTML = '<option value="">All Categories</option>' +
             categoriesCache.map(c => `<option value="${escHtml(c.name)}">${escHtml(c.name)}</option>`).join('');
         if (filterPrev) filterSel.value = filterPrev;
 
-        // Preview tab filter
         const prevSel = document.getElementById('previewCatFilter');
         prevSel.innerHTML = '<option value="">— All Categories —</option>' +
             categoriesCache.map(c => `<option value="${escHtml(c.name)}">${escHtml(c.name)}</option>`).join('');
     }
 
-    // ─── Add Category ────────────────────────────────────────────────────
     function openCategoryModal() {
         editingCatId = null;
         document.getElementById('categoryForm').reset();
@@ -1219,9 +1172,6 @@
         editingCatId = null;
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  SAVE/UPDATE CATEGORY  →  POST or PUT /api/v1/policies/categories
-    // ═══════════════════════════════════════════════════════════════════════
     async function submitCategoryForm(e) {
         e.preventDefault();
         const body = {
@@ -1247,9 +1197,6 @@
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  DELETE CATEGORY  →  DELETE /api/v1/policies/categories/{id}
-    // ═══════════════════════════════════════════════════════════════════════
     function confirmDeleteCategory(id, name, count) {
         document.getElementById('confirmDeleteMsg').innerHTML =
             `Delete category <strong>"${escHtml(name)}"</strong>?`
@@ -1268,16 +1215,14 @@
                 showToast('Category deleted!', 'success');
                 await fetchCategories();
             } catch (err) {
-                showToast(err.message, 'error');  // backend sends 409 message here
+                showToast(err.message, 'error');
             } finally {
                 hideLoader();
             }
         });
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  EMPLOYEE PREVIEW  →  GET /api/v1/policies/employee-preview
-    // ═══════════════════════════════════════════════════════════════════════
+    // EMPLOYEE PREVIEW
     async function fetchEmployeePreview() {
         const dept     = document.getElementById('previewDeptFilter').value;
         const empType  = document.getElementById('previewEmpTypeFilter').value;
@@ -1352,9 +1297,7 @@
         }).join('');
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  EXPORT CSV (client-side from current page data)
-    // ═══════════════════════════════════════════════════════════════════════
+    // EXPORT CSV
     async function exportPoliciesCSV() {
         showLoader();
         try {
@@ -1364,7 +1307,6 @@
             const empType    = document.getElementById('filterEmpType').value;
             const status     = document.getElementById('filterStatus').value;
 
-            // Fetch all pages for export (size=1000)
             const params = new URLSearchParams({
                 page: 0, size: 1000,
                 ...(search   && { searchKeyword: search }),
@@ -1403,9 +1345,7 @@
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  STATIC DROPDOWN POPULATION (Departments + Emp Types — hardcoded)
-    // ═══════════════════════════════════════════════════════════════════════
+    // POPULATE DROPDOWNS
     function populateStaticDropdowns() {
         const deptFilter = document.getElementById('filterDept');
         deptFilter.innerHTML = '<option value="">All Departments</option>' +
@@ -1424,9 +1364,7 @@
             ALL_EMP_TYPES.map(t=>`<option value="${escHtml(t)}">${escHtml(t)}</option>`).join('');
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  MULTI-SELECT COMPONENT
-    // ═══════════════════════════════════════════════════════════════════════
+    // MULTI-SELECT
     function initMultiSelect(type) {
         const options = type === 'dept' ? ALL_DEPARTMENTS : ALL_EMP_TYPES;
         renderMultiOptions(type, options);
@@ -1439,14 +1377,17 @@
             ? options.filter(o => o.toLowerCase().includes(filterText.toLowerCase()))
             : options;
 
-        container.innerHTML = filtered.length === 0
-            ? `<div style="padding:12px;text-align:center;color:var(--text-light);font-size:13px;">No results</div>`
-            : filtered.map(opt => `
-                <label class="multi-select-option ${selected.includes(opt)?'selected':''}"
-                    onclick="toggleOption('${type}','${escHtml(opt)}',event)">
-                    <input type="checkbox" ${selected.includes(opt)?'checked':''} onclick="event.stopPropagation()">
-                    <span>${escHtml(opt)}</span>
-                </label>`).join('');
+        if (!filtered.length) {
+            container.innerHTML = `<div style="padding:12px;text-align:center;color:var(--text-light);font-size:13px;">No results</div>`;
+            return;
+        }
+
+        container.innerHTML = filtered.map(opt => `
+            <label class="multi-select-option ${selected.includes(opt)?'selected':''}"
+                onclick="toggleOption('${type}','${escHtml(opt)}',event)">
+                <input type="checkbox" ${selected.includes(opt)?'checked':''} onclick="event.stopPropagation()">
+                <span>${escHtml(opt)}</span>
+            </label>`).join('');
     }
 
     function filterMultiOptions(type, val) {
@@ -1541,9 +1482,7 @@
         text.innerHTML = html;
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  TABS
-    // ═══════════════════════════════════════════════════════════════════════
+    // TABS
     function initTabs() {
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function () {
@@ -1552,16 +1491,13 @@
                 this.classList.add('active');
                 document.getElementById(this.dataset.tab).classList.add('active');
 
-                // Trigger data load when switching tabs
                 if (this.dataset.tab === 'tab-categories') fetchCategories();
                 if (this.dataset.tab === 'tab-preview')    fetchEmployeePreview();
             });
         });
     }
 
-    // ═══════════════════════════════════════════════════════════════════════
-    //  MISC
-    // ═══════════════════════════════════════════════════════════════════════
+    // MISC
     function closeConfirmModal() { document.getElementById('confirmDeleteModal').classList.remove('active'); }
 
     ['policyModal','viewPolicyModal','categoryModal'].forEach(id => {

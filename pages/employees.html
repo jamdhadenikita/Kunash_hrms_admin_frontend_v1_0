@@ -7,6 +7,7 @@
     <title>Employee Management | HRMS Admin</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -1345,6 +1346,85 @@ input.valid:focus, select.valid:focus, textarea.valid:focus {
     .upload-zone, button, .btn-primary, .btn-outline {
         cursor: pointer;
     }
+
+    /* ===== TABLE SCROLL WRAPPER with THIN SCROLLBAR ===== */
+.table-scroll-wrapper {
+    overflow-x: auto;
+    overflow-y: clip;
+    scrollbar-width: thin;
+    scrollbar-color: #BDE4EE #f0f7f9;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-track {
+    background: #f0f7f9;
+    border-radius: 10px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: #BDE4EE;
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #62C9EA;
+}
+
+/* ===== EMPLOYEE TABLE — same style as company table ===== */
+.employees-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.employees-table thead tr {
+    background: var(--primary-bg-light);
+}
+
+.employees-table thead th {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 14px 12px;
+    text-align: left;
+    color: var(--primary);
+    background: var(--primary-bg-light);
+    border-bottom: 2px solid var(--primary-soft);
+}
+
+.employees-table tbody td {
+    padding: 14px 12px;
+    font-size: 13px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--primary-soft);
+}
+
+.employees-table tbody tr:hover {
+    background: var(--primary-bg-light);
+}
+
+/* Sticky Actions column */
+.employees-table th:last-child,
+.employees-table td:last-child {
+    position: sticky;
+    right: 0;
+    background: #ffffff;
+    z-index: 5;
+    box-shadow: -4px 0 8px -4px rgba(0, 0, 0, 0.1);
+}
+
+.employees-table thead th:last-child {
+    background: var(--primary-bg-light);
+    z-index: 10;
+}
+
+.employees-table tbody tr:hover td:last-child {
+    background: var(--primary-bg-light);
+}
 </style>
 
 </head>
@@ -2156,12 +2236,16 @@ input.valid:focus, select.valid:focus, textarea.valid:focus {
 
                             <div class="form-group" style="margin-bottom:14px;">
                                 <label>Department <span class="req">*</span></label>
-                                <input type="text" id="qDept" placeholder="e.g. IT, HR, Finance" maxlength="100">
+                                <select id="qDept" style="width:100%;padding:10px 12px;border-radius:6px;border:1px solid var(--primary-soft);font-size:13px;color:var(--text-dark);">
+                                    <option value="">Select Department</option>
+                                </select>
                             </div>
 
                             <div class="form-group" style="margin-bottom:14px;">
                                 <label>Designation <span class="req">*</span></label>
-                                <input type="text" id="qDesig" placeholder="e.g. Software Engineer" maxlength="100">
+                                <select id="qDesig" style="width:100%;padding:10px 12px;border-radius:6px;border:1px solid var(--primary-soft);font-size:13px;color:var(--text-dark);">
+                                    <option value="">Select Designation</option>
+                                </select>
                             </div>
 
                             <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:16px;border-top:2px solid var(--primary-soft);">
@@ -5963,12 +6047,22 @@ function closePromotionModal() {
     };
 
     // ── Open modal ──────────────────────────────────────────────────────────────
+    // function openQuickAddModal() {
+    //     resetQuickAddModal();
+    //     document.getElementById('quickAddMemberModal').classList.add('active');
+    //     // Focus first input on next tick
+    //     setTimeout(() => document.getElementById('qFN')?.focus(), 50);
+    // }
+
     function openQuickAddModal() {
-        resetQuickAddModal();
-        document.getElementById('quickAddMemberModal').classList.add('active');
-        // Focus first input on next tick
-        setTimeout(() => document.getElementById('qFN')?.focus(), 50);
-    }
+    resetQuickAddModal();
+    document.getElementById('quickAddMemberModal').classList.add('active');
+    // Focus first input on next tick
+    setTimeout(() => document.getElementById('qFN')?.focus(), 50);
+
+    // Populate department and designation dropdowns from API
+    populateQuickAddDropdowns();
+}
 
     // ── Close modal ─────────────────────────────────────────────────────────────
     function closeQuickAddModal() {
@@ -6015,6 +6109,24 @@ function closePromotionModal() {
         quickAddState.submitting = false;
         quickAddState.generatedPassword = '';
     }
+
+    // Populate Department & Designation dropdowns in Quick Add modal
+function populateQuickAddDropdowns() {
+    const deptSelect = document.getElementById('qDept');
+    const desigSelect = document.getElementById('qDesig');
+
+    // Departments
+    if (deptSelect && Array.isArray(window._departments)) {
+        deptSelect.innerHTML = '<option value="">Select Department</option>' +
+            window._departments.map(d => `<option value="${d}">${d}</option>`).join('');
+    }
+
+    // Designations
+    if (desigSelect && Array.isArray(window._designations)) {
+        desigSelect.innerHTML = '<option value="">Select Designation</option>' +
+            window._designations.map(d => `<option value="${d}">${d}</option>`).join('');
+    }
+}
 
     // ── Inline error display ─────────────────────────────────────────────────────
     function showQuickAddError(msg) {

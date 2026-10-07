@@ -1,265 +1,23 @@
-<!-- Collapsible Sidebar with Fixed Submenu Toggle -->
+<!-- Collapsible Sidebar with Dynamic Module Rendering -->
 <aside class="main-sidebar w-64 flex flex-col" id="mainSidebar"
     style="background: #b8cfd7; height: 100vh; overflow: hidden;">
     <!-- Sidebar Header -->
-<div class="h-14 flex items-center justify-between px-4 border-b flex-shrink-0" style="border-bottom-color: #3098b5;">
-    <div class="sidebar-logo" style="display: flex; align-items: center; gap: 8px;">
-        <img id="sidebarCompanyLogo" 
-             src="/assets/images/logo.png" 
-             alt="Company Logo" 
-             style="height: 45px; width: 180px; object-fit: contain; transition: all 0.3s ease;">
+    <div class="h-14 flex items-center justify-between px-4 border-b flex-shrink-0" style="border-bottom-color: #3098b5;">
+        <div class="sidebar-logo" style="display: flex; align-items: center; gap: 8px;">
+            <img id="sidebarCompanyLogo"
+                 src="/assets/images/kunash-logo.png"
+                 alt="Company Logo"
+                 style="height: 45px; width: 180px; object-fit: contain; transition: all 0.3s ease;">
+        </div>
+        <button id="collapseBtn" class="transition-all duration-300 hover:scale-110" style="color: #3098b5; background: transparent; border: none; cursor: pointer; padding: 8px;">
+            <i id="collapseIcon" class="fas fa-chevron-left text-xs"></i>
+        </button>
     </div>
-    <button id="collapseBtn" class="transition-all duration-300 hover:scale-110" style="color: #3098b5; background: transparent; border: none; cursor: pointer; padding: 8px;">
-        <i id="collapseIcon" class="fas fa-chevron-left text-xs"></i>
-    </button>
-</div>
 
-    <!-- Navigation Menu -->
+    <!-- Navigation Menu — rendered dynamically by sidebar.js -->
     <nav class="flex-1 overflow-y-auto py-4 sidebar-nav" style="overflow-y: auto; overflow-x: hidden;">
-        <ul class="space-y-0.5 px-2">
-            <!-- Dashboard -->
-            <li class="nav-item">
-                <a href="/dashboard.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="dashboard">
-                    <i class="fas fa-tachometer-alt w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Dashboard</span>
-                </a>
-            </li>
-
-            <!-- Company Management - Single Link (No Submodules) -->
-            <li class="nav-item">
-                <a href="/pages/company-mgmt/company.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="company">
-                    <i class="fas fa-building w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Company Management</span>
-                </a>
-            </li>
-
-            <!-- Employee Management -->
-            <li class="nav-item has-submenu">
-
-                <a href="/pages/employees.html"
-                    class="nav-link toggle-submenu flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="employees">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-users w-4 text-xs" style="color: #1B738C;"></i>
-                        <span class="nav-text text-sm font-medium" style="color: #125f74;">Employee Management</span>
-                    </div>
-                    <!-- <i class="fas fa-chevron-right submenu-arrow text-[9px] transition-transform duration-300"
-                        style="color: #1B738C;"></i> -->
-                </a>
-                <!-- <ul class="flex flex-col items-end submenu mt-1 space-y-0.5" style="display: none;"> -->
-
-                <!-- <li><a href="/pages/employees.html?tab=all"
-                            class="block px-3 py-1.5 ml-7 rounded-lg text-[13px] transition-all duration-300"
-                            style="color: #125f74;">1. All Employees</a></li>
-
-                    <li><a href="/pages/employees.html?tab=add"
-                            class="block px-3 py-1.5 ml-7 rounded-lg text-[13px] transition-all duration-300"
-                            style="color: #125f74;">2. Add Employee</a></li> -->
-
-
-
-
-                <!-- </ul> -->
-            </li>
-
-
-            <!-- Onboarding -->
-            <li class="nav-item">
-                <a href="/pages/onboarding.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="onboarding">
-                    <i class="fas fa-user-plus w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Onboarding</span>
-                </a>
-            </li>
-
-            <!-- Asset Management -->
-            <li class="nav-item">
-                <a href="/pages/asset.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="asset-management">
-                    <i class="fas fa-laptop w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Asset Management</span>
-                </a>
-            </li>
-
-            <!-- Exit -->
-            <li class="nav-item">
-                <a href="/pages/exit.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="exit">
-                    <i class="fas fa-sign-out-alt w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Exit Management</span>
-                </a>
-            </li>
-
-
-
-
-            <!-- Attendance -->
-            <li class="nav-item">
-                <a href="/pages/attandance.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="attendance">
-                    <i class="fas fa-clock w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Attendance</span>
-                </a>
-            </li>
-
-            <!-- Leave Management -->
-            <li class="nav-item">
-                <a href="/pages/leave.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="leave">
-                    <i class="fas fa-calendar-alt w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Leave Management</span>
-                </a>
-            </li>
-
-            <!-- Expense Management -->
-            <li class="nav-item">
-                <a href="/pages/expense.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="expense">
-                    <i class="fas fa-wallet w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Expense Management</span>
-                </a>
-            </li>
-
-            <!-- Payroll -->
-            <li class="nav-item has-submenu">
-                <a href="javascript:void(0);"
-                    class="nav-link toggle-submenu flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="payroll">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-rupee-sign w-4 text-xs" style="color: #1B738C;"></i>
-                        <span class="nav-text text-sm font-medium" style="color: #125f74;">Payroll</span>
-                    </div>
-                    <i class="fas fa-chevron-right submenu-arrow text-[9px] transition-transform duration-300"
-                        style="color: #1B738C;"></i>
-                </a>
-                <ul class="submenu mt-1 space-y-0.5" style="display: none;">
-                    <li><a href="/pages/payroll/employee_payroll.html"
-                            class="block px-3 py-1.5 ml-7 rounded-lg text-[13px] transition-all duration-300"
-                            style="color: #125f74;">1. Employee Pay</a></li>
-                    <li><a href="/pages/payroll/payslips.html"
-                            class="block px-3 py-1.5 ml-7 rounded-lg text-[13px] transition-all duration-300"
-                            style="color: #125f74;">2. Employee Pay-Slips</a></li>
-                </ul>
-            </li>
-
-            <!-- KPI / Performance -->
-            <!-- <li class="nav-item">
-                <a href="/pages/kpi.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="kpi">
-                    <i class="fas fa-chart-line w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">KPI / Performance</span>
-                </a>
-            </li> -->
-
-            <!-- Workflow & Approval -->
-            <li class="nav-item">
-                <a href="/pages/career.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="workflow">
-                    <i class="fas fa-tasks w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Careers</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="/pages/policyManagement.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="policy">
-                    <i class="fas fa-file-contract w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Policy Management</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="/pages/calendar.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="calendar">
-                    <i class="fas fa-file-contract w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Calender Management</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="/executive-report.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="executive-report">
-                    <i class="fas fa-chart-pie w-4 text-xs" style="color: #1B738C;"></i> 
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Executive Report</span>
-                </a>
-            </li>
-
-            <!-- Asset Management -->
-            <!-- <li class="nav-item">
-                <a href="/pages/asset.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="asset">
-                    <i class="fas fa-laptop w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Asset Management</span>
-                </a>
-            </li> -->
-
-
-
-            <!-- Notification -->
-            <!-- <li class="nav-item">
-                <a href="/pages/notification.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="notification">
-                    <i class="fas fa-bell w-4 text-xs" style="color: #1B738C;"></i>
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">Notification</span>
-                </a>
-            </li> -->
-
-            <!-- Reports -->
-            <!-- <li class="nav-item">
-                <a href="/pages/attandance.html"
-                    class="nav-link flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 group">
-
-                    <i class="fas fa-file-alt w-4 text-xs" style="color: #1B738C;"></i>
-
-                    <span class="nav-text text-sm font-medium" style="color: #125f74;">
-                        Reports
-                    </span>
-
-                </a>
-            </li> -->
-
-
-            <!-- Security & Role -->
-            <!-- <li class="nav-item has-submenu">
-                <a href="javascript:void(0);"
-                    class="nav-link toggle-submenu flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-300 group"
-                    data-module="security">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-shield-alt w-4 text-xs" style="color: #1B738C;"></i>
-                        <span class="nav-text text-sm font-medium" style="color: #125f74;">Security & Role</span>
-                    </div>
-                    <i class="fas fa-chevron-right submenu-arrow text-[9px] transition-transform duration-300"
-                        style="color: #125f74;"></i>
-                </a>
-                <ul class="submenu mt-1 space-y-0.5" style="display: none;">
-                    <li><a href="/pages/security.html?tab=roles"
-                            class="block px-3 py-1.5 ml-7 rounded-lg text-[13px] transition-all duration-300"
-                            style="color: #125f74;"> Role Management</a></li>
-                    <li><a href="/pages/security.html?tab=permissions"
-                            class="block px-3 py-1.5 ml-7 rounded-lg text-[13px] transition-all duration-300"
-                            style="color: #125f74;"> Permissions</a></li>
-                    <li><a href="/pages/security.html?tab=audit"
-                            class="block px-3 py-1.5 ml-7 rounded-lg text-[13px] transition-all duration-300"
-                            style="color: #125f74;"> Audit Logs</a></li>
-                </ul>
-            </li> -->
+        <ul class="space-y-0.5 px-2" id="dynamicNavList">
+            <!-- EMPTY — sidebar.js fills this based on module access -->
         </ul>
     </nav>
 </aside>
@@ -272,7 +30,6 @@
         flex-direction: column;
     }
 
-    /* Navigation Menu Scrollbar Styling */
     .sidebar-nav {
         scrollbar-width: thin;
         scrollbar-color: #1B738C #BDE4EE;
@@ -280,96 +37,55 @@
         overflow-x: hidden !important;
     }
 
-    .sidebar-nav::-webkit-scrollbar {
-        width: 4px;
-    }
-
-    .sidebar-nav::-webkit-scrollbar-track {
-        background: #BDE4EE;
-        border-radius: 10px;
-    }
-
-    .sidebar-nav::-webkit-scrollbar-thumb {
-        background: #1B738C;
-        border-radius: 10px;
-    }
-
-    .sidebar-nav::-webkit-scrollbar-thumb:hover {
-        background: #BDE4EE;
-    }
+    .sidebar-nav::-webkit-scrollbar { width: 4px; }
+    .sidebar-nav::-webkit-scrollbar-track { background: #BDE4EE; border-radius: 10px; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: #1B738C; border-radius: 10px; }
+    .sidebar-nav::-webkit-scrollbar-thumb:hover { background: #BDE4EE; }
 
     .nav-link {
         border: 1px solid transparent;
         cursor: pointer;
     }
 
-    /* Sidebar Navigation Hover Effects */
     .nav-link:hover {
         background-color: #649cab;
         transform: translateX(2px);
         border: 1px solid #1B738C;
-
     }
-
-    .nav-link:hover span {
-        color: white !important;
-    }
-
-    .nav-link:hover i {
-        color: white !important;
-    }
+    .nav-link:hover span { color: white !important; }
+    .nav-link:hover i { color: white !important; }
 
     .nav-link.active {
         background-color: #1B738C;
         border: 1px solid #17657a;
     }
+    .nav-link.active span { color: #f8f8f8 !important; font-weight: 600; }
+    .nav-link.active i { color: #ebe1ed !important; }
 
-    .nav-link.active span {
-        color: #f8f8f8 !important;
-        font-weight: 600;
-    }
-
-    .nav-link.active i {
-        color: #ebe1ed !important;
-    }
-
-    /* Submenu Hover Effects */
     .submenu li a:hover {
         background-color: #649cab;
         color: white !important;
         transform: translateX(2px);
     }
-
     .submenu li a.active {
         background-color: #1B738C;
         color: #EDE9E6 !important;
         font-weight: 500;
     }
 
-    /* Submenu open arrow rotation */
-    .has-submenu.submenu-open>.nav-link .submenu-arrow {
+    .has-submenu.submenu-open > .nav-link .submenu-arrow {
         transform: rotate(90deg);
     }
 
-    /* Sidebar Collapsed Styles */
-    .main-sidebar.collapsed {
-        width: 70px;
-    }
+    .main-sidebar.collapsed { width: 70px; }
 
     .main-sidebar.collapsed .nav-text,
     .main-sidebar.collapsed .submenu-arrow,
     .main-sidebar.collapsed .sidebar-logo span {
         display: none;
     }
-
-    .main-sidebar.collapsed .nav-link {
-        justify-content: center;
-    }
-
-    .main-sidebar.collapsed .nav-link i {
-        margin-right: 0;
-        font-size: 1rem;
-    }
+    .main-sidebar.collapsed .nav-link { justify-content: center; }
+    .main-sidebar.collapsed .nav-link i { margin-right: 0; font-size: 1rem; }
 
     .main-sidebar.collapsed .submenu {
         position: fixed;
@@ -383,28 +99,21 @@
         z-index: 1000;
         border: 1px solid #F3F4F4;
     }
-
-    .main-sidebar.collapsed .has-submenu:hover .submenu {
-        display: block !important;
-    }
-
+    .main-sidebar.collapsed .has-submenu:hover .submenu { display: block !important; }
     .main-sidebar.collapsed .has-submenu .submenu li a {
         padding: 8px 14px;
         white-space: nowrap;
         font-size: 12px;
         color: #146278 !important;
     }
-
     .main-sidebar.collapsed .has-submenu .submenu li a:hover {
         background-color: rgba(84, 8, 99, 0.1);
         color: #fefefe !important;
     }
 
-    /* Transition Effects */
     .main-sidebar,
     .nav-link,
     .submenu li a {
         transition: all 0.3s ease;
     }
 </style>
-
